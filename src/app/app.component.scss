@@ -1,0 +1,11 @@
+.body {
+  height: 100vh;
+  box-sizing: border-box;
+  app-header {
+    display: block;
+  }
+  app-sidebar {
+    display: block;
+    height: calc(100% - 64px);
+  }
+}

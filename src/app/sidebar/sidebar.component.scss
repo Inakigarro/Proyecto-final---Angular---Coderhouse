@@ -1,0 +1,13 @@
+mat-sidenav-container {
+  height: 100%;
+}
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+mat-sidenav-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
