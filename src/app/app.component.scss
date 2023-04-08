@@ -3,9 +3,6 @@
   box-sizing: border-box;
   app-header {
     display: block;
-  }
-  app-sidebar {
-    display: block;
-    height: calc(100% - 64px);
+    height: 100%;
   }
 }

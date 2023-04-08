@@ -1,10 +1,12 @@
 <mat-sidenav-container>
-    <mat-sidenav class="sidenav" mode="side" opened>
-        <div *ngFor="let boton of botones">
-            <button mat-raised-button>{{boton}}</button>
+    <mat-sidenav mode="side" opened>
+        <div class="sidenav">
+            <ng-container *ngFor="let boton of botones">
+                <button class="nav-button" mat-raised-button>{{boton}}</button>
+            </ng-container>
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
-        sexo
+        <app-list [toolbarButtons]="toolbarButtons" [headers]="listHeader" [items]="listItems"></app-list>
     </mat-sidenav-content>
 </mat-sidenav-container>
