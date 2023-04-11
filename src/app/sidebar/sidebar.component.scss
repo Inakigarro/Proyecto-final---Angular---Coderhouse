@@ -13,9 +13,6 @@ mat-sidenav-content {
   box-sizing: border-box;
   padding: 1%;
   width: $sidenav-content-width;
-  app-list {
-    width: 100%;
-  }
 }
 .sidenav {
   display: flex;
@@ -27,4 +24,8 @@ mat-sidenav-content {
 
 .nav-button {
   width: 50%;
+}
+
+.mainContent {
+  width: 100%;
 }

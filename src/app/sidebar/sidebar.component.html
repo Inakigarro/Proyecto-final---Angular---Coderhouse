@@ -1,12 +1,15 @@
 <mat-sidenav-container>
     <mat-sidenav mode="side" opened>
         <div class="sidenav">
-            <ng-container *ngFor="let boton of botones">
-                <button class="nav-button" mat-raised-button>{{boton}}</button>
+            <ng-container *ngFor="let button of buttons">
+                <app-button [button]="button.buttonDefinition" [label]="button.label" [icon]="button.icon"
+                    [url]="button.url" (executed)="this.navigate($event)"></app-button>
             </ng-container>
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
-        <app-list [toolbarButtons]="toolbarButtons" [headers]="listHeader" [items]="listItems"></app-list>
+        <div class="mainContent">
+            <router-outlet></router-outlet>
+        </div>
     </mat-sidenav-content>
 </mat-sidenav-container>

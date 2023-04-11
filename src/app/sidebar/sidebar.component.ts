@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ExtendedButtonDefinition } from '../components/models/button';
 import { Alumno } from '../models/models';
+import { AppService } from '../app.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,54 +10,38 @@ import { Alumno } from '../models/models';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
-  public botones: string[] = [
-    'Alumnos',
-    'Profesores',
-    'Cursos',
-    'Trabajo',
-    'Contacto',
-  ];
-
-  public toolbarButtons: ExtendedButtonDefinition[] = [
+  public buttons: ExtendedButtonDefinition[] = [
     {
       buttonDefinition: {
+        kind: 'raised',
         buttonType: 'normal',
         type: 'basic',
-        kind: 'raised',
       },
-      label: 'New',
+      label: 'Alumnos',
+      url: 'alumnos',
+    },
+    {
+      buttonDefinition: {
+        kind: 'raised',
+        buttonType: 'normal',
+        type: 'basic',
+      },
+      label: 'Profesores',
+      url: 'profesores',
+    },
+    {
+      buttonDefinition: {
+        kind: 'raised',
+        buttonType: 'normal',
+        type: 'basic',
+      },
+      label: 'Cursos',
     },
   ];
 
-  public listHeader = ['id', 'nombre', 'apellido'];
-  public listItems: Alumno[] = [
-    {
-      id: '1',
-      firstName: 'Iñaki',
-      lastName: 'Garro',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-    {
-      id: '2',
-      firstName: 'Lucia',
-      lastName: 'Garcia',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-    {
-      id: '3',
-      firstName: 'Agustin',
-      lastName: 'Brutten',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-    {
-      id: '4',
-      firstName: 'Federico',
-      lastName: 'Emens',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-  ];
+  constructor(private appService: AppService, private router: Router) {}
+
+  public navigate(url: string) {
+    this.router.navigate([url]);
+  }
 }

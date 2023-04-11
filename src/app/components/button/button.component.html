@@ -1,15 +1,14 @@
 <ng-container *ngIf="button">
     <ng-container [ngSwitch]="button.kind">
         <button *ngSwitchCase="'basic'" mat-button [disabled]="disabled" [type]="button.type"
-            (click)="executed.emit(button)">
+            (click)="executed.emit(url)">
             <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
         </button>
         <button *ngSwitchCase="'raised'" mat-raised-button [disabled]="disabled" [type]="button.type"
-            (click)="executed.emit(button)">
+            (click)="executed.emit(url)">
             <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
         </button>
-        <button *ngSwitchCase="'fab'" mat-fab [disabled]="disabled" [type]="button.type"
-            (click)="executed.emit(button)">
+        <button *ngSwitchCase="'fab'" mat-fab [disabled]="disabled" [type]="button.type" (click)="executed.emit(url)">
             <ng-template [ngTemplateOutlet]="buttonContent"></ng-template>
         </button>
     </ng-container>

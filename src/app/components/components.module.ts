@@ -18,12 +18,7 @@ const MaterialModules = [
 
 @NgModule({
   declarations: [ListComponent, ButtonComponent],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    MaterialModules,
-  ],
-  exports: [ListComponent],
+  imports: [CommonModule, MaterialModules],
+  exports: [ListComponent, ButtonComponent],
 })
 export class ComponentsModule {}

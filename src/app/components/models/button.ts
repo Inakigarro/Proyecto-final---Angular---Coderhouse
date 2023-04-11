@@ -8,4 +8,5 @@ export interface ExtendedButtonDefinition {
   buttonDefinition: BasicButtonDefinition;
   label?: string;
   icon?: string;
+  url?: string;
 }

@@ -19,6 +19,9 @@ export class ButtonComponent {
   @Input()
   public icon?: string;
 
+  @Input()
+  public url?: string;
+
   @Output()
-  public executed = new EventEmitter<BasicButtonDefinition>();
+  public executed = new EventEmitter<string>();
 }

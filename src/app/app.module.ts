@@ -11,6 +11,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { ComponentsModule } from './components/components.module';
+import { ListaAlumnosComponent } from './alumnos/lista-alumnos/lista-alumnos.component';
+import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
+import { AlumnosModule } from './alumnos/alumnos.module';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -26,9 +29,16 @@ const MaterialModules = [
     BrowserModule,
     BrowserAnimationsModule,
     ComponentsModule,
+    AlumnosModule,
     MaterialModules,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_BASE_HREF,
+      useFactory: (p: PlatformLocation) => p.getBaseHrefFromDOM(),
+      deps: [PlatformLocation],
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

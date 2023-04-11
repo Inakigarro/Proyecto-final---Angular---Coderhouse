@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class ListComponent<TItem> {
   @Input()
-  public toolbarButtons: ExtendedButtonDefinition[] = [];
+  public toolbarButtons: ExtendedButtonDefinition[];
 
   @Input()
   public headers: string[];
