@@ -11,7 +11,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { ComponentsModule } from './components/components.module';
-import { ListaAlumnosComponent } from './alumnos/lista-alumnos/lista-alumnos.component';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { AlumnosModule } from './alumnos/alumnos.module';
 
@@ -25,12 +24,11 @@ const MaterialModules = [
 @NgModule({
   declarations: [AppComponent, HeaderComponent, SidebarComponent],
   imports: [
-    AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
     ComponentsModule,
-    AlumnosModule,
     MaterialModules,
+    AppRoutingModule,
   ],
   providers: [
     {

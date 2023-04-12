@@ -10,3 +10,10 @@ export interface ExtendedButtonDefinition {
   icon?: string;
   url?: string;
 }
+
+export interface ListButtonDefinition {
+  buttonDefinition: BasicButtonDefinition;
+  label?: string;
+  icon?: string;
+  itemId?: number;
+}

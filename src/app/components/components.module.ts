@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ButtonComponent } from './button/button.component';
+import { ListButtonComponent } from './list-button/list-button.component';
 
 const MaterialModules = [
   MatTableModule,
@@ -17,8 +18,8 @@ const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [ListComponent, ButtonComponent],
+  declarations: [ListComponent, ButtonComponent, ListButtonComponent],
   imports: [CommonModule, MaterialModules],
-  exports: [ListComponent, ButtonComponent],
+  exports: [ListComponent, ButtonComponent, ListButtonComponent],
 })
 export class ComponentsModule {}
