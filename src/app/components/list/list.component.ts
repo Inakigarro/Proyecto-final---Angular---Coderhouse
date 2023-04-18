@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { ButtonComponent } from '../button/button.component';
 import { ExtendedButtonDefinition } from '../models/button';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -13,12 +12,12 @@ export class ListComponent<TItem> {
   public toolbarButtons: ExtendedButtonDefinition[];
 
   @Input()
-  public headers: string[];
+  public headers: (keyof TItem)[];
 
   @Input()
   public items: TItem[];
 
-  public dataSource = new MatTableDataSource();
+  public dataSource = new MatTableDataSource<TItem[]>();
 
   constructor() {
     this.dataSource.data.push(this.items);

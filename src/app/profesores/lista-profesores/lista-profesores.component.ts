@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subject, filter, tap } from 'rxjs';
 import { AppService } from 'src/app/app.service';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
-import { Profesor } from 'src/app/models/models';
+import { ProfesoresService } from '../profesores.service';
 
 @Component({
   selector: 'app-lista-profesores',
   templateUrl: './lista-profesores.component.html',
   styleUrls: ['./lista-profesores.component.scss'],
 })
-export class ListaProfesoresComponent {
-  public data: Profesor[] = this.appService.listaProfesores;
+export class ListaProfesoresComponent implements OnDestroy {
+  public destroy$ = new Subject();
+  public data$ = this.profesoresService.getProfesores();
+  public dataLength$ = this.profesoresService.getProfesoresLength();
   public headers: string[] = ['id', 'nombre', 'apellido', 'correo'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -22,7 +25,21 @@ export class ListaProfesoresComponent {
       label: 'New',
     },
   ];
-  public dataSource = new MatTableDataSource(this.appService.listaProfesores);
+  public dataSource = new MatTableDataSource();
 
-  constructor(private appService: AppService) {}
+  constructor(private profesoresService: ProfesoresService) {
+    this.data$
+      .pipe(
+        filter((x) => !!x),
+        tap((profesores) =>
+          profesores.forEach((p) => this.dataSource.data.push(p))
+        )
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next({});
+    this.destroy$.complete();
+  }
 }

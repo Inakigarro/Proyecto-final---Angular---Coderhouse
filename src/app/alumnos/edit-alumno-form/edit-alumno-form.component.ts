@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AppService } from 'src/app/app.service';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
 import { Alumno } from 'src/app/models/models';
 import { ALUMNOS_BASE_ROUTE } from '../base-route';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { AlumnosService } from '../alumnos.service';
 
 @Component({
   selector: 'app-edit-alumno-form',
@@ -39,7 +39,7 @@ export class EditAlumnoFormComponent {
   private id: string = '';
   constructor(
     private formBuilder: FormBuilder,
-    private service: AppService,
+    private service: AlumnosService,
     private route: ActivatedRoute
   ) {
     let alumno: Alumno | undefined;

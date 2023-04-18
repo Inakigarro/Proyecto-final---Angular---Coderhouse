@@ -11,6 +11,7 @@ import { NuevoAlumnoFormComponent } from './nuevo-alumno-form/nuevo-alumno-form.
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { EditAlumnoFormComponent } from './edit-alumno-form/edit-alumno-form.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const MaterialModules = [
   MatTableModule,
@@ -18,10 +19,15 @@ const MaterialModules = [
   MatFormFieldModule,
   MatInputModule,
   MatCardModule,
+  MatProgressSpinnerModule,
 ];
 
 @NgModule({
-  declarations: [ListaAlumnosComponent, NuevoAlumnoFormComponent, EditAlumnoFormComponent],
+  declarations: [
+    ListaAlumnosComponent,
+    NuevoAlumnoFormComponent,
+    EditAlumnoFormComponent,
+  ],
   imports: [
     CommonModule,
     ComponentsModule,

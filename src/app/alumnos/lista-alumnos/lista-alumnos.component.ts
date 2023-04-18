@@ -1,19 +1,21 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { AppService } from 'src/app/app.service';
+import { Subject, filter, tap } from 'rxjs';
 import {
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from 'src/app/components/models/button';
-import { Alumno } from 'src/app/models/models';
+import { AlumnosService } from '../alumnos.service';
 
 @Component({
   selector: 'app-lista-alumnos',
   templateUrl: './lista-alumnos.component.html',
   styleUrls: ['./lista-alumnos.component.scss'],
 })
-export class ListaAlumnosComponent {
-  public data: Alumno[] = this.appService.listaAlumnos;
+export class ListaAlumnosComponent implements OnDestroy {
+  public destroy$ = new Subject();
+  public data$ = this.alumnosService.getAlumnos();
+  public dataLength$ = this.alumnosService.getAlumnosLength();
   public headers: string[] = ['id', 'nombre', 'apellido', 'correo', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -44,18 +46,31 @@ export class ListaAlumnosComponent {
       icon: 'delete',
     },
   ];
-  public dataSource = new MatTableDataSource(this.appService.listaAlumnos);
-  constructor(private appService: AppService) {}
+  public dataSource = new MatTableDataSource();
+  constructor(private alumnosService: AlumnosService) {
+    this.data$
+      .pipe(
+        filter((x) => !!x),
+        tap((alumnos) => alumnos.forEach((a) => this.dataSource.data.push(a)))
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next({});
+    this.destroy$.complete();
+    console.log('observable destruido');
+  }
 
   public onEditButtonClicked(id: number) {
-    this.appService.navigate(['edit', `${id}`], true);
+    this.alumnosService.navigate(['edit', `${id}`], true);
   }
   public onDeleteButtonClicked(id: number) {
-    this.appService.deleteAlumnoById(id);
-    this.dataSource.data = this.appService.listaAlumnos;
+    this.alumnosService.deleteAlumnoById(id);
+    this.dataSource.data = this.alumnosService.listaAlumnos;
   }
 
   public navigate(url: string) {
-    this.appService.navigate([url], true);
+    this.alumnosService.navigate([url], true);
   }
 }

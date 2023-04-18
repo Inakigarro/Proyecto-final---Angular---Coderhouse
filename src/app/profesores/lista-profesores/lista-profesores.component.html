@@ -4,23 +4,30 @@
             [icon]="toolbarButton.icon"></app-button>
     </ng-container>
 </mat-toolbar>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>Id</th>
-        <td mat-cell *matCellDef="let element">{{element.id}}</td>
-    </ng-container>
-    <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef>Nombre</th>
-        <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
-    </ng-container>
-    <ng-container matColumnDef="apellido">
-        <th mat-header-cell *matHeaderCellDef>Apellido</th>
-        <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
-    </ng-container>
-    <ng-container matColumnDef="correo">
-        <th mat-header-cell *matHeaderCellDef>Correo</th>
-        <td mat-cell *matCellDef="let element">{{element.email}}</td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="headers"></tr>
-    <tr mat-row *matRowDef="let row; columns: headers"></tr>
-</table>
+<ng-container *ngIf="dataLength$ | async; else loading">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Id</th>
+            <td mat-cell *matCellDef="let element">{{element.id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
+        </ng-container>
+        <ng-container matColumnDef="apellido">
+            <th mat-header-cell *matHeaderCellDef>Apellido</th>
+            <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
+        </ng-container>
+        <ng-container matColumnDef="correo">
+            <th mat-header-cell *matHeaderCellDef>Correo</th>
+            <td mat-cell *matCellDef="let element">{{element.email}}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="headers"></tr>
+        <tr mat-row *matRowDef="let row; columns: headers"></tr>
+    </table>
+</ng-container>
+
+<ng-template #loading>
+    <mat-progress-spinner class="spinner" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+</ng-template>

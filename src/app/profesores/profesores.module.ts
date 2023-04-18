@@ -5,8 +5,13 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ComponentsModule } from '../components/components.module';
 import { ProfesoresRoutingModule } from './profesores-routing.module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-const MaterialModules = [MatTableModule, MatToolbarModule];
+const MaterialModules = [
+  MatTableModule,
+  MatToolbarModule,
+  MatProgressSpinnerModule,
+];
 
 @NgModule({
   declarations: [ListaProfesoresComponent],

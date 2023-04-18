@@ -5,10 +5,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AppService } from 'src/app/app.service';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
 import { Alumno } from 'src/app/models/models';
 import { ALUMNOS_BASE_ROUTE } from '../base-route';
+import { AlumnosService } from '../alumnos.service';
 @Component({
   selector: 'app-nuevo-alumno-form',
   templateUrl: './nuevo-alumno-form.component.html',
@@ -34,7 +34,10 @@ export class NuevoAlumnoFormComponent {
       label: 'Cancel',
     },
   ];
-  constructor(private formBuilder: FormBuilder, private service: AppService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private service: AlumnosService
+  ) {
     this.form = this.formBuilder.group({
       firstName: new FormControl('', [
         Validators.required,
