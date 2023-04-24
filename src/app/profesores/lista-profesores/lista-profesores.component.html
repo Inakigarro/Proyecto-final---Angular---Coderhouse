@@ -1,7 +1,7 @@
 <mat-toolbar class="listToolbar">
     <ng-container *ngFor="let toolbarButton of toolbarButtons">
-        <app-button [button]="toolbarButton.buttonDefinition" [label]="toolbarButton.label"
-            [icon]="toolbarButton.icon"></app-button>
+        <app-button [button]="toolbarButton.buttonDefinition" [label]="toolbarButton.label" [icon]="toolbarButton.icon"
+            [url]="toolbarButton.url" (executed)="navigate($event)"></app-button>
     </ng-container>
 </mat-toolbar>
 <ng-container *ngIf="dataLength$ | async; else loading">

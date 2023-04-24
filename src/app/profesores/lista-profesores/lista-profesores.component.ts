@@ -23,6 +23,7 @@ export class ListaProfesoresComponent implements OnDestroy {
         kind: 'raised',
       },
       label: 'New',
+      url: 'nuevo',
     },
   ];
   public dataSource = new MatTableDataSource();
@@ -41,5 +42,9 @@ export class ListaProfesoresComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
+  }
+
+  public navigate(url: string) {
+    this.profesoresService.navigate([url], true);
   }
 }
