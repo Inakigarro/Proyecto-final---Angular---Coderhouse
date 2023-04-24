@@ -16,6 +16,8 @@ export class ListaAlumnosComponent implements OnDestroy {
   public destroy$ = new Subject();
   public data$ = this.alumnosService.getAlumnos();
   public dataLength$ = this.alumnosService.getAlumnosLength();
+  public inCreationForm$ = this.alumnosService.inCreationForm$();
+  public inEditionForm$ = this.alumnosService.inEditionForm$();
   public headers: string[] = ['id', 'nombre', 'apellido', 'correo', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -24,8 +26,8 @@ export class ListaAlumnosComponent implements OnDestroy {
         type: 'basic',
         kind: 'raised',
       },
-      label: 'New',
-      url: 'new-alumno',
+      label: 'Nuevo',
+      url: 'nuevo',
     },
   ];
   public listItemButtons: ListButtonDefinition[] = [
@@ -35,7 +37,7 @@ export class ListaAlumnosComponent implements OnDestroy {
         type: 'basic',
         kind: 'raised',
       },
-      label: 'Edit',
+      label: 'Editar',
     },
     {
       buttonDefinition: {
@@ -47,6 +49,7 @@ export class ListaAlumnosComponent implements OnDestroy {
     },
   ];
   public dataSource = new MatTableDataSource();
+
   constructor(private alumnosService: AlumnosService) {
     this.data$
       .pipe(
@@ -59,11 +62,11 @@ export class ListaAlumnosComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
-    console.log('observable destruido');
   }
 
   public onEditButtonClicked(id: number) {
-    this.alumnosService.navigate(['edit', `${id}`], true);
+    this.alumnosService.navigate(['editar', `${id}`], true);
+    this.alumnosService.inEditionForm = true;
   }
   public onDeleteButtonClicked(id: number) {
     this.alumnosService.deleteAlumnoById(id);
@@ -72,5 +75,8 @@ export class ListaAlumnosComponent implements OnDestroy {
 
   public navigate(url: string) {
     this.alumnosService.navigate([url], true);
+    if (url === 'nuevo') {
+      this.alumnosService.inCreationForm = true;
+    }
   }
 }

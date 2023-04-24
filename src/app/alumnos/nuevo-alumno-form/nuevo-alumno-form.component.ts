@@ -64,10 +64,12 @@ export class NuevoAlumnoFormComponent {
       nuevoAlumno.id = this.service.getNewAlumnoId();
       this.service.addAlumno(nuevoAlumno);
       this.service.navigate([ALUMNOS_BASE_ROUTE], false);
+      this.service.inCreationForm = false;
     }
   }
   public onCancel() {
     this.form.reset();
     this.service.navigate([ALUMNOS_BASE_ROUTE], false);
+    this.service.inCreationForm = false;
   }
 }
