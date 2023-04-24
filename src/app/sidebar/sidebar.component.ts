@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { ExtendedButtonDefinition } from '../components/models/button';
-import { Alumno } from '../models/models';
 import { AppService } from '../app.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -39,9 +37,9 @@ export class SidebarComponent {
     },
   ];
 
-  constructor(private appService: AppService, private router: Router) {}
+  constructor(private appService: AppService) {}
 
   public navigate(url: string) {
-    this.router.navigate([url]);
+    this.appService.navigate([url]);
   }
 }

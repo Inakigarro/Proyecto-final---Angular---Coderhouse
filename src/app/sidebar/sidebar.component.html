@@ -3,12 +3,12 @@
         <div class="sidenav">
             <ng-container *ngFor="let button of buttons">
                 <app-button [button]="button.buttonDefinition" [label]="button.label" [icon]="button.icon"
-                    [url]="button.url" (executed)="this.navigate($event)"></app-button>
+                    [routerLink]="button.url"></app-button>
             </ng-container>
         </div>
     </mat-sidenav>
     <mat-sidenav-content>
-        <div class="mainContent">
+        <div class="main-content">
             <router-outlet></router-outlet>
         </div>
     </mat-sidenav-content>
