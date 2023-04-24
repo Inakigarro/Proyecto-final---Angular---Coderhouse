@@ -30,12 +30,11 @@ const MaterialModules = [
   ],
   imports: [
     CommonModule,
+    AlumnosRoutingModule,
     ComponentsModule,
     MaterialModules,
     ReactiveFormsModule,
     FormsModule,
-    AlumnosRoutingModule,
   ],
-  // exports: [AlumnosRoutingModule],
 })
 export class AlumnosModule {}

@@ -8,14 +8,16 @@ const routes: Routes = [
   {
     path: '',
     component: ListaAlumnosComponent,
-  },
-  {
-    path: 'new-alumno',
-    component: NuevoAlumnoFormComponent,
-  },
-  {
-    path: 'edit/:id',
-    component: EditAlumnoFormComponent,
+    children: [
+      {
+        path: 'nuevo',
+        component: NuevoAlumnoFormComponent,
+      },
+      {
+        path: 'editar/:id',
+        component: EditAlumnoFormComponent,
+      },
+    ],
   },
 ];
 

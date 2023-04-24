@@ -37,7 +37,6 @@ export class AlumnosService {
       phone: '123456789',
     },
   ];
-
   constructor(private router: Router) {}
 
   public getAlumnos = () =>
@@ -74,6 +73,14 @@ export class AlumnosService {
     let alumno = this.listaAlumnos.find((x) => `${x.id}` === id);
     return alumno;
   }
+
+  // Navigation.
+  public inCreationForm = false;
+  public inCreationForm$ = () =>
+    new Observable<boolean>((s) => s.next(this.inCreationForm));
+  public inEditionForm = false;
+  public inEditionForm$ = () =>
+    new Observable<boolean>((s) => s.next(this.inEditionForm));
 
   public navigate(url: string[], isRelative: boolean) {
     let urlArray: string[] = [];
