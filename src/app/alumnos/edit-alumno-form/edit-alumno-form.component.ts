@@ -83,10 +83,12 @@ export class EditAlumnoFormComponent {
         console.error('Ha ocurrido un error al actualziar el alumno.');
       }
       this.service.navigate([ALUMNOS_BASE_ROUTE], false);
+      this.service.inEditionForm = false;
     }
   }
   public onCancel() {
     this.form.reset();
     this.service.navigate([ALUMNOS_BASE_ROUTE], false);
+    this.service.inEditionForm = false;
   }
 }
