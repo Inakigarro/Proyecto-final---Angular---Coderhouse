@@ -2,30 +2,36 @@ import { Injectable } from '@angular/core';
 import { Profesor } from '../models/models';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { PROFESORES_ARRAY } from '../local-storage-constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfesoresService {
-  public listaProfesores: Profesor[] = [
-    {
-      id: 1,
-      firstName: 'Tomas',
-      lastName: 'Catalini',
-      email: 'email@email.com',
-    },
-  ];
+  private listaProfesores: Profesor[] = [];
+  public profesores$ = new Observable<Profesor[]>((s) =>
+    s.next(this.listaProfesores)
+  );
+  public profesoresLength$ = new Observable<number>((s) =>
+    s.next(this.listaProfesores.length)
+  );
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    let data: Profesor[] = JSON.parse(
+      localStorage.getItem(PROFESORES_ARRAY) as string
+    );
+    data.forEach((p: Profesor) => {
+      this.listaProfesores.push(p);
+    });
+  }
 
-  // Profesores.
-  public getProfesores = () =>
-    new Observable<Profesor[]>((s) => s.next(this.listaProfesores));
-
-  public getProfesoresLength = () =>
-    new Observable<number>((s) => s.next(this.listaProfesores.length));
-
-  public getNewProfesorId = () => this.listaProfesores.slice(-1)[0].id + 1;
+  public getNewProfesorId() {
+    if (this.listaProfesores.length === 0) {
+      return 1;
+    } else {
+      return this.listaProfesores.slice(-1)[0].id + 1;
+    }
+  }
   public addProfesor(nuevoProfesor: Profesor) {
     this.listaProfesores.push(nuevoProfesor);
   }
@@ -43,9 +49,9 @@ export class ProfesoresService {
   public findProfesorById(id: string) {
     return this.listaProfesores.find((x) => `${x.id}` === id);
   }
-  public deleteAlumnoById(id: number) {
-    let indexToRemove = this.listaProfesores.findIndex((x) => x.id === id);
-    this.listaProfesores.splice(indexToRemove, 1);
+  public deleteProfesorById(id: number) {
+    this.listaProfesores = this.listaProfesores.filter((p) => p.id !== id);
+    return this.listaProfesores;
   }
   public navigate(url: string[], isRelative: boolean) {
     let urlArray: string[] = [];

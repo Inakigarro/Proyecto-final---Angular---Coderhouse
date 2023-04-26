@@ -2,50 +2,30 @@ import { Injectable } from '@angular/core';
 import { Alumno } from '../models/models';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, filter, map } from 'rxjs';
+import { ALUMNOS_ARRAY } from '../local-storage-constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlumnosService {
-  public listaAlumnos: Alumno[] = [
-    {
-      id: 1,
-      firstName: 'Iñaki',
-      lastName: 'Garro',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-    {
-      id: 2,
-      firstName: 'Lucia',
-      lastName: 'Garcia',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-    {
-      id: 3,
-      firstName: 'Agustin',
-      lastName: 'Brutten',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-    {
-      id: 4,
-      firstName: 'Federico',
-      lastName: 'Emens',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-  ];
-  constructor(private router: Router) {}
+  public listaAlumnos: Alumno[] = [];
+  public alumnos$ = new Observable<Alumno[]>((s) => s.next(this.listaAlumnos));
+  public alumnosLength$ = new Observable<number>((s) =>
+    s.next(this.listaAlumnos.length)
+  );
+  constructor(private router: Router) {
+    let data: Alumno[] = JSON.parse(
+      localStorage.getItem(ALUMNOS_ARRAY) as string
+    );
+    data.forEach((a: Alumno) => this.listaAlumnos.push(a));
+  }
 
-  public getAlumnos = () =>
-    new Observable<Alumno[]>((s) => s.next(this.listaAlumnos));
-  public getAlumnosLength = () =>
-    new Observable<number>((s) => s.next(this.listaAlumnos.length));
   public getNewAlumnoId() {
-    let lastId = this.listaAlumnos.slice(-1)[0].id + 1;
-    return lastId;
+    if (this.listaAlumnos.length === 0) {
+      return 1;
+    } else {
+      return this.listaAlumnos.slice(-1)[0].id + 1;
+    }
   }
 
   public addAlumno(nuevoAlumno: Alumno) {
@@ -65,13 +45,12 @@ export class AlumnosService {
   }
 
   public deleteAlumnoById(id: number) {
-    let indexToRemove = this.listaAlumnos.findIndex((x) => x.id === id);
-    this.listaAlumnos.splice(indexToRemove, 1);
+    this.listaAlumnos = this.listaAlumnos.filter((a) => a.id !== id);
+    return this.listaAlumnos;
   }
 
   public findAlumnoById(id: string) {
-    let alumno = this.listaAlumnos.find((x) => `${x.id}` === id);
-    return alumno;
+    return this.listaAlumnos.find((x) => `${x.id}` === id);
   }
 
   // Navigation.

@@ -1,23 +1,22 @@
-import { Component, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { Subject, filter, tap } from 'rxjs';
-import { AppService } from 'src/app/app.service';
+import { Component, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { CursosService } from '../cursos.service';
 import {
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from 'src/app/components/models/button';
-import { ProfesoresService } from '../profesores.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-  selector: 'app-lista-profesores',
-  templateUrl: './lista-profesores.component.html',
-  styleUrls: ['./lista-profesores.component.scss'],
+  selector: 'app-lista-cursos',
+  templateUrl: './lista-cursos.component.html',
+  styleUrls: ['./lista-cursos.component.scss'],
 })
-export class ListaProfesoresComponent implements OnDestroy {
+export class ListaCursosComponent implements OnDestroy {
   public destroy$ = new Subject();
-  public data$ = this.profesoresService.profesores$;
-  public dataLength$ = this.profesoresService.profesoresLength$;
-  public headers: string[] = ['id', 'nombre', 'apellido', 'correo', 'botones'];
+  public data$ = this.service.cursos$;
+  public dataLength$ = this.service.cursosLength$;
+  public headers: string[] = ['id', 'displayName', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
       buttonDefinition: {
@@ -48,25 +47,23 @@ export class ListaProfesoresComponent implements OnDestroy {
     },
   ];
   public dataSource = new MatTableDataSource();
-
-  constructor(private profesoresService: ProfesoresService) {
+  constructor(private service: CursosService) {
     this.data$.subscribe({
-      next: (profesores) => (this.dataSource.data = profesores),
+      next: (cursos) => (this.dataSource.data = cursos),
     });
   }
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
   }
-
   public onEditButtonClicked(id: number) {
-    this.profesoresService.navigate(['editar', `${id}`], true);
+    this.service.navigate(['editar', `${id}`], true);
   }
   public onDeleteButtonClicked(id: number) {
-    this.dataSource.data = this.profesoresService.deleteProfesorById(id);
+    this.dataSource.data = this.service.deleteCursoById(id);
   }
 
   public navigate(url: string) {
-    this.profesoresService.navigate([url], true);
+    this.service.navigate([url], true);
   }
 }

@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Nuevo Curso</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="form">
+            <div class="formFieldRow">
+                <mat-form-field>
+                    <mat-label for="displayNameInput">Nombre: </mat-label>
+                    <input required matInput formControlName="displayName" type="text" id="displayNameInput">
+                </mat-form-field>
+            </div>
+            <ng-container *ngFor="let button of buttons">
+                <app-button [button]="button.buttonDefinition" [label]="button.label"
+                    (executed)="button.buttonDefinition.type === 'submit' ? onSubmit() : onCancel()"></app-button>
+            </ng-container>
+        </form>
+    </mat-card-content>
+</mat-card>

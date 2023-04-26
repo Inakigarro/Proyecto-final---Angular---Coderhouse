@@ -14,8 +14,8 @@ import { AlumnosService } from '../alumnos.service';
 })
 export class ListaAlumnosComponent implements OnDestroy {
   public destroy$ = new Subject();
-  public data$ = this.alumnosService.getAlumnos();
-  public dataLength$ = this.alumnosService.getAlumnosLength();
+  public data$ = this.alumnosService.alumnos$;
+  public dataLength$ = this.alumnosService.alumnosLength$;
   public headers: string[] = ['id', 'nombre', 'apellido', 'correo', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -47,15 +47,11 @@ export class ListaAlumnosComponent implements OnDestroy {
     },
   ];
   public dataSource = new MatTableDataSource();
-  public navigated = false;
 
   constructor(private alumnosService: AlumnosService) {
-    this.data$
-      .pipe(
-        filter((x) => !!x),
-        map((alumnos) => alumnos.forEach((a) => this.dataSource.data.push(a)))
-      )
-      .subscribe();
+    this.data$.subscribe((alumnos) =>
+      alumnos.forEach((a) => this.dataSource.data.push(a))
+    );
   }
 
   ngOnDestroy(): void {
@@ -67,8 +63,7 @@ export class ListaAlumnosComponent implements OnDestroy {
     this.alumnosService.navigate(['editar', `${id}`], true);
   }
   public onDeleteButtonClicked(id: number) {
-    this.alumnosService.deleteAlumnoById(id);
-    this.dataSource.data = this.alumnosService.listaAlumnos;
+    this.dataSource.data = this.alumnosService.deleteAlumnoById(id);
   }
 
   public navigate(url: string) {
