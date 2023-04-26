@@ -16,8 +16,6 @@ export class ListaAlumnosComponent implements OnDestroy {
   public destroy$ = new Subject();
   public data$ = this.alumnosService.getAlumnos();
   public dataLength$ = this.alumnosService.getAlumnosLength();
-  public inCreationForm$ = this.alumnosService.inCreationForm$();
-  public inEditionForm$ = this.alumnosService.inEditionForm$();
   public headers: string[] = ['id', 'nombre', 'apellido', 'correo', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -75,8 +73,5 @@ export class ListaAlumnosComponent implements OnDestroy {
 
   public navigate(url: string) {
     this.alumnosService.navigate([url], true);
-    if (url === 'nuevo') {
-      this.alumnosService.inCreationForm = true;
-    }
   }
 }

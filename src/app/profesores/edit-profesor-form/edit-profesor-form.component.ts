@@ -6,17 +6,16 @@ import {
   Validators,
 } from '@angular/forms';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
-import { Alumno } from 'src/app/models/models';
-import { ALUMNOS_BASE_ROUTE } from '../base-route';
+import { ProfesoresService } from '../profesores.service';
 import { ActivatedRoute } from '@angular/router';
-import { AlumnosService } from '../alumnos.service';
+import { Profesor } from 'src/app/models/models';
+import { PROFESORES_BASE_ROUTE } from '../base-route';
 
 @Component({
-  selector: 'app-edit-alumno-form',
-  templateUrl: './edit-alumno-form.component.html',
-  styleUrls: ['./edit-alumno-form.component.scss'],
+  selector: 'app-edit-profesor-form',
+  templateUrl: './edit-profesor-form.component.html',
 })
-export class EditAlumnoFormComponent {
+export class EditProfesorFormComponent {
   public form: FormGroup;
   public buttons: ExtendedButtonDefinition[] = [
     {
@@ -36,57 +35,55 @@ export class EditAlumnoFormComponent {
       label: 'Cancel',
     },
   ];
+
   private id: string = '';
+
   constructor(
     private formBuilder: FormBuilder,
-    private service: AlumnosService,
+    private service: ProfesoresService,
     private route: ActivatedRoute
   ) {
-    let alumno: Alumno | undefined;
+    let profesor: Profesor | undefined;
     this.route.params.subscribe((params) => {
       this.id = params['id'];
-      alumno = this.service.findAlumnoById(this.id);
+      profesor = this.service.findProfesorById(this.id);
     });
-
     this.form = this.formBuilder.group({
-      firstName: new FormControl(`${alumno?.firstName}`, [
+      firstName: new FormControl(`${profesor?.firstName}`, [
         Validators.required,
         Validators.maxLength(30),
       ]),
-      lastName: new FormControl(`${alumno?.lastName}`, [
+      lastName: new FormControl(`${profesor?.lastName}`, [
         Validators.required,
         Validators.maxLength(30),
       ]),
-      email: new FormControl(`${alumno?.email}`, [
+      email: new FormControl(`${profesor?.email}`, [
         Validators.required,
         Validators.maxLength(150),
         Validators.email,
-      ]),
-      phone: new FormControl(`${alumno?.phone}`, [
-        Validators.required,
-        Validators.maxLength(20),
       ]),
     });
   }
 
   public onSubmit() {
     if (this.form.valid) {
-      const data: Alumno = this.form.value;
-      let alumno = this.service.findAlumnoById(this.id);
+      const data: Profesor = this.form.value;
+      let profesor = this.service.findProfesorById(this.id);
 
-      if (alumno) {
-        this.service.modifyAlumno({
+      if (profesor) {
+        this.service.modifyProfesor({
           ...data,
-          id: alumno.id,
+          id: profesor.id,
         });
       } else {
-        console.error('Ha ocurrido un error al actualziar el alumno.');
+        console.error('Ha ocurrido un error al actualziar el profesor.');
       }
-      this.service.navigate([ALUMNOS_BASE_ROUTE], false);
+      this.service.navigate([PROFESORES_BASE_ROUTE], false);
     }
   }
+
   public onCancel() {
     this.form.reset();
-    this.service.navigate([ALUMNOS_BASE_ROUTE], false);
+    this.service.navigate([PROFESORES_BASE_ROUTE], false);
   }
 }

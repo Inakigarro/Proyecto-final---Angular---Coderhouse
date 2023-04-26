@@ -34,6 +34,16 @@ export class SidebarComponent {
         type: 'basic',
       },
       label: 'Cursos',
+      url: 'cursos',
+    },
+    {
+      buttonDefinition: {
+        kind: 'raised',
+        buttonType: 'normal',
+        type: 'basic',
+      },
+      label: 'Inscripciones',
+      url: 'inscripciones',
     },
   ];
 

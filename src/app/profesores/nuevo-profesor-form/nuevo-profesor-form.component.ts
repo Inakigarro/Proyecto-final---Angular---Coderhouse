@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -6,15 +6,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
-import { Alumno } from 'src/app/models/models';
-import { ALUMNOS_BASE_ROUTE } from '../base-route';
-import { AlumnosService } from '../alumnos.service';
+import { ProfesoresService } from '../profesores.service';
+import { PROFESORES_BASE_ROUTE } from '../base-route';
+import { Profesor } from 'src/app/models/models';
+
 @Component({
-  selector: 'app-nuevo-alumno-form',
-  templateUrl: './nuevo-alumno-form.component.html',
-  styleUrls: ['./nuevo-alumno-form.component.scss'],
+  selector: 'app-nuevo-profesor-form',
+  templateUrl: './nuevo-profesor-form.component.html',
 })
-export class NuevoAlumnoFormComponent {
+export class NuevoProfesorFormComponent implements OnInit {
   public form: FormGroup;
   public buttons: ExtendedButtonDefinition[] = [
     {
@@ -36,7 +36,7 @@ export class NuevoAlumnoFormComponent {
   ];
   constructor(
     private formBuilder: FormBuilder,
-    private service: AlumnosService
+    private service: ProfesoresService
   ) {
     this.form = this.formBuilder.group({
       firstName: new FormControl('', [
@@ -52,22 +52,19 @@ export class NuevoAlumnoFormComponent {
         Validators.maxLength(150),
         Validators.email,
       ]),
-      phone: new FormControl('', [
-        Validators.required,
-        Validators.maxLength(20),
-      ]),
     });
   }
   public onSubmit() {
     if (this.form.valid) {
-      const nuevoAlumno: Alumno = this.form.value;
-      nuevoAlumno.id = this.service.getNewAlumnoId();
-      this.service.addAlumno(nuevoAlumno);
-      this.service.navigate([ALUMNOS_BASE_ROUTE], false);
+      const nuevoProfesor: Profesor = this.form.value;
+      nuevoProfesor.id = this.service.getNewProfesorId();
+      this.service.addProfesor(nuevoProfesor);
+      this.service.navigate([PROFESORES_BASE_ROUTE], false);
     }
   }
   public onCancel() {
     this.form.reset();
-    this.service.navigate([ALUMNOS_BASE_ROUTE], false);
+    this.service.navigate([PROFESORES_BASE_ROUTE], false);
   }
+  ngOnInit() {}
 }

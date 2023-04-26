@@ -75,13 +75,6 @@ export class AlumnosService {
   }
 
   // Navigation.
-  public inCreationForm = false;
-  public inCreationForm$ = () =>
-    new Observable<boolean>((s) => s.next(this.inCreationForm));
-  public inEditionForm = false;
-  public inEditionForm$ = () =>
-    new Observable<boolean>((s) => s.next(this.inEditionForm));
-
   public navigate(url: string[], isRelative: boolean) {
     let urlArray: string[] = [];
     if (isRelative) {

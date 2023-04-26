@@ -7,7 +7,7 @@ export interface Alumno {
 }
 
 export interface Profesor {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
   email: string;

@@ -8,21 +8,11 @@ import { APP_BASE_HREF } from '@angular/common';
   providedIn: 'root',
 })
 export class AppService {
-  public listaProfesores: Profesor[] = [
-    {
-      id: '1',
-      firstName: 'Tomas',
-      lastName: 'Catalini',
-      email: 'email@email.com',
-    },
-  ];
   constructor(
     private router: Router,
     @Inject(APP_BASE_HREF)
     private baseUrl: string
   ) {}
-
-  public getBaseUrl = () => this.baseUrl;
   public navigate(url: string[], isRelative: boolean = false) {
     let urlArray: string[] = [];
     if (isRelative) {
