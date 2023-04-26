@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject, filter, tap } from 'rxjs';
+import { Subject, filter, map } from 'rxjs';
 import {
   ExtendedButtonDefinition,
   ListButtonDefinition,
@@ -49,12 +49,13 @@ export class ListaAlumnosComponent implements OnDestroy {
     },
   ];
   public dataSource = new MatTableDataSource();
+  public navigated = false;
 
   constructor(private alumnosService: AlumnosService) {
     this.data$
       .pipe(
         filter((x) => !!x),
-        tap((alumnos) => alumnos.forEach((a) => this.dataSource.data.push(a)))
+        map((alumnos) => alumnos.forEach((a) => this.dataSource.data.push(a)))
       )
       .subscribe();
   }
@@ -66,7 +67,6 @@ export class ListaAlumnosComponent implements OnDestroy {
 
   public onEditButtonClicked(id: number) {
     this.alumnosService.navigate(['editar', `${id}`], true);
-    this.alumnosService.inEditionForm = true;
   }
   public onDeleteButtonClicked(id: number) {
     this.alumnosService.deleteAlumnoById(id);

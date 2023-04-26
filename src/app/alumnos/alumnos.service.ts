@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Alumno } from '../models/models';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { Observable, filter, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

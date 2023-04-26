@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { EditAlumnoFormComponent } from './edit-alumno-form/edit-alumno-form.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AlumnosComponent } from './alumnos.component';
 
 const MaterialModules = [
   MatTableModule,
@@ -27,6 +28,7 @@ const MaterialModules = [
     ListaAlumnosComponent,
     NuevoAlumnoFormComponent,
     EditAlumnoFormComponent,
+    AlumnosComponent,
   ],
   imports: [
     CommonModule,
