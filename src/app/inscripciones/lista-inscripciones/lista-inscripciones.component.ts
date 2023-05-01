@@ -37,6 +37,14 @@ export class ListaInscripcionesComponent implements OnDestroy {
       },
       label: 'Detalles',
     },
+    {
+      buttonDefinition: {
+        buttonType: 'normal',
+        type: 'basic',
+        kind: 'fab',
+      },
+      icon: 'delete',
+    },
   ];
   public dataSource = new MatTableDataSource();
 

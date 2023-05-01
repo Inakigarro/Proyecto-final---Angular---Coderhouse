@@ -24,7 +24,7 @@
         </ng-container>
         <ng-container matColumnDef="botones">
             <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="space-evenly center">
                 <ng-container *ngFor="let listButton of listItemButtons">
                     <app-list-button [button]="listButton.buttonDefinition" [label]="listButton.label"
                         [icon]="listButton.icon" [id]="element.id"

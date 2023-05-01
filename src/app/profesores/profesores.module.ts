@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditProfesorFormComponent } from './edit-profesor-form/edit-profesor-form.component';
+import { FlexModule } from '@angular/flex-layout';
 
 const MaterialModules = [
   MatTableModule,
@@ -37,6 +38,7 @@ const MaterialModules = [
     MaterialModules,
     ReactiveFormsModule,
     FormsModule,
+    FlexModule,
   ],
 })
 export class ProfesoresModule {}

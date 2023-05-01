@@ -13,6 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentsModule } from '../components/components.module';
 import { NuevoCursoFormComponent } from './nuevo-curso-form/nuevo-curso-form.component';
 import { EditarCursoFormComponent } from './editar-curso-form/editar-curso-form.component';
+import { FlexModule } from '@angular/flex-layout';
+
 const MaterialModules = [
   MatTableModule,
   MatToolbarModule,
@@ -23,7 +25,12 @@ const MaterialModules = [
 ];
 
 @NgModule({
-  declarations: [CursosComponent, ListaCursosComponent, NuevoCursoFormComponent, EditarCursoFormComponent],
+  declarations: [
+    CursosComponent,
+    ListaCursosComponent,
+    NuevoCursoFormComponent,
+    EditarCursoFormComponent,
+  ],
   imports: [
     CommonModule,
     CursosRoutingModule,
@@ -31,6 +38,7 @@ const MaterialModules = [
     MaterialModules,
     ReactiveFormsModule,
     FormsModule,
+    FlexModule,
   ],
 })
 export class CursosModule {}
