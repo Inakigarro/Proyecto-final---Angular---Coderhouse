@@ -18,6 +18,13 @@ const routes: Routes = [
       import('./cursos/cursos.module').then((m) => m.CursosModule),
   },
   {
+    path: 'inscripciones',
+    loadChildren: () =>
+      import('./inscripciones/inscripciones.module').then(
+        (m) => m.InscripcionesModule
+      ),
+  },
+  {
     path: '',
     redirectTo: 'alumnos',
     pathMatch: 'full',

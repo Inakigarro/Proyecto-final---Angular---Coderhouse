@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
-import { Alumno, Curso, Profesor } from './models/models';
+import { Alumno, Curso, Inscripcion, Profesor } from './models/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import {
   ALUMNOS_ARRAY,
   CURSOS_ARRAY,
+  INSCRIPCIONES_ARRAY,
   PROFESORES_ARRAY,
 } from './local-storage-constants';
 
@@ -55,20 +56,58 @@ export class AppService {
     {
       id: 1,
       displayName: 'Desarrollo Web',
-      profesorId: 1,
+      profesor: {
+        id: 1,
+        firstName: 'Tomas',
+        lastName: 'Catalini',
+        email: 'email@email.com',
+      },
       inscripciones: [],
     },
     {
       id: 2,
       displayName: 'Programacion Web',
-      profesorId: 1,
+      profesor: {
+        id: 1,
+        firstName: 'Tomas',
+        lastName: 'Catalini',
+        email: 'email@email.com',
+      },
       inscripciones: [],
     },
     {
       id: 3,
       displayName: 'Angular',
-      profesorId: 1,
-      inscripciones: [],
+      profesor: {
+        id: 1,
+        firstName: 'Tomas',
+        lastName: 'Catalini',
+        email: 'email@email.com',
+      },
+      inscripciones: [1],
+    },
+  ];
+  private listInscripciones: Inscripcion[] = [
+    {
+      id: 1,
+      alumno: {
+        id: 1,
+        firstName: 'Iñaki',
+        lastName: 'Garro',
+        email: 'email@email.com',
+        phone: '123456789',
+      },
+      curso: {
+        id: 3,
+        displayName: 'Angular',
+        profesor: {
+          id: 1,
+          firstName: 'Tomas',
+          lastName: 'Catalini',
+          email: 'email@email.com',
+        },
+        inscripciones: [],
+      },
     },
   ];
   constructor(
@@ -83,6 +122,10 @@ export class AppService {
       JSON.stringify(this.listaProfesores)
     );
     localStorage.setItem(CURSOS_ARRAY, JSON.stringify(this.listaCursos));
+    localStorage.setItem(
+      INSCRIPCIONES_ARRAY,
+      JSON.stringify(this.listInscripciones)
+    );
   }
   public navigate(url: string[], isRelative: boolean = false) {
     let urlArray: string[] = [];

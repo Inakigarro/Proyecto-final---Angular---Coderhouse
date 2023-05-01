@@ -16,7 +16,7 @@ export class ListaCursosComponent implements OnDestroy {
   public destroy$ = new Subject();
   public data$ = this.service.cursos$;
   public dataLength$ = this.service.cursosLength$;
-  public headers: string[] = ['id', 'displayName', 'botones'];
+  public headers: string[] = ['id', 'displayName', 'inscriptos', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
       buttonDefinition: {

@@ -7,17 +7,12 @@ import { CURSOS_ARRAY } from '../local-storage-constants';
 @Injectable({ providedIn: 'root' })
 export class CursosService {
   public listaCursos: Curso[] = [];
-  public cursos$ = new Observable<Curso[]>((s) => s.next(this.listaCursos));
+  public cursos$ = new Observable<Curso[]>((s) => s.next(this.ObtainData()));
   public cursosLength$ = new Observable<number>((s) =>
     s.next(this.listaCursos.length)
   );
   constructor(private router: Router) {
-    let data: Curso[] = JSON.parse(
-      localStorage.getItem(CURSOS_ARRAY) as string
-    );
-    data.forEach((p: Curso) => {
-      this.listaCursos.push(p);
-    });
+    this.listaCursos = this.ObtainData();
   }
 
   public getNewCursoId() {
@@ -40,7 +35,7 @@ export class CursosService {
     let item = this.listaCursos.find((x) => x.id == curso.id);
     if (item) {
       item.displayName = curso.displayName;
-      item.profesorId = curso.profesorId;
+      item.profesor = curso.profesor;
       item.inscripciones = curso.inscripciones;
     } else {
       console.error('El curso solicitado no existe.');
@@ -62,5 +57,9 @@ export class CursosService {
       url.forEach((x) => urlArray.push(x));
       this.router.navigate(url);
     }
+  }
+
+  private ObtainData() {
+    return JSON.parse(localStorage.getItem(CURSOS_ARRAY) as string) as Curso[];
   }
 }

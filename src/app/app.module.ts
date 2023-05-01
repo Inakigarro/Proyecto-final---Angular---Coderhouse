@@ -12,7 +12,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { ComponentsModule } from './components/components.module';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
-import { AlumnosModule } from './alumnos/alumnos.module';
 
 const MaterialModules = [
   MatToolbarModule,

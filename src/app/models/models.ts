@@ -16,7 +16,7 @@ export interface Profesor {
 export interface Curso {
   id: number;
   displayName: string;
-  profesorId: number;
+  profesor: Profesor;
   inscripciones: number[];
 }
 

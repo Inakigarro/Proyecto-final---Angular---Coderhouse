@@ -1,0 +1,43 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Detalles
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content fxLayout="row" fxLayoutAlign="space-evenly center">
+        <div>
+            <h3>Alumno Inscripto</h3>
+            <form [formGroup]="alumnoFormGroup" fxLayout="column">
+                <mat-form-field>
+                    <mat-label for="alumnoDisplayName">Nombre: </mat-label>
+                    <input required readonly matInput formControlName="displayName" type="text" id="alumnoDisplayName">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label for="alumnoEmail">Email: </mat-label>
+                    <input required readonly [disabled]="true" matInput formControlName="email" type="text"
+                        id="alumnoEmail">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label for="alumnoTelefono">Telefono: </mat-label>
+                    <input required readonly [disabled]="true" matInput formControlName="phone" type="text"
+                        id="alumnoTelefono">
+                </mat-form-field>
+            </form>
+        </div>
+        <div>
+            <h3>Curso</h3>
+            <form [formGroup]="cursoFormGroup" fxLayout="column">
+                <mat-form-field>
+                    <mat-label for="cursoDisplayName">Nombre: </mat-label>
+                    <input required readonly [disabled]="true" matInput formControlName="displayName" type="text"
+                        id="cursoDisplayName">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label for="cursoProfesor">Profesor: </mat-label>
+                    <input required readonly [disabled]="true" matInput formControlName="profesor" type="text"
+                        id="cursoProfesor">
+                </mat-form-field>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>

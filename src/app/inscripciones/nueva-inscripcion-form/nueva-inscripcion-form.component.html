@@ -1,0 +1,59 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            Nueva Inscripcion
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content fxLayout="row" fxLayoutAlign="space-evenly center">
+        <div>
+            <h3>Alumno</h3>
+            <form [formGroup]="alumnoFormGroup" fxLayout="column">
+                <mat-form-field>
+                    <mat-label for="alumnoSelect">Alumno</mat-label>
+                    <mat-select [(value)]="alumnoSelected" (valueChange)="onAlumnoSelected()">
+                        <mat-option>None</mat-option>
+                        <ng-container *ngFor="let alumno of listaAlumnos | async">
+                            <mat-option [value]="alumno">
+                                {{alumno.firstName}} {{alumno.lastName}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label for="alumnoEmail">Email: </mat-label>
+                    <input required readonly matInput formControlName="email" type="text" id="alumnoEmail">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label for="alumnoTelefono">Telefono: </mat-label>
+                    <input required readonly matInput formControlName="phone" type="text" id="alumnoTelefono">
+                </mat-form-field>
+            </form>
+        </div>
+        <div>
+            <h3>Curso</h3>
+            <form [formGroup]="cursoFormGroup" fxLayout="column">
+                <mat-form-field>
+                    <mat-label for="alumnoSelect">Alumno</mat-label>
+                    <mat-select [(value)]="cursoSelected" (valueChange)="onCursoSelected()">
+                        <mat-option>None</mat-option>
+                        <ng-container *ngFor="let curso of listaCursos | async">
+                            <mat-option [value]="curso">
+                                {{curso.displayName}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label for="cursoProfesor">Profesor: </mat-label>
+                    <input required readonly matInput formControlName="profesor" type="text" id="cursoProfesor">
+                </mat-form-field>
+            </form>
+        </div>
+    </mat-card-content>
+    <mat-card-footer>
+        <ng-container *ngFor="let button of buttons">
+            <app-button [button]="button.buttonDefinition" [label]="button.label"
+                (executed)="button.buttonDefinition.type === 'submit' ? onSubmit() : onCancel()"></app-button>
+        </ng-container>
+    </mat-card-footer>
+</mat-card>
