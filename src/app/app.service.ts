@@ -8,42 +8,14 @@ import {
   INSCRIPCIONES_ARRAY,
   PROFESORES_ARRAY,
 } from './local-storage-constants';
+import { HttpClient } from '@angular/common/http';
 
 // Este servicio sera utilizado para brindar data de prueba.
 @Injectable({
   providedIn: 'root',
 })
 export class AppService {
-  private listaAlumnos: Alumno[] = [
-    {
-      id: 1,
-      firstName: 'Iñaki',
-      lastName: 'Garro',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-    {
-      id: 2,
-      firstName: 'Lucia',
-      lastName: 'Garcia',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-    {
-      id: 3,
-      firstName: 'Agustin',
-      lastName: 'Brutten',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-    {
-      id: 4,
-      firstName: 'Federico',
-      lastName: 'Emens',
-      email: 'email@email.com',
-      phone: '123456789',
-    },
-  ];
+  private apiEndpoint = 'https://64504de6a322196911485862.mockapi.io/api/';
   private listaProfesores: Profesor[] = [
     {
       id: 1,
@@ -115,18 +87,7 @@ export class AppService {
     @Inject(APP_BASE_HREF)
     private baseUrl: string
   ) {}
-  public seedInLocalStorage() {
-    localStorage.setItem(ALUMNOS_ARRAY, JSON.stringify(this.listaAlumnos));
-    localStorage.setItem(
-      PROFESORES_ARRAY,
-      JSON.stringify(this.listaProfesores)
-    );
-    localStorage.setItem(CURSOS_ARRAY, JSON.stringify(this.listaCursos));
-    localStorage.setItem(
-      INSCRIPCIONES_ARRAY,
-      JSON.stringify(this.listInscripciones)
-    );
-  }
+
   public navigate(url: string[], isRelative: boolean = false) {
     let urlArray: string[] = [];
     if (isRelative) {

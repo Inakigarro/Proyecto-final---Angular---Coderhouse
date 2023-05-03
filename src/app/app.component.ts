@@ -7,8 +7,6 @@ import { AppService } from './app.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(private service: AppService) {
-    this.service.seedInLocalStorage();
-  }
+  constructor() {}
   title = 'proyecto-final';
 }
