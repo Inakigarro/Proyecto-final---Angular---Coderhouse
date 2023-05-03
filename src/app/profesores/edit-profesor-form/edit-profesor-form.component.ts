@@ -10,6 +10,7 @@ import { ProfesoresService } from '../profesores.service';
 import { ActivatedRoute } from '@angular/router';
 import { Profesor } from 'src/app/models/models';
 import { PROFESORES_BASE_ROUTE } from '../base-route';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-edit-profesor-form',
@@ -24,7 +25,7 @@ export class EditProfesorFormComponent {
         kind: 'raised',
         type: 'submit',
       },
-      label: 'Save',
+      label: 'Guardar',
     },
     {
       buttonDefinition: {
@@ -32,12 +33,11 @@ export class EditProfesorFormComponent {
         kind: 'basic',
         type: 'reset',
       },
-      label: 'Cancel',
+      label: 'Cancelar',
     },
   ];
-
   private id: string = '';
-
+  public loaded = false;
   constructor(
     private formBuilder: FormBuilder,
     private service: ProfesoresService,
@@ -46,39 +46,41 @@ export class EditProfesorFormComponent {
     let profesor: Profesor | undefined;
     this.route.params.subscribe((params) => {
       this.id = params['id'];
-      profesor = this.service.findProfesorById(this.id);
     });
-    this.form = this.formBuilder.group({
-      firstName: new FormControl(`${profesor?.firstName}`, [
-        Validators.required,
-        Validators.maxLength(30),
-      ]),
-      lastName: new FormControl(`${profesor?.lastName}`, [
-        Validators.required,
-        Validators.maxLength(30),
-      ]),
-      email: new FormControl(`${profesor?.email}`, [
-        Validators.required,
-        Validators.maxLength(150),
-        Validators.email,
-      ]),
-    });
+    this.service
+      .findProfesorById(this.id)
+      .pipe(filter((x) => !!x))
+      .subscribe((profesor) => {
+        this.form = this.formBuilder.group({
+          id: new FormControl(`${profesor.id}`, [Validators.required]),
+          firstName: new FormControl(`${profesor?.firstName}`, [
+            Validators.required,
+            Validators.maxLength(30),
+          ]),
+          lastName: new FormControl(`${profesor?.lastName}`, [
+            Validators.required,
+            Validators.maxLength(30),
+          ]),
+          email: new FormControl(`${profesor?.email}`, [
+            Validators.required,
+            Validators.maxLength(150),
+            Validators.email,
+          ]),
+        });
+
+        this.loaded = true;
+      });
   }
 
   public onSubmit() {
     if (this.form.valid) {
       const data: Profesor = this.form.value;
-      let profesor = this.service.findProfesorById(this.id);
-
-      if (profesor) {
-        this.service.modifyProfesor({
-          ...data,
-          id: profesor.id,
-        });
-      } else {
-        console.error('Ha ocurrido un error al actualziar el profesor.');
-      }
-      this.service.navigate([PROFESORES_BASE_ROUTE], false);
+      this.service
+        .modifyProfesor(data)
+        .pipe(filter((x) => !!x))
+        .subscribe((data) =>
+          this.service.navigate([PROFESORES_BASE_ROUTE], false)
+        );
     }
   }
 

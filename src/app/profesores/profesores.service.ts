@@ -1,58 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Profesor } from '../models/models';
-import { Observable } from 'rxjs';
+import { CreateProfesor, Profesor } from '../models/models';
 import { Router } from '@angular/router';
 import { PROFESORES_ARRAY } from '../local-storage-constants';
+import { ProfesoresApiService } from './profesores-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfesoresService {
-  private listaProfesores: Profesor[] = [];
-  public profesores$ = new Observable<Profesor[]>((s) =>
-    s.next(this.listaProfesores)
-  );
-  public profesoresLength$ = new Observable<number>((s) =>
-    s.next(this.listaProfesores.length)
-  );
+  public profesores$ = this.apiService.get();
 
-  constructor(private router: Router) {
-    let data: Profesor[] = JSON.parse(
-      localStorage.getItem(PROFESORES_ARRAY) as string
-    );
-    data.forEach((p: Profesor) => {
-      this.listaProfesores.push(p);
-    });
+  constructor(
+    private router: Router,
+    private apiService: ProfesoresApiService
+  ) {}
+
+  public addProfesor(nuevoProfesor: CreateProfesor) {
+    return this.apiService.add(nuevoProfesor);
   }
 
-  public getNewProfesorId() {
-    if (this.listaProfesores.length === 0) {
-      return 1;
-    } else {
-      return this.listaProfesores.slice(-1)[0].id + 1;
-    }
-  }
-  public addProfesor(nuevoProfesor: Profesor) {
-    this.listaProfesores.push(nuevoProfesor);
-  }
   public modifyProfesor(profesor: Profesor) {
-    let item = this.listaProfesores.find((x) => x.id === profesor.id);
-    if (item) {
-      item.firstName = profesor.firstName;
-      item.lastName = profesor.lastName;
-      item.email = profesor.email;
-    } else {
-      console.error('El profesor solicitado no existe');
-    }
+    return this.apiService.modify(profesor);
   }
 
   public findProfesorById(id: string) {
-    return this.listaProfesores.find((x) => `${x.id}` === id);
+    return this.apiService.getById(id);
   }
+
   public deleteProfesorById(id: number) {
-    this.listaProfesores = this.listaProfesores.filter((p) => p.id !== id);
-    return this.listaProfesores;
+    return this.apiService.deleteById(id);
   }
+
   public navigate(url: string[], isRelative: boolean) {
     let urlArray: string[] = [];
     if (isRelative) {

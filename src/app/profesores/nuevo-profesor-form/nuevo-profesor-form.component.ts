@@ -8,13 +8,14 @@ import {
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
 import { ProfesoresService } from '../profesores.service';
 import { PROFESORES_BASE_ROUTE } from '../base-route';
-import { Profesor } from 'src/app/models/models';
+import { CreateProfesor, Profesor } from 'src/app/models/models';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-nuevo-profesor-form',
   templateUrl: './nuevo-profesor-form.component.html',
 })
-export class NuevoProfesorFormComponent implements OnInit {
+export class NuevoProfesorFormComponent {
   public form: FormGroup;
   public buttons: ExtendedButtonDefinition[] = [
     {
@@ -54,17 +55,21 @@ export class NuevoProfesorFormComponent implements OnInit {
       ]),
     });
   }
+
   public onSubmit() {
     if (this.form.valid) {
-      const nuevoProfesor: Profesor = this.form.value;
-      nuevoProfesor.id = this.service.getNewProfesorId();
-      this.service.addProfesor(nuevoProfesor);
-      this.service.navigate([PROFESORES_BASE_ROUTE], false);
+      const nuevoProfesor: CreateProfesor = this.form.value;
+      this.service
+        .addProfesor(nuevoProfesor)
+        .pipe(filter((x) => !!x))
+        .subscribe((data) =>
+          this.service.navigate([PROFESORES_BASE_ROUTE], false)
+        );
     }
   }
+
   public onCancel() {
     this.form.reset();
     this.service.navigate([PROFESORES_BASE_ROUTE], false);
   }
-  ngOnInit() {}
 }

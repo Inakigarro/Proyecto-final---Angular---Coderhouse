@@ -1,12 +1,12 @@
-import { Component, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject, filter, tap } from 'rxjs';
-import { AppService } from 'src/app/app.service';
+import { Subject, filter } from 'rxjs';
 import {
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from 'src/app/components/models/button';
 import { ProfesoresService } from '../profesores.service';
+import { Profesor } from 'src/app/models/models';
 
 @Component({
   selector: 'app-lista-profesores',
@@ -15,8 +15,7 @@ import { ProfesoresService } from '../profesores.service';
 })
 export class ListaProfesoresComponent implements OnDestroy {
   public destroy$ = new Subject();
-  public data$ = this.profesoresService.profesores$;
-  public dataLength$ = this.profesoresService.profesoresLength$;
+  public data$ = this.service.profesores$;
   public headers: string[] = ['id', 'nombre', 'apellido', 'correo', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -47,26 +46,34 @@ export class ListaProfesoresComponent implements OnDestroy {
       icon: 'delete',
     },
   ];
-  public dataSource = new MatTableDataSource();
-
-  constructor(private profesoresService: ProfesoresService) {
-    this.data$.subscribe({
-      next: (profesores) => (this.dataSource.data = profesores),
+  public dataSource = new MatTableDataSource<Profesor>();
+  public loaded = false;
+  constructor(private service: ProfesoresService) {
+    this.data$.subscribe((profesores) => {
+      this.dataSource.data = profesores;
+      this.loaded = true;
     });
   }
+
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
   }
 
   public onEditButtonClicked(id: number) {
-    this.profesoresService.navigate(['editar', `${id}`], true);
+    this.service.navigate(['editar', `${id}`], true);
   }
   public onDeleteButtonClicked(id: number) {
-    this.dataSource.data = this.profesoresService.deleteProfesorById(id);
+    this.loaded = false;
+    this.service
+      .deleteProfesorById(id)
+      .pipe(filter((x) => !!x))
+      .subscribe((data) => {
+        this.dataSource.data = this.dataSource.data.filter((x) => x.id !== id);
+      });
   }
 
   public navigate(url: string) {
-    this.profesoresService.navigate([url], true);
+    this.service.navigate([url], true);
   }
 }
