@@ -7,6 +7,7 @@ import { AppService } from './app.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  public loggedIn = true;
   constructor() {}
   title = 'proyecto-final';
 }

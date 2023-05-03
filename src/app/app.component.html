@@ -1,3 +1,8 @@
 <div class="body">
-    <app-header></app-header>
+    <ng-container *ngIf="loggedIn; else logIn">
+        <app-header></app-header>
+    </ng-container>
+    <ng-template #logIn>
+        <app-login></app-login>
+    </ng-template>
 </div>

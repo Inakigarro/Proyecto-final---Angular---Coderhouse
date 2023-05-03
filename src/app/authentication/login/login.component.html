@@ -1,0 +1,21 @@
+<mat-card>
+    <mat-card-header fxLayout="row" fxLayoutAlign="center">
+        <mat-card-title>Inicio de sesion</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form [formGroup]="loginFormGroup" fxLayout="column" fxLayoutAlign="center">
+            <mat-form-field>
+                <mat-label for="loginInput">Login Id: </mat-label>
+                <input required matInput formControlName="loginId" type="text" id="loginInput">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label form="passwordInput">Password: </mat-label>
+                <input required matInput formControlName="password" type="password" id="passwordInput">
+            </mat-form-field>
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button>Guardar</button>
+                <button>Cancelar</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ComponentsModule } from './components/components.module';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -30,6 +31,7 @@ const MaterialModules = [
     MaterialModules,
     AppRoutingModule,
     HttpClientModule,
+    AuthenticationModule,
   ],
   providers: [
     {
