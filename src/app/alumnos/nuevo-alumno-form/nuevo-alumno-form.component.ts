@@ -6,9 +6,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
-import { Alumno } from 'src/app/models/models';
+import { Alumno, CreateAlumno } from 'src/app/models/models';
 import { ALUMNOS_BASE_ROUTE } from '../base-route';
 import { AlumnosService } from '../alumnos.service';
+import { filter } from 'rxjs';
 @Component({
   selector: 'app-nuevo-alumno-form',
   templateUrl: './nuevo-alumno-form.component.html',
@@ -58,14 +59,19 @@ export class NuevoAlumnoFormComponent {
       ]),
     });
   }
+
   public onSubmit() {
     if (this.form.valid) {
-      const nuevoAlumno: Alumno = this.form.value;
-      nuevoAlumno.id = this.service.getNewAlumnoId();
-      this.service.addAlumno(nuevoAlumno);
-      this.service.navigate([ALUMNOS_BASE_ROUTE], false);
+      const nuevoAlumno: CreateAlumno = this.form.value;
+      this.service
+        .addAlumno(nuevoAlumno)
+        .pipe(filter((x) => !!x))
+        .subscribe((data) =>
+          this.service.navigate([ALUMNOS_BASE_ROUTE], false)
+        );
     }
   }
+
   public onCancel() {
     this.form.reset();
     this.service.navigate([ALUMNOS_BASE_ROUTE], false);

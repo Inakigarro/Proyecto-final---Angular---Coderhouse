@@ -1,11 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject, filter, map } from 'rxjs';
+import { Subject, filter } from 'rxjs';
 import {
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from 'src/app/components/models/button';
 import { AlumnosService } from '../alumnos.service';
+import { Alumno } from 'src/app/models/models';
 
 @Component({
   selector: 'app-lista-alumnos',
@@ -14,8 +15,7 @@ import { AlumnosService } from '../alumnos.service';
 })
 export class ListaAlumnosComponent implements OnDestroy {
   public destroy$ = new Subject();
-  public data$ = this.alumnosService.alumnos$;
-  public dataLength$ = this.alumnosService.alumnosLength$;
+  public data$ = this.service.alumnos$;
   public headers: string[] = ['id', 'nombre', 'apellido', 'correo', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -46,12 +46,13 @@ export class ListaAlumnosComponent implements OnDestroy {
       icon: 'delete',
     },
   ];
-  public dataSource = new MatTableDataSource();
-
-  constructor(private alumnosService: AlumnosService) {
-    this.data$.subscribe((alumnos) =>
-      alumnos.forEach((a) => this.dataSource.data.push(a))
-    );
+  public dataSource = new MatTableDataSource<Alumno>();
+  public loaded = false;
+  constructor(private service: AlumnosService) {
+    this.data$.subscribe((alumnos) => {
+      this.dataSource.data = alumnos;
+      this.loaded = true;
+    });
   }
 
   ngOnDestroy(): void {
@@ -60,13 +61,20 @@ export class ListaAlumnosComponent implements OnDestroy {
   }
 
   public onEditButtonClicked(id: number) {
-    this.alumnosService.navigate(['editar', `${id}`], true);
+    this.service.navigate(['editar', `${id}`], true);
   }
   public onDeleteButtonClicked(id: number) {
-    this.dataSource.data = this.alumnosService.deleteAlumnoById(id);
+    this.loaded = false;
+    this.service
+      .deleteAlumnoById(id)
+      .pipe(filter((x) => !!x))
+      .subscribe((data) => {
+        this.dataSource.data = this.dataSource.data.filter((x) => x.id !== id);
+        this.loaded = true;
+      });
   }
 
   public navigate(url: string) {
-    this.alumnosService.navigate([url], true);
+    this.service.navigate([url], true);
   }
 }

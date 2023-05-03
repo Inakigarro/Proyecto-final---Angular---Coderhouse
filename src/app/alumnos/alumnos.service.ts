@@ -1,56 +1,30 @@
 import { Injectable } from '@angular/core';
-import { Alumno } from '../models/models';
-import { NavigationEnd, Router } from '@angular/router';
-import { Observable, filter, map } from 'rxjs';
-import { ALUMNOS_ARRAY } from '../local-storage-constants';
+import { Alumno, CreateAlumno } from '../models/models';
+import { Router } from '@angular/router';
+import { AlumnosApiService } from './alumnos-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlumnosService {
-  public listaAlumnos: Alumno[] = [];
-  public alumnos$ = new Observable<Alumno[]>((s) => s.next(this.listaAlumnos));
-  public alumnosLength$ = new Observable<number>((s) =>
-    s.next(this.listaAlumnos.length)
-  );
-  constructor(private router: Router) {
-    let data: Alumno[] = JSON.parse(
-      localStorage.getItem(ALUMNOS_ARRAY) as string
-    );
-    data.forEach((a: Alumno) => this.listaAlumnos.push(a));
-  }
+  public alumnos$ = this.apiService.get();
 
-  public getNewAlumnoId() {
-    if (this.listaAlumnos.length === 0) {
-      return 1;
-    } else {
-      return this.listaAlumnos.slice(-1)[0].id + 1;
-    }
-  }
+  constructor(private router: Router, private apiService: AlumnosApiService) {}
 
-  public addAlumno(nuevoAlumno: Alumno) {
-    this.listaAlumnos.push(nuevoAlumno);
+  public addAlumno(nuevoAlumno: CreateAlumno) {
+    return this.apiService.add(nuevoAlumno);
   }
 
   public modifyAlumno(alumno: Alumno) {
-    let item = this.listaAlumnos.find((x) => x.id === alumno.id);
-    if (item) {
-      item.firstName = alumno.firstName;
-      item.lastName = alumno.lastName;
-      item.email = alumno.email;
-      item.phone = alumno.phone;
-    } else {
-      console.error('El alumno solicitado no existe');
-    }
+    return this.apiService.modify(alumno);
   }
 
   public deleteAlumnoById(id: number) {
-    this.listaAlumnos = this.listaAlumnos.filter((a) => a.id !== id);
-    return this.listaAlumnos;
+    return this.apiService.deleteById(id);
   }
 
   public findAlumnoById(id: string) {
-    return this.listaAlumnos.find((x) => `${x.id}` === id);
+    return this.apiService.getById(id);
   }
 
   // Navigation.
