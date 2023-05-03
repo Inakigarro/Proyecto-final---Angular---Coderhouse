@@ -10,6 +10,7 @@ import { CursosService } from '../cursos.service';
 import { Curso } from 'src/app/models/models';
 import { CURSOS_BASE_ROUTE } from '../base-route';
 import { ActivatedRoute } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-editar-curso-form',
@@ -36,6 +37,7 @@ export class EditarCursoFormComponent {
     },
   ];
   private id: string = '';
+  public loaded = false;
   constructor(
     private formBuilder: FormBuilder,
     private service: CursosService,
@@ -44,29 +46,28 @@ export class EditarCursoFormComponent {
     let curso: Curso | undefined;
     this.route.params.subscribe((params) => {
       this.id = params['id'];
-      curso = this.service.findCursoById(this.id);
     });
-    this.form = this.formBuilder.group({
-      displayName: new FormControl(`${curso?.displayName}`, [
-        Validators.required,
-        Validators.maxLength(30),
-      ]),
-    });
+    this.service
+      .findCursoById(this.id)
+      .pipe(filter((x) => !!x))
+      .subscribe((curso) => {
+        this.form = this.formBuilder.group({
+          id: new FormControl(`${curso.id}`, [Validators.required]),
+          displayName: new FormControl(`${curso?.displayName}`, [
+            Validators.required,
+            Validators.maxLength(30),
+          ]),
+        });
+        this.loaded = true;
+      });
   }
   public onSubmit() {
     if (this.form.valid) {
       const data: Curso = this.form.value;
-      let curso = this.service.findCursoById(this.id);
-
-      if (curso) {
-        this.service.modifyCurso({
-          ...data,
-          id: curso.id,
-        });
-      } else {
-        console.error('Ha ocurrido un error al actualziar el curso.');
-      }
-      this.service.navigate([CURSOS_BASE_ROUTE], false);
+      this.service
+        .modifyCurso(data)
+        .pipe(filter((x) => !!x))
+        .subscribe((data) => this.service.navigate([CURSOS_BASE_ROUTE], false));
     }
   }
   public onCancel() {

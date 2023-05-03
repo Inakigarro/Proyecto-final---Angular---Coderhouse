@@ -1,11 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, filter } from 'rxjs';
 import { CursosService } from '../cursos.service';
 import {
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from 'src/app/components/models/button';
 import { MatTableDataSource } from '@angular/material/table';
+import { Curso } from 'src/app/models/models';
 
 @Component({
   selector: 'app-lista-cursos',
@@ -15,7 +16,6 @@ import { MatTableDataSource } from '@angular/material/table';
 export class ListaCursosComponent implements OnDestroy {
   public destroy$ = new Subject();
   public data$ = this.service.cursos$;
-  public dataLength$ = this.service.cursosLength$;
   public headers: string[] = ['id', 'displayName', 'inscriptos', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -46,12 +46,15 @@ export class ListaCursosComponent implements OnDestroy {
       icon: 'delete',
     },
   ];
-  public dataSource = new MatTableDataSource();
+  public dataSource = new MatTableDataSource<Curso>();
+  public loaded = false;
   constructor(private service: CursosService) {
-    this.data$.subscribe({
-      next: (cursos) => (this.dataSource.data = cursos),
+    this.data$.subscribe((cursos) => {
+      this.dataSource.data = cursos;
+      this.loaded = true;
     });
   }
+
   ngOnDestroy(): void {
     this.destroy$.next({});
     this.destroy$.complete();
@@ -60,7 +63,14 @@ export class ListaCursosComponent implements OnDestroy {
     this.service.navigate(['editar', `${id}`], true);
   }
   public onDeleteButtonClicked(id: number) {
-    this.dataSource.data = this.service.deleteCursoById(id);
+    this.loaded = false;
+    this.service
+      .deleteCursoById(id)
+      .pipe(filter((x) => !!x))
+      .subscribe((data) => {
+        this.dataSource.data = this.dataSource.data.filter((x) => x.id !== id);
+        this.loaded = true;
+      });
   }
 
   public navigate(url: string) {

@@ -3,17 +3,23 @@
         <mat-card-title>Editar Curso</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <form [formGroup]="form">
-            <div class="formFieldRow">
-                <mat-form-field>
-                    <mat-label for="displayNameInput">Nombre: </mat-label>
-                    <input required matInput formControlName="displayName" type="text" id="displayNameInput">
-                </mat-form-field>
-            </div>
-            <ng-container *ngFor="let button of buttons">
-                <app-button [button]="button.buttonDefinition" [label]="button.label"
-                    (executed)="button.buttonDefinition.type === 'submit' ? onSubmit() : onCancel()"></app-button>
-            </ng-container>
-        </form>
+        <ng-container *ngIf="loaded; else loading">
+            <form [formGroup]="form">
+                <div class="formFieldRow">
+                    <mat-form-field>
+                        <mat-label for="displayNameInput">Nombre: </mat-label>
+                        <input required matInput formControlName="displayName" type="text" id="displayNameInput">
+                    </mat-form-field>
+                </div>
+                <ng-container *ngFor="let button of buttons">
+                    <app-button [button]="button.buttonDefinition" [label]="button.label"
+                        (executed)="button.buttonDefinition.type === 'submit' ? onSubmit() : onCancel()"></app-button>
+                </ng-container>
+            </form>
+        </ng-container>
+        <ng-template #loading>
+            <mat-progress-spinner class="spinner" color="accent" mode="indeterminate">
+            </mat-progress-spinner>
+        </ng-template>
     </mat-card-content>
 </mat-card>

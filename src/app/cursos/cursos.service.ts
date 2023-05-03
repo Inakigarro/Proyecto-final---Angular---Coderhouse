@@ -1,50 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Curso } from '../models/models';
+import { CreateCurso, Curso } from '../models/models';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { CURSOS_ARRAY } from '../local-storage-constants';
+import { CursosApiService } from './cursos-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class CursosService {
   public listaCursos: Curso[] = [];
-  public cursos$ = new Observable<Curso[]>((s) => s.next(this.ObtainData()));
+  public cursos$ = this.apiService.get();
   public cursosLength$ = new Observable<number>((s) =>
     s.next(this.listaCursos.length)
   );
-  constructor(private router: Router) {
-    this.listaCursos = this.ObtainData();
-  }
+  constructor(private router: Router, private apiService: CursosApiService) {}
 
-  public getNewCursoId() {
-    if (this.listaCursos.length === 0) {
-      return 1;
-    } else {
-      return this.listaCursos.slice(-1)[0].id + 1;
-    }
-  }
-
-  public addCurso(nuevoCurso: Curso) {
-    this.listaCursos.push(nuevoCurso);
+  public addCurso(nuevoCurso: CreateCurso) {
+    return this.apiService.add(nuevoCurso);
   }
 
   public findCursoById(id: string) {
-    return this.listaCursos.find((x) => `${x.id}` === id);
+    return this.apiService.getByI(id);
   }
 
   public modifyCurso(curso: Curso) {
-    let item = this.listaCursos.find((x) => x.id == curso.id);
-    if (item) {
-      item.displayName = curso.displayName;
-      item.profesor = curso.profesor;
-      item.inscripciones = curso.inscripciones;
-    } else {
-      console.error('El curso solicitado no existe.');
-    }
+    return this.apiService.modify(curso);
   }
 
   public deleteCursoById(id: number) {
-    this.listaCursos = this.listaCursos.filter((p) => p.id !== id);
-    return this.listaCursos;
+    return this.apiService.deleteById(id);
   }
 
   public navigate(url: string[], isRelative: boolean) {
@@ -57,9 +40,5 @@ export class CursosService {
       url.forEach((x) => urlArray.push(x));
       this.router.navigate(url);
     }
-  }
-
-  private ObtainData() {
-    return JSON.parse(localStorage.getItem(CURSOS_ARRAY) as string) as Curso[];
   }
 }
