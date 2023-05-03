@@ -1,34 +1,30 @@
 import { Injectable } from '@angular/core';
 import { CreateProfesor, Profesor } from '../models/models';
 import { Router } from '@angular/router';
-import { PROFESORES_ARRAY } from '../local-storage-constants';
-import { ProfesoresApiService } from './profesores-api.service';
+import { ApiService } from '../api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfesoresService {
-  public profesores$ = this.apiService.get();
+  public profesores$ = this.apiService.getProfesores();
 
-  constructor(
-    private router: Router,
-    private apiService: ProfesoresApiService
-  ) {}
+  constructor(private router: Router, private apiService: ApiService) {}
 
   public addProfesor(nuevoProfesor: CreateProfesor) {
-    return this.apiService.add(nuevoProfesor);
+    return this.apiService.addProfesor(nuevoProfesor);
   }
 
   public modifyProfesor(profesor: Profesor) {
-    return this.apiService.modify(profesor);
+    return this.apiService.modifyProfesor(profesor);
   }
 
   public findProfesorById(id: string) {
-    return this.apiService.getById(id);
+    return this.apiService.getProfesorById(id);
   }
 
   public deleteProfesorById(id: number) {
-    return this.apiService.deleteById(id);
+    return this.apiService.deleteProfesorById(id);
   }
 
   public navigate(url: string[], isRelative: boolean) {

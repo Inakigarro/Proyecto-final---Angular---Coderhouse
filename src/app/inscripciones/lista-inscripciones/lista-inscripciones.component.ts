@@ -1,11 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject } from 'rxjs';
+import { Subject, filter } from 'rxjs';
 import {
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from 'src/app/components/models/button';
 import { InscripcionesService } from '../inscripciones.service';
+import { InscripcionDto } from 'src/app/models/models';
 
 @Component({
   selector: 'app-lista-inscripciones',
@@ -14,8 +15,7 @@ import { InscripcionesService } from '../inscripciones.service';
 })
 export class ListaInscripcionesComponent implements OnDestroy {
   public destroy$ = new Subject();
-  public data$ = this.service.inscripciones$;
-  public dataLength$ = this.service.inscripcionesLength$;
+  public data$ = this.service.buildIncripcionList();
   public headers: string[] = ['id', 'curso', 'alumno', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -46,12 +46,16 @@ export class ListaInscripcionesComponent implements OnDestroy {
       icon: 'delete',
     },
   ];
-  public dataSource = new MatTableDataSource();
+  public dataSource = new MatTableDataSource<InscripcionDto>();
+  public loaded = false;
 
   constructor(private service: InscripcionesService) {
-    this.data$.subscribe((inscripciones) =>
-      inscripciones.forEach((i) => this.dataSource.data.push(i))
-    );
+    this.data$.pipe(filter((x) => !!x)).subscribe((inscripciones) => {
+      console.log(inscripciones);
+
+      this.dataSource.data = inscripciones;
+      this.loaded = true;
+    });
   }
 
   ngOnDestroy(): void {
@@ -64,7 +68,14 @@ export class ListaInscripcionesComponent implements OnDestroy {
   }
 
   public onDeleteButtonClicked(id: number) {
-    this.dataSource.data = this.service.deleteInscripcionById(id);
+    this.loaded = false;
+    this.service
+      .deleteInscripcionById(id)
+      .pipe(filter((x) => !!x))
+      .subscribe(() => {
+        this.dataSource.data = this.dataSource.data.filter((x) => x.id !== id);
+        this.loaded = true;
+      });
   }
 
   public navigate(url: string) {

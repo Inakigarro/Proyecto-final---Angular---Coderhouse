@@ -29,23 +29,29 @@ export interface CreateProfesor {
 export interface Curso {
   id: number;
   displayName: string;
-  profesor: Profesor;
+  profesorId: number;
   inscripciones: number[];
 }
 
 export interface CreateCurso {
   displayName: string;
-  profesor: Profesor;
+  profesorId: number;
   inscripciones: number[];
 }
 
 export interface Inscripcion {
   id: number;
-  curso: Curso;
-  alumno: Alumno;
+  cursoId: number;
+  alumnoId: number;
 }
 
 export interface CreateInscripcion {
   cursoId: number;
   alumnoId: number;
+}
+
+export interface InscripcionDto {
+  id: number;
+  curso?: Curso;
+  alumno?: Alumno;
 }

@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
 import { CursosService } from '../cursos.service';
-import { CreateCurso, Curso } from 'src/app/models/models';
+import { CreateCurso, Curso, Profesor } from 'src/app/models/models';
 import { CURSOS_BASE_ROUTE } from '../base-route';
 import { filter } from 'rxjs';
 
@@ -35,6 +35,8 @@ export class NuevoCursoFormComponent {
       label: 'Cancelar',
     },
   ];
+  public listaProfesores$ = this.service.profesores$;
+  public profesorSelected: Profesor;
   constructor(
     private formBuilder: FormBuilder,
     private service: CursosService
@@ -48,9 +50,10 @@ export class NuevoCursoFormComponent {
   }
   public onSubmit() {
     if (this.form.valid) {
-      const nuevoProfesor: CreateCurso = this.form.value;
+      const nuevoCurso: CreateCurso = this.form.value;
+      nuevoCurso.profesorId = this.profesorSelected.id;
       this.service
-        .addCurso(nuevoProfesor)
+        .addCurso(nuevoCurso)
         .pipe(filter((x) => !!x))
         .subscribe((data) => this.service.navigate([CURSOS_BASE_ROUTE], false));
     }

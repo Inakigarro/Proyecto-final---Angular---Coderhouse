@@ -3,33 +3,32 @@
         <mat-card-title>Nuevo Alumno</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <form [formGroup]="form">
-            <div class="formFieldRow">
-                <mat-form-field>
-                    <mat-label for="firstNameInput">Nombre: </mat-label>
-                    <input required matInput formControlName="firstName" type="text" id="firstNameInput">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label for="lastNameInput">Apellido: </mat-label>
-                    <input required matInput formControlName="lastName" id="lastNameInput" type="text">
-                </mat-form-field>
+        <form [formGroup]="form" fxLayout="column">
+            <mat-form-field>
+                <mat-label for="firstNameInput">Nombre: </mat-label>
+                <input required matInput formControlName="firstName" type="text" id="firstNameInput">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label for="lastNameInput">Apellido: </mat-label>
+                <input required matInput formControlName="lastName" id="lastNameInput" type="text">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label for="emailInput">Correo: </mat-label>
+                <input required matInput formControlName="email" type="email" id="emailInput">
+            </mat-form-field>
+
+
+            <mat-form-field>
+                <mat-label for="phoneInput">Telefono: </mat-label>
+                <input required matInput formControlName="phone" type="text" id="phoneInput">
+            </mat-form-field>
+            <div fxLayout="row">
+                <ng-container *ngFor="let button of buttons">
+                    <app-button [button]="button.buttonDefinition" [label]="button.label"
+                        (executed)="button.buttonDefinition.type === 'submit' ? onSubmit() : onCancel()"></app-button>
+                </ng-container>
             </div>
-            <div>
-                <mat-form-field>
-                    <mat-label for="emailInput">Correo: </mat-label>
-                    <input required matInput formControlName="email" type="email" id="emailInput">
-                </mat-form-field>
-            </div>
-            <div>
-                <mat-form-field>
-                    <mat-label for="phoneInput">Telefono: </mat-label>
-                    <input required matInput formControlName="phone" type="text" id="phoneInput">
-                </mat-form-field>
-            </div>
-            <ng-container *ngFor="let button of buttons">
-                <app-button [button]="button.buttonDefinition" [label]="button.label"
-                    (executed)="button.buttonDefinition.type === 'submit' ? onSubmit() : onCancel()"></app-button>
-            </ng-container>
         </form>
     </mat-card-content>
 </mat-card>

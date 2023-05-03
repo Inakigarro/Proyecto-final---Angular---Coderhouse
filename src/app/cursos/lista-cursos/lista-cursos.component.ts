@@ -24,7 +24,7 @@ export class ListaCursosComponent implements OnDestroy {
         type: 'basic',
         kind: 'raised',
       },
-      label: 'New',
+      label: 'Nuevo',
       url: 'nuevo',
     },
   ];

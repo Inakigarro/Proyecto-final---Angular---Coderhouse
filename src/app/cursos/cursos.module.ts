@@ -14,6 +14,7 @@ import { ComponentsModule } from '../components/components.module';
 import { NuevoCursoFormComponent } from './nuevo-curso-form/nuevo-curso-form.component';
 import { EditarCursoFormComponent } from './editar-curso-form/editar-curso-form.component';
 import { FlexModule } from '@angular/flex-layout';
+import { MatSelectModule } from '@angular/material/select';
 
 const MaterialModules = [
   MatTableModule,
@@ -22,6 +23,7 @@ const MaterialModules = [
   MatInputModule,
   MatCardModule,
   MatProgressSpinnerModule,
+  MatSelectModule,
 ];
 
 @NgModule({

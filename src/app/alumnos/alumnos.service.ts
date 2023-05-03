@@ -1,30 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Alumno, CreateAlumno } from '../models/models';
 import { Router } from '@angular/router';
-import { AlumnosApiService } from './alumnos-api.service';
+import { ApiService } from '../api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlumnosService {
-  public alumnos$ = this.apiService.get();
+  public alumnos$ = this.apiService.getAlumnos();
 
-  constructor(private router: Router, private apiService: AlumnosApiService) {}
+  constructor(private router: Router, private apiService: ApiService) {}
 
   public addAlumno(nuevoAlumno: CreateAlumno) {
-    return this.apiService.add(nuevoAlumno);
+    return this.apiService.addAlumno(nuevoAlumno);
   }
 
   public modifyAlumno(alumno: Alumno) {
-    return this.apiService.modify(alumno);
+    return this.apiService.modifyAlumno(alumno);
   }
 
   public deleteAlumnoById(id: number) {
-    return this.apiService.deleteById(id);
+    return this.apiService.deleteAlumnoById(id);
   }
 
   public findAlumnoById(id: string) {
-    return this.apiService.getById(id);
+    return this.apiService.getAlumnoById(id);
   }
 
   // Navigation.

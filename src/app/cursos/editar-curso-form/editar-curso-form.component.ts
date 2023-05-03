@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
 import { CursosService } from '../cursos.service';
-import { Curso } from 'src/app/models/models';
+import { Curso, Profesor } from 'src/app/models/models';
 import { CURSOS_BASE_ROUTE } from '../base-route';
 import { ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs';
@@ -36,14 +36,16 @@ export class EditarCursoFormComponent {
       label: 'Cancelar',
     },
   ];
+  public listaProfesores$ = this.service.profesores$;
   private id: string = '';
+  public profesorSelected: Profesor;
+
   public loaded = false;
   constructor(
     private formBuilder: FormBuilder,
     private service: CursosService,
     private route: ActivatedRoute
   ) {
-    let curso: Curso | undefined;
     this.route.params.subscribe((params) => {
       this.id = params['id'];
     });
@@ -58,7 +60,13 @@ export class EditarCursoFormComponent {
             Validators.maxLength(30),
           ]),
         });
-        this.loaded = true;
+        this.service
+          .findProfesorById(curso.profesorId)
+          .pipe(filter((x) => !!x))
+          .subscribe((profesor) => {
+            this.profesorSelected = profesor;
+            this.loaded = true;
+          });
       });
   }
   public onSubmit() {

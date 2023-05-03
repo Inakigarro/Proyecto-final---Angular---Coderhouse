@@ -12,6 +12,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { ComponentsModule } from './components/components.module';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -28,6 +29,7 @@ const MaterialModules = [
     ComponentsModule,
     MaterialModules,
     AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [
     {

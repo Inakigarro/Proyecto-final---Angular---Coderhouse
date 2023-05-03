@@ -2,34 +2,37 @@ import { Injectable } from '@angular/core';
 import { CreateCurso, Curso } from '../models/models';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { CURSOS_ARRAY } from '../local-storage-constants';
-import { CursosApiService } from './cursos-api.service';
+import { ApiService } from '../api.service';
 
 @Injectable({ providedIn: 'root' })
 export class CursosService {
   public listaCursos: Curso[] = [];
-  public cursos$ = this.apiService.get();
+  public cursos$ = this.apiService.getCursos();
+  public profesores$ = this.apiService.getProfesores();
   public cursosLength$ = new Observable<number>((s) =>
     s.next(this.listaCursos.length)
   );
-  constructor(private router: Router, private apiService: CursosApiService) {}
+  constructor(private router: Router, private apiService: ApiService) {}
 
   public addCurso(nuevoCurso: CreateCurso) {
-    return this.apiService.add(nuevoCurso);
+    return this.apiService.addCurso(nuevoCurso);
   }
 
   public findCursoById(id: string) {
-    return this.apiService.getByI(id);
+    return this.apiService.getCursoById(id);
   }
 
   public modifyCurso(curso: Curso) {
-    return this.apiService.modify(curso);
+    return this.apiService.modifyCurso(curso);
   }
 
   public deleteCursoById(id: number) {
-    return this.apiService.deleteById(id);
+    return this.apiService.deleteCursoById(id);
   }
 
+  public findProfesorById(id: number) {
+    return this.apiService.getProfesorById(id.toString());
+  }
   public navigate(url: string[], isRelative: boolean) {
     let urlArray: string[] = [];
     if (isRelative) {

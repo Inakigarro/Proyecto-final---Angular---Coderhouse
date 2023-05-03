@@ -1,66 +1,83 @@
 import { Injectable } from '@angular/core';
-import { Alumno, Curso, Inscripcion } from '../models/models';
-import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 import {
-  ALUMNOS_ARRAY,
-  CURSOS_ARRAY,
-  INSCRIPCIONES_ARRAY,
-} from '../local-storage-constants';
+  CreateInscripcion,
+  Inscripcion,
+  InscripcionDto,
+} from '../models/models';
+import { filter, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { ApiService } from '../api.service';
 
 @Injectable({ providedIn: 'root' })
 export class InscripcionesService {
-  public listaInscripciones: Inscripcion[] = [];
-  public listaAlumnos: Alumno[] = [];
-  public listaCursos: Curso[] = [];
-  public inscripciones$ = new Observable<Inscripcion[]>((s) =>
-    s.next(this.listaInscripciones)
-  );
-  public inscripcionesLength$ = new Observable<number>((s) =>
-    s.next(this.listaInscripciones.length)
-  );
+  public inscripciones$ = this.apiService.getInscripciones();
 
-  public alumnos$ = new Observable<Alumno[]>((s) => s.next(this.listaAlumnos));
-  public cursos$ = new Observable<Curso[]>((s) => s.next(this.listaCursos));
-  constructor(private router: Router) {
-    let inscripciones: Inscripcion[] = JSON.parse(
-      localStorage.getItem(INSCRIPCIONES_ARRAY) as string
-    );
-    inscripciones.forEach((i: Inscripcion) => this.listaInscripciones.push(i));
-    let alumnos: Alumno[] = JSON.parse(
-      localStorage.getItem(ALUMNOS_ARRAY) as string
-    );
-    alumnos.forEach((a: Alumno) => this.listaAlumnos.push(a));
-    let cursos: Curso[] = JSON.parse(
-      localStorage.getItem(CURSOS_ARRAY) as string
-    );
-    cursos.forEach((c: Curso) => this.listaCursos.push(c));
+  public alumnos$ = this.apiService.getAlumnos();
+  public cursos$ = this.apiService.getCursos();
+
+  constructor(private router: Router, private apiService: ApiService) {}
+
+  // Inscripciones.
+  public addInscripcion(inscripcion: CreateInscripcion) {
+    return this.apiService.addInscripcion(inscripcion);
   }
 
-  public addInscripcion(inscripcion: Inscripcion) {
-    this.listaInscripciones.push(inscripcion);
-  }
   public addIncripcionToCurso(inscripcion: Inscripcion) {
-    let curso = this.listaCursos.find((x) => (x.id = inscripcion.curso.id));
-    curso?.inscripciones.push(inscripcion.id);
-    localStorage.setItem(CURSOS_ARRAY, JSON.stringify(this.listaCursos));
+    this.apiService
+      .getCursoById(inscripcion.cursoId.toString())
+      .pipe(filter((x) => !!x))
+      .subscribe((c) => {
+        c.inscripciones.push(inscripcion.id);
+        this.apiService.modifyCurso(c);
+      });
   }
+
   public findInscripcionById(id: string) {
-    return this.listaInscripciones.find((x) => `${x.id}` === id);
+    return this.apiService.getInscripcionById(id);
   }
 
   public deleteInscripcionById(id: number) {
-    return this.listaInscripciones.filter((i) => i.id !== id);
+    return this.apiService.deleteInscripcionById(id);
   }
 
-  public getInscripcionId() {
-    if (this.listaInscripciones.length === 0) {
-      return 1;
-    } else {
-      return this.listaInscripciones.slice(-1)[0].id + 1;
-    }
+  public buildIncripcionList() {
+    let inscripciones: Inscripcion[] = [];
+    let listaInscripciones: InscripcionDto[] = [];
+    this.inscripciones$
+      .pipe(filter((x) => !!x))
+      .subscribe((data) => (inscripciones = data));
+
+    inscripciones.forEach((i) => {
+      let inscripcion: InscripcionDto = {
+        id: i.id,
+      };
+      this.apiService
+        .getAlumnoById(i.alumnoId.toString())
+        .pipe(filter((x) => !!x))
+        .subscribe((a) => (inscripcion.alumno = a));
+      this.apiService
+        .getCursoById(i.cursoId.toString())
+        .pipe(filter((x) => !!x))
+        .subscribe((c) => (inscripcion.curso = c));
+      listaInscripciones.push(inscripcion);
+    });
+    return of(listaInscripciones);
   }
 
+  // Alumnos.
+  public findAlumnoById(id: number) {
+    return this.apiService.getAlumnoById(id.toString());
+  }
+
+  // Cursos.
+  public findCursoById(id: number) {
+    return this.apiService.getCursoById(id.toString());
+  }
+
+  // Profesores.
+  public findProfesorById(id: number) {
+    return this.apiService.getProfesorById(id.toString());
+  }
   // Navigation.
   public navigate(url: string[], isRelative: boolean) {
     let urlArray: string[] = [];
