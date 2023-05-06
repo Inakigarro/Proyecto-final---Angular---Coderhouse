@@ -4,40 +4,50 @@
             Detalles
         </mat-card-title>
     </mat-card-header>
-    <mat-card-content fxLayout="row" fxLayoutAlign="space-evenly center">
-        <div>
-            <h3>Alumno Inscripto</h3>
-            <form [formGroup]="alumnoFormGroup" fxLayout="column">
-                <mat-form-field>
-                    <mat-label for="alumnoDisplayName">Nombre: </mat-label>
-                    <input required readonly matInput formControlName="displayName" type="text" id="alumnoDisplayName">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label for="alumnoEmail">Email: </mat-label>
-                    <input required readonly [disabled]="true" matInput formControlName="email" type="text"
-                        id="alumnoEmail">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label for="alumnoTelefono">Telefono: </mat-label>
-                    <input required readonly [disabled]="true" matInput formControlName="phone" type="text"
-                        id="alumnoTelefono">
-                </mat-form-field>
-            </form>
-        </div>
-        <div>
-            <h3>Curso</h3>
-            <form [formGroup]="cursoFormGroup" fxLayout="column">
-                <mat-form-field>
-                    <mat-label for="cursoDisplayName">Nombre: </mat-label>
-                    <input required readonly [disabled]="true" matInput formControlName="displayName" type="text"
-                        id="cursoDisplayName">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label for="cursoProfesor">Profesor: </mat-label>
-                    <input required readonly [disabled]="true" matInput formControlName="profesor" type="text"
-                        id="cursoProfesor">
-                </mat-form-field>
-            </form>
-        </div>
+    <mat-card-content fxLayout="row" fxLayoutAlign="space-evenly start" fxLayoutGap="5px">
+        <ng-container *ngIf="alumnoLoaded && cursoLoaded; else loading">
+            <div fxLayout="column" class="entityForm">
+                <h3>Alumno Inscripto</h3>
+                <form [formGroup]="alumnoFormGroup" fxLayout="column">
+                    <mat-form-field appearance="outline">
+                        <mat-label for="alumnoDisplayName">Nombre: </mat-label>
+                        <input required readonly matInput formControlName="displayName" type="text"
+                            id="alumnoDisplayName">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label for="alumnoEmail">Email: </mat-label>
+                        <input required readonly matInput formControlName="email" type="text" id="alumnoEmail">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label for="alumnoTelefono">Telefono: </mat-label>
+                        <input required readonly matInput formControlName="phone" type="text" id="alumnoTelefono">
+                    </mat-form-field>
+                </form>
+            </div>
+            <div fxLayout="column" class="entityForm">
+                <h3>Curso</h3>
+                <form [formGroup]="cursoFormGroup" fxLayout="column">
+                    <mat-form-field appearance="outline">
+                        <mat-label for="cursoDisplayName">Nombre: </mat-label>
+                        <input required readonly matInput formControlName="displayName" type="text"
+                            id="cursoDisplayName">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                        <mat-label for="cursoProfesor">Profesor: </mat-label>
+                        <input required readonly matInput formControlName="profesor" type="text" id="cursoProfesor">
+                    </mat-form-field>
+                </form>
+            </div>
+        </ng-container>
+
+        <ng-template #loading>
+            <mat-progress-spinner class="spinner" color="accent" mode="indeterminate">
+            </mat-progress-spinner>
+        </ng-template>
     </mat-card-content>
+    <mat-card-footer>
+        <ng-container *ngFor="let button of buttons">
+            <app-button [button]="button.buttonDefinition" [label]="button.label" (executed)="reset()"></app-button>
+        </ng-container>
+    </mat-card-footer>
 </mat-card>
