@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CreateCurso, Curso } from '../models/models';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 
@@ -33,6 +33,19 @@ export class CursosService {
   public findProfesorById(id: number) {
     return this.apiService.getProfesorById(id.toString());
   }
+
+  public getInscripcionesByCursoId(id: number) {
+    return this.apiService
+      .getInscripciones()
+      .pipe(map((ins) => ins.filter((i) => i.cursoId === id)));
+  }
+
+  public getAlumnosInscriptos(ids: number[]) {
+    return this.apiService
+      .getAlumnos()
+      .pipe(map((alumnos) => alumnos.filter((a) => ids.includes(a.id))));
+  }
+
   public navigate(url: string[], isRelative: boolean) {
     let urlArray: string[] = [];
     if (isRelative) {

@@ -3,33 +3,48 @@
         <mat-card-title>Editar Curso</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <ng-container *ngIf="loaded; else loading">
+        <ng-container *ngIf="cursoLoaded && profesorLoaded; else loading">
             <form [formGroup]="form" fxLayout="column">
                 <mat-form-field>
                     <mat-label for="displayNameInput">Nombre: </mat-label>
-                    <input required matInput formControlName="displayName" type="text" id="displayNameInput">
+                    <input required matInput [formControl]="displayNameFormControl" type="text" id="displayNameInput">
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label for="profesorSelect">Profesor</mat-label>
-                    <mat-select [(value)]="profesorSelected">
-                        <ng-container *ngFor="let profesor of listaProfesores$ | async">
-                            <mat-option [value]="profesor">
-                                {{profesor.firstName}} {{profesor.lastName}}
-                            </mat-option>
-                        </ng-container>
+                    <mat-select [(value)]="profesorSelected" [compareWith]="comparator">
+                        <mat-option></mat-option>
+                        <mat-option *ngFor="let profesor of listaProfesores$ | async" [value]="profesor">
+                            {{profesor.firstName}} {{profesor.lastName}}
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <div fxLayout="row">
-                    <ng-container *ngFor="let button of buttons">
-                        <app-button [button]="button.buttonDefinition" [label]="button.label"
-                            (executed)="button.buttonDefinition.type === 'submit' ? onSubmit() : onCancel()"></app-button>
-                    </ng-container>
-                </div>
             </form>
+            <table mat-table [dataSource]="alumnosDataSource" class="mat-elevation-z8" style="margin-bottom: 2%;">
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                    <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="apellido">
+                    <th mat-header-cell *matHeaderCellDef>Apellido</th>
+                    <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="correo">
+                    <th mat-header-cell *matHeaderCellDef>Correo</th>
+                    <td mat-cell *matCellDef="let element">{{element.email}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="headers"></tr>
+                <tr mat-row *matRowDef="let row; columns: headers"></tr>
+            </table>
         </ng-container>
         <ng-template #loading>
             <mat-progress-spinner class="spinner" color="accent" mode="indeterminate">
             </mat-progress-spinner>
         </ng-template>
+        <div fxLayout="row">
+            <ng-container *ngFor="let button of buttons">
+                <app-button [button]="button.buttonDefinition" [label]="button.label"
+                    (executed)="button.buttonDefinition.type === 'submit' ? onSubmit() : onCancel()"></app-button>
+            </ng-container>
+        </div>
     </mat-card-content>
 </mat-card>
