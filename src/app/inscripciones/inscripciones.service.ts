@@ -25,10 +25,9 @@ export class InscripcionesService {
   public addIncripcionToCurso(inscripcion: Inscripcion) {
     this.apiService
       .getCursoById(inscripcion.cursoId.toString())
-      .pipe(filter((x) => !!x))
       .subscribe((c) => {
         c.inscripciones.push(inscripcion.id);
-        this.apiService.modifyCurso(c);
+        this.apiService.modifyCurso(c).subscribe();
       });
   }
 

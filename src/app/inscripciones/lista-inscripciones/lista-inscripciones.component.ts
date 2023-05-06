@@ -51,8 +51,6 @@ export class ListaInscripcionesComponent implements OnDestroy {
 
   constructor(private service: InscripcionesService) {
     this.data$.pipe(filter((x) => !!x)).subscribe((inscripciones) => {
-      console.log(inscripciones);
-
       this.dataSource.data = inscripciones;
       this.loaded = true;
     });

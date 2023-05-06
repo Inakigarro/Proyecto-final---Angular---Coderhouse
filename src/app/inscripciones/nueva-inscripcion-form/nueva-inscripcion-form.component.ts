@@ -84,13 +84,10 @@ export class NuevaInscripcionFormComponent {
       alumnoId: this.alumnoSelected.id,
       cursoId: this.cursoSelected.id,
     };
-    this.service
-      .addInscripcion(inscripcion)
-      .pipe(filter((x) => !!x))
-      .subscribe((data) => {
-        this.service.addIncripcionToCurso(data);
-        this.service.navigate([INSCRIPCIONES_BASE_ROUTE], false);
-      });
+    this.service.addInscripcion(inscripcion).subscribe((data) => {
+      this.service.addIncripcionToCurso(data);
+      this.service.navigate([INSCRIPCIONES_BASE_ROUTE], false);
+    });
   }
 
   public onCancel() {
