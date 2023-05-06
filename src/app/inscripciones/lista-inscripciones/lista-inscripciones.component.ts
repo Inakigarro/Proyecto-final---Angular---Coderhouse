@@ -15,7 +15,7 @@ import { InscripcionDto } from 'src/app/models/models';
 })
 export class ListaInscripcionesComponent implements OnDestroy {
   public destroy$ = new Subject();
-  public data$ = this.service.buildIncripcionList();
+  public data$ = this.service.inscripciones$;
   public headers: string[] = ['id', 'curso', 'alumno', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -50,9 +50,27 @@ export class ListaInscripcionesComponent implements OnDestroy {
   public loaded = false;
 
   constructor(private service: InscripcionesService) {
-    this.data$.pipe(filter((x) => !!x)).subscribe((inscripciones) => {
-      this.dataSource.data = inscripciones;
-      this.loaded = true;
+    this.data$.subscribe((inscripciones) => {
+      let inscripcionesList: InscripcionDto[] = [];
+      inscripciones.map((i) => {
+        let inscripcion: InscripcionDto = {
+          id: i.id,
+        };
+
+        this.service
+          .findAlumnoById(i.alumnoId)
+          .subscribe((a) => (inscripcion.alumno = a));
+        this.service
+          .findCursoById(i.cursoId)
+          .subscribe((c) => (inscripcion.curso = c));
+
+        inscripcionesList.push(inscripcion);
+      });
+
+      if (inscripcionesList.length > 0) {
+        this.dataSource.data = inscripcionesList;
+        this.loaded = true;
+      }
     });
   }
 

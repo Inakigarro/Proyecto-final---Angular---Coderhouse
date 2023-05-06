@@ -4,7 +4,7 @@ import {
   Inscripcion,
   InscripcionDto,
 } from '../models/models';
-import { filter, of } from 'rxjs';
+import { BehaviorSubject, Observable, filter, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 
@@ -37,30 +37,6 @@ export class InscripcionesService {
 
   public deleteInscripcionById(id: number) {
     return this.apiService.deleteInscripcionById(id);
-  }
-
-  public buildIncripcionList() {
-    let inscripciones: Inscripcion[] = [];
-    let listaInscripciones: InscripcionDto[] = [];
-    this.inscripciones$
-      .pipe(filter((x) => !!x))
-      .subscribe((data) => (inscripciones = data));
-
-    inscripciones.forEach((i) => {
-      let inscripcion: InscripcionDto = {
-        id: i.id,
-      };
-      this.apiService
-        .getAlumnoById(i.alumnoId.toString())
-        .pipe(filter((x) => !!x))
-        .subscribe((a) => (inscripcion.alumno = a));
-      this.apiService
-        .getCursoById(i.cursoId.toString())
-        .pipe(filter((x) => !!x))
-        .subscribe((c) => (inscripcion.curso = c));
-      listaInscripciones.push(inscripcion);
-    });
-    return of(listaInscripciones);
   }
 
   // Alumnos.
