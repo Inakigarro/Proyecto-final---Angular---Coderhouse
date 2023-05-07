@@ -14,12 +14,14 @@ import { ComponentsModule } from './components/components.module';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { MatMenuModule } from '@angular/material/menu';
 
 const MaterialModules = [
   MatToolbarModule,
   MatIconModule,
   MatSidenavModule,
   MatButtonModule,
+  MatMenuModule,
 ];
 
 @NgModule({

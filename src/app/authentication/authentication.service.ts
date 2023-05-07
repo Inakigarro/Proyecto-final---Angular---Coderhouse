@@ -8,7 +8,16 @@ import { Router } from '@angular/router';
 export class AuthenticationService {
   private authUser$ = new BehaviorSubject<Usuario | null>(null);
   private apiUrl = 'https://64504de6a322196911485862.mockapi.io/api/usuarios';
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  constructor(private httpClient: HttpClient, private router: Router) {
+    const currentUser = JSON.parse(
+      localStorage.getItem('token') as string
+    ) as Usuario;
+    if (currentUser) {
+      this.authUser$.next(currentUser);
+    } else {
+      this.authUser$.next(null);
+    }
+  }
 
   public getCurrentUser() {
     return this.authUser$.asObservable();

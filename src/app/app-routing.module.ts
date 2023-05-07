@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './authentication/guards/auth.guard';
+import { LoginGuard } from './authentication/guards/login.guard';
 
 const routes: Routes = [
   {
@@ -9,6 +10,7 @@ const routes: Routes = [
       import('./authentication/authentication.module').then(
         (m) => m.AuthenticationModule
       ),
+    canActivate: [LoginGuard],
   },
   {
     path: 'alumnos',
@@ -38,7 +40,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'auth',
+    redirectTo: 'alumnos',
     pathMatch: 'full',
   },
 ];
