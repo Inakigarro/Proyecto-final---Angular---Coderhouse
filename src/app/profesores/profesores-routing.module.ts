@@ -4,6 +4,7 @@ import { ListaProfesoresComponent } from './lista-profesores/lista-profesores.co
 import { ProfesoresComponent } from './profesores.component';
 import { NuevoProfesorFormComponent } from './nuevo-profesor-form/nuevo-profesor-form.component';
 import { EditProfesorFormComponent } from './edit-profesor-form/edit-profesor-form.component';
+import { AuthGuard } from '../authentication/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -13,14 +14,17 @@ const routes: Routes = [
       {
         path: '',
         component: ListaProfesoresComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'nuevo',
         component: NuevoProfesorFormComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'editar/:id',
         component: EditProfesorFormComponent,
+        canActivate: [AuthGuard],
       },
     ],
   },

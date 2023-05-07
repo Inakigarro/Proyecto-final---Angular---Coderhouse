@@ -4,6 +4,7 @@ import { InscripcionesComponent } from './inscripciones.component';
 import { ListaInscripcionesComponent } from './lista-inscripciones/lista-inscripciones.component';
 import { InscripcionDetallesComponent } from './inscripcion-detalles/inscripcion-detalles.component';
 import { NuevaInscripcionFormComponent } from './nueva-inscripcion-form/nueva-inscripcion-form.component';
+import { AuthGuard } from '../authentication/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -13,14 +14,17 @@ const routes: Routes = [
       {
         path: '',
         component: ListaInscripcionesComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'nueva',
         component: NuevaInscripcionFormComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'detalles/:id',
         component: InscripcionDetallesComponent,
+        canActivate: [AuthGuard],
       },
     ],
   },

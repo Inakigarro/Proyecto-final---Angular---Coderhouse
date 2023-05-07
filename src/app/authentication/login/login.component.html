@@ -3,7 +3,7 @@
         <mat-card-title>Inicio de sesion</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <form [formGroup]="loginFormGroup" fxLayout="column" fxLayoutAlign="center">
+        <form [formGroup]="loginFormGroup" fxLayout="column" fxLayoutAlign="center center">
             <mat-form-field>
                 <mat-label for="loginInput">Login Id: </mat-label>
                 <input required matInput formControlName="loginId" type="text" id="loginInput">
@@ -12,10 +12,13 @@
                 <mat-label form="passwordInput">Password: </mat-label>
                 <input required matInput formControlName="password" type="password" id="passwordInput">
             </mat-form-field>
-            <div fxLayout="row" fxLayoutAlign="space-evenly center">
-                <button>Guardar</button>
-                <button>Cancelar</button>
-            </div>
         </form>
     </mat-card-content>
+    <mat-card-footer fxLayout="row" fxLayoutAlign="space-evenly center">
+        <ng-container *ngFor="let button of buttons">
+            <app-button [button]="button.buttonDefinition" [label]="button.label"
+                (executed)="button.buttonDefinition.type === 'submit' ? onSubmit() : onCancel()"
+                color="accent"></app-button>
+        </ng-container>
+    </mat-card-footer>
 </mat-card>

@@ -55,3 +55,14 @@ export interface InscripcionDto {
   curso?: Curso;
   alumno?: Alumno;
 }
+
+export interface Usuario {
+  id: number;
+  loginId: string;
+  password: string;
+}
+
+export interface CreateUsuario {
+  loginId: string;
+  password: string;
+}

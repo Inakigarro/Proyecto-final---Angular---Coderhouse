@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AuthenticationRoutingModule } from './authentication-routing.module';
+import { ComponentsModule } from '../components/components.module';
 
 const MaterialModule = [MatFormFieldModule, MatInputModule, MatCardModule];
 
@@ -13,10 +15,12 @@ const MaterialModule = [MatFormFieldModule, MatInputModule, MatCardModule];
   declarations: [LoginComponent],
   imports: [
     CommonModule,
+    ComponentsModule,
     ReactiveFormsModule,
     FormsModule,
     MaterialModule,
     FlexLayoutModule,
+    AuthenticationRoutingModule,
   ],
   exports: [LoginComponent],
 })
