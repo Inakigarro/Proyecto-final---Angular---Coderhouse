@@ -4,7 +4,6 @@ import {
   ListButtonDefinition,
 } from '../models/button';
 import { MatTableDataSource } from '@angular/material/table';
-import { AppService } from 'src/app/app.service';
 import { ComponentsService } from '../components.service';
 
 @Component({
