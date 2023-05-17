@@ -14,6 +14,10 @@ import { EditAlumnoFormComponent } from './edit-alumno-form/edit-alumno-form.com
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AlumnosComponent } from './alumnos.component';
 import { FlexModule } from '@angular/flex-layout';
+import { StoreModule } from '@ngrx/store';
+import { ALUMNOS_FEATURE_KEY, alumnosReducer } from './+state/alumnos.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { AlumnosEffects } from './+state/alumnos.effects';
 
 const MaterialModules = [
   MatTableModule,
@@ -39,6 +43,8 @@ const MaterialModules = [
     ReactiveFormsModule,
     FormsModule,
     FlexModule,
+    StoreModule.forFeature(ALUMNOS_FEATURE_KEY, alumnosReducer),
+    EffectsModule.forFeature([AlumnosEffects]),
   ],
 })
 export class AlumnosModule {}

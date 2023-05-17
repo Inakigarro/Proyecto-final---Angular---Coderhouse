@@ -2,11 +2,13 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject, filter } from 'rxjs';
 import {
+  BasicButtonDefinition,
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from 'src/app/components/models/button';
 import { ProfesoresService } from '../profesores.service';
 import { Profesor } from 'src/app/models/models';
+import { ProfesoresActions } from '../+state/profesores.actions';
 
 @Component({
   selector: 'app-lista-profesores',
@@ -75,5 +77,22 @@ export class ListaProfesoresComponent implements OnDestroy {
 
   public navigate(url: string) {
     this.service.navigate([url], true);
+  }
+
+  public dispatch(id: number, button: BasicButtonDefinition) {
+    if (button.kind === 'raised') {
+      this.service.dispatch(
+        ProfesoresActions.editProfesorButtonClicked({
+          profesorId: id,
+        })
+      );
+    }
+    if (button.kind === 'fab') {
+      this.service.dispatch(
+        ProfesoresActions.editProfesorButtonClicked({
+          profesorId: id,
+        })
+      );
+    }
   }
 }

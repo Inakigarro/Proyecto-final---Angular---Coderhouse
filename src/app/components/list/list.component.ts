@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
+  BasicButtonDefinition,
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from '../models/button';
@@ -48,4 +49,6 @@ export class ListComponent<TItem extends object & { id: number }>
   public navigate(event: string) {
     this.service.navigate([event], true);
   }
+
+  public dispatch(id: number, button: BasicButtonDefinition) {}
 }

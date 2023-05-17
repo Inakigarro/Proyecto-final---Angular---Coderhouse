@@ -2,11 +2,14 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subject, filter } from 'rxjs';
 import { CursosService } from '../cursos.service';
 import {
+  BasicButtonDefinition,
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from 'src/app/components/models/button';
 import { MatTableDataSource } from '@angular/material/table';
 import { Curso } from 'src/app/models/models';
+import { InscripcionesActions } from 'src/app/inscripciones/+state/inscripciones.actions';
+import { CursosActions } from '../+state/cursos.inscripciones';
 
 @Component({
   selector: 'app-lista-cursos',
@@ -75,5 +78,23 @@ export class ListaCursosComponent implements OnDestroy {
 
   public navigate(url: string) {
     this.service.navigate([url], true);
+  }
+
+  public dispatch(id: number, button: BasicButtonDefinition) {
+    if (button.kind === 'raised') {
+      this.service.dispatch(
+        CursosActions.editCursoButtonClicked({
+          cursoId: id,
+        })
+      );
+    }
+
+    if (button.kind === 'fab') {
+      this.service.dispatch(
+        CursosActions.deleteCursoButtonClicked({
+          cursoId: id,
+        })
+      );
+    }
   }
 }

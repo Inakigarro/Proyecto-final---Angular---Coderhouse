@@ -1,3 +1,5 @@
+import { Action } from '@ngrx/store';
+
 export interface BasicButtonDefinition {
   buttonType: 'normal' | 'submit' | 'warning';
   type: 'basic' | 'submit' | 'reset';
@@ -16,4 +18,5 @@ export interface ListButtonDefinition {
   label?: string;
   icon?: string;
   itemId?: number;
+  action?: Action;
 }

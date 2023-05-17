@@ -2,11 +2,13 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject, filter } from 'rxjs';
 import {
+  BasicButtonDefinition,
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from 'src/app/components/models/button';
 import { InscripcionesService } from '../inscripciones.service';
 import { InscripcionDto } from 'src/app/models/models';
+import { InscripcionesActions } from '../+state/inscripciones.actions';
 
 @Component({
   selector: 'app-lista-inscripciones',
@@ -96,5 +98,23 @@ export class ListaInscripcionesComponent implements OnDestroy {
 
   public navigate(url: string) {
     this.service.navigate([url], true);
+  }
+
+  public dispatch(id: number, button: BasicButtonDefinition) {
+    if (button.kind === 'raised') {
+      this.service.dispatch(
+        InscripcionesActions.editInscripcionButtonClicked({
+          inscripcionId: id,
+        })
+      );
+    }
+
+    if (button.kind === 'fab') {
+      this.service.dispatch(
+        InscripcionesActions.deleteInscripcionButtonClicked({
+          inscripcionId: id,
+        })
+      );
+    }
   }
 }

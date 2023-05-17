@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CreateProfesor, Profesor } from '../models/models';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
+import { Action, Store } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,11 @@ import { ApiService } from '../api.service';
 export class ProfesoresService {
   public profesores$ = this.apiService.getProfesores();
 
-  constructor(private router: Router, private apiService: ApiService) {}
+  constructor(
+    private router: Router,
+    private apiService: ApiService,
+    private store: Store
+  ) {}
 
   public addProfesor(nuevoProfesor: CreateProfesor) {
     return this.apiService.addProfesor(nuevoProfesor);
@@ -37,5 +42,9 @@ export class ProfesoresService {
       url.forEach((x) => urlArray.push(x));
       this.router.navigate(url);
     }
+  }
+
+  public dispatch(action: Action) {
+    this.store.dispatch(action);
   }
 }

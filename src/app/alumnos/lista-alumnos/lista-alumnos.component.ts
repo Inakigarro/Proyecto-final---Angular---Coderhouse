@@ -1,13 +1,14 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject, filter } from 'rxjs';
+import { Subject, filter, map } from 'rxjs';
 import {
+  BasicButtonDefinition,
   ExtendedButtonDefinition,
   ListButtonDefinition,
 } from 'src/app/components/models/button';
 import { AlumnosService } from '../alumnos.service';
 import { Alumno } from 'src/app/models/models';
-
+import { AlumnosActions } from '../+state/alumnos.actions';
 @Component({
   selector: 'app-lista-alumnos',
   templateUrl: './lista-alumnos.component.html',
@@ -15,7 +16,7 @@ import { Alumno } from 'src/app/models/models';
 })
 export class ListaAlumnosComponent implements OnDestroy {
   public destroy$ = new Subject();
-  public data$ = this.service.alumnos$;
+  public listLoaded$ = this.service.alumnoListLoaded$;
   public headers: string[] = ['id', 'nombre', 'apellido', 'correo', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -47,12 +48,13 @@ export class ListaAlumnosComponent implements OnDestroy {
     },
   ];
   public dataSource = new MatTableDataSource<Alumno>();
-  public loaded = false;
   constructor(private service: AlumnosService) {
-    this.data$.subscribe((alumnos) => {
-      this.dataSource.data = alumnos;
-      this.loaded = true;
-    });
+    this.service.listaAlumnos$
+      .pipe(
+        filter((x) => !!x),
+        map((alumnos) => (this.dataSource.data = alumnos as Alumno[]))
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
@@ -64,17 +66,32 @@ export class ListaAlumnosComponent implements OnDestroy {
     this.service.navigate(['editar', `${id}`], true);
   }
   public onDeleteButtonClicked(id: number) {
-    this.loaded = false;
     this.service
       .deleteAlumnoById(id)
       .pipe(filter((x) => !!x))
       .subscribe((data) => {
         this.dataSource.data = this.dataSource.data.filter((x) => x.id !== id);
-        this.loaded = true;
       });
   }
 
   public navigate(url: string) {
     this.service.navigate([url], true);
+  }
+
+  public dispatch(id: number, button: BasicButtonDefinition) {
+    if (button.kind === 'raised') {
+      this.service.dispatch(
+        AlumnosActions.editAlumnoButtonClicked({
+          alumnoId: id,
+        })
+      );
+    }
+    if (button.kind === 'fab') {
+      this.service.dispatch(
+        AlumnosActions.deleteAlumnoButtonClicked({
+          alumnoId: id,
+        })
+      );
+    }
   }
 }

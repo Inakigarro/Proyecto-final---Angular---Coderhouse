@@ -28,7 +28,7 @@
                 <ng-container *ngFor="let listButton of listItemButtons">
                     <app-list-button [button]="listButton.buttonDefinition" [label]="listButton.label"
                         [icon]="listButton.icon" [id]="element.id"
-                        (executed)="listButton.buttonDefinition.kind === 'fab' ? onDeleteButtonClicked($event) : onEditButtonClicked($event)"></app-list-button>
+                        (executed)="dispatch(element.id, $event)"></app-list-button>
                 </ng-container>
             </td>
         </ng-container>

@@ -7,6 +7,7 @@ import {
 import { BehaviorSubject, Observable, filter, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
+import { Action, Store } from '@ngrx/store';
 
 @Injectable({ providedIn: 'root' })
 export class InscripcionesService {
@@ -15,7 +16,11 @@ export class InscripcionesService {
   public alumnos$ = this.apiService.getAlumnos();
   public cursos$ = this.apiService.getCursos();
 
-  constructor(private router: Router, private apiService: ApiService) {}
+  constructor(
+    private router: Router,
+    private apiService: ApiService,
+    private store: Store
+  ) {}
 
   // Inscripciones.
   public addInscripcion(inscripcion: CreateInscripcion) {
@@ -64,5 +69,9 @@ export class InscripcionesService {
       url.forEach((x) => urlArray.push(x));
       this.router.navigate(url);
     }
+  }
+
+  public dispatch(action: Action) {
+    this.store.dispatch(action);
   }
 }

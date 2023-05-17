@@ -23,5 +23,5 @@ export class ListButtonComponent {
   public id: number;
 
   @Output()
-  public executed = new EventEmitter<number>();
+  public executed = new EventEmitter<BasicButtonDefinition>();
 }

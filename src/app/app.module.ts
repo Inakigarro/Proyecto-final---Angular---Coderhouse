@@ -1,4 +1,3 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +14,10 @@ import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { MatMenuModule } from '@angular/material/menu';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { NgModule, isDevMode } from '@angular/core';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -34,6 +37,9 @@ const MaterialModules = [
     AppRoutingModule,
     HttpClientModule,
     AuthenticationModule,
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [
     {
