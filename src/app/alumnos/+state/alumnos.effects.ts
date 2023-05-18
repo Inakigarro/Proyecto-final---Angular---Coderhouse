@@ -35,6 +35,24 @@ export class AlumnosEffects {
     )
   );
 
+  // Crear alumnos
+  public createAlumnoRequested$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(AlumnosActions.createAlumnoFormSubmitted),
+      switchMap((action) =>
+        this.service.addAlumno(action.alumno).pipe(
+          take(1),
+          map((alumno) => alumno)
+        )
+      ),
+      map((alumno) =>
+        AlumnosActions.createAlumnoFormSubmitionSucceed({
+          alumno: alumno,
+        })
+      )
+    )
+  );
+
   // Editar Alumnos
   public requesCurrentAlumnoFromRouting$ = createEffect(() =>
     this.action$.pipe(
@@ -85,10 +103,42 @@ export class AlumnosEffects {
     )
   );
 
+  // Borrar alumno.
+  public deleteAlumnoButtonClicked$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(AlumnosActions.deleteAlumnoButtonClicked),
+      switchMap((action) =>
+        this.service.deleteAlumnoById(action.alumnoId).pipe(
+          take(1),
+          map(() => AlumnosActions.requestAlumnosList())
+        )
+      )
+    )
+  );
+
+  public alumnosList$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(AlumnosActions.requestAlumnosList),
+      switchMap(() =>
+        this.service.getAlumnos().pipe(
+          take(1),
+          map((alumnos) =>
+            AlumnosActions.alumnosListObtained({
+              alumnosList: alumnos,
+            })
+          )
+        )
+      )
+    )
+  );
+
   public navigateToAlumnosList$ = createEffect(
     () =>
       this.action$.pipe(
-        ofType(AlumnosActions.editAlumnoFormSubmitionSucceed),
+        ofType(
+          AlumnosActions.createAlumnoFormSubmitionSucceed,
+          AlumnosActions.editAlumnoFormSubmitionSucceed
+        ),
         tap(() => this.service.navigateToRoot())
       ),
     { dispatch: false }

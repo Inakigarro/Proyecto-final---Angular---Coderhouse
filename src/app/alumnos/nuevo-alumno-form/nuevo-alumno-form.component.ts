@@ -10,6 +10,7 @@ import { Alumno, CreateAlumno } from 'src/app/models/models';
 import { ALUMNOS_BASE_ROUTE } from '../base-route';
 import { AlumnosService } from '../alumnos.service';
 import { filter } from 'rxjs';
+import { AlumnosActions } from '../+state/alumnos.actions';
 @Component({
   selector: 'app-nuevo-alumno-form',
   templateUrl: './nuevo-alumno-form.component.html',
@@ -63,12 +64,11 @@ export class NuevoAlumnoFormComponent {
   public onSubmit() {
     if (this.form.valid) {
       const nuevoAlumno: CreateAlumno = this.form.value;
-      this.service
-        .addAlumno(nuevoAlumno)
-        .pipe(filter((x) => !!x))
-        .subscribe((data) =>
-          this.service.navigate([ALUMNOS_BASE_ROUTE], false)
-        );
+      this.service.dispatch(
+        AlumnosActions.createAlumnoFormSubmitted({
+          alumno: nuevoAlumno,
+        })
+      );
     }
   }
 

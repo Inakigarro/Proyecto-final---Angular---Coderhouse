@@ -27,7 +27,7 @@ export class EditAlumnoFormComponent {
         kind: 'raised',
         type: 'submit',
       },
-      label: 'Save',
+      label: 'Guardar',
     },
     {
       buttonDefinition: {
@@ -35,7 +35,7 @@ export class EditAlumnoFormComponent {
         kind: 'basic',
         type: 'reset',
       },
-      label: 'Cancel',
+      label: 'Cancelar',
     },
   ];
   public currentAlumno$ = this.service.currentAlumno$;
