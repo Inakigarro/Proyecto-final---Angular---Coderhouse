@@ -22,7 +22,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'editar/:id',
+        path: 'editar/:alumnoId',
         component: EditAlumnoFormComponent,
         canActivate: [AuthGuard],
       },

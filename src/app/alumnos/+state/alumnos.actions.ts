@@ -7,6 +7,11 @@ export const AlumnosActions = createActionGroup({
     'Request Alumnos list': emptyProps(),
     'Alumnos list obtained': props<{ alumnosList: Alumno[] }>(),
     'Edit alumno button clicked': props<{ alumnoId: number }>(),
+    'Request current alumno': props<{ alumnoId: number }>(),
+    'Current Alumno obtained': props<{ alumno: Alumno }>(),
+    'Edit Alumno form submitted': props<{ alumno: Alumno }>(),
+    'Edit alumno form submition succeed': props<{ alumno: Alumno }>(),
+    'Edit alumno form submition failed': emptyProps(),
     'Delete alumno button clicked': props<{ alumnoId: number }>(),
   },
 });

@@ -30,6 +30,24 @@ const reducer = createReducer(
     ...state,
     alumnosListLoaded: true,
     listaAlumnos: action.alumnosList,
+  })),
+  on(AlumnosActions.editAlumnoButtonClicked, (state) => ({
+    ...state,
+    currentAlumnoLoaded: false,
+  })),
+  on(AlumnosActions.currentAlumnoObtained, (state, action) => ({
+    ...state,
+    currentAlumnoLoaded: true,
+    currentAlumno: action.alumno,
+  })),
+  on(AlumnosActions.editAlumnoFormSubmitted, (state, action) => ({
+    ...state,
+    currentAlumnoLoaded: false,
+    currentAlumno: undefined,
+  })),
+  on(AlumnosActions.editAlumnoFormSubmitionSucceed, (state, action) => ({
+    ...state,
+    currentAlumno: action.alumno,
   }))
 );
 

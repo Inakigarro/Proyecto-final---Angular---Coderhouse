@@ -7,7 +7,5 @@ import { AlumnosActions } from './+state/alumnos.actions';
   template: `<router-outlet></router-outlet>`,
 })
 export class AlumnosComponent {
-  constructor(private service: AlumnosService) {
-    this.service.dispatch(AlumnosActions.requestAlumnosList());
-  }
+  constructor() {}
 }

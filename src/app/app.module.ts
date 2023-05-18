@@ -18,6 +18,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { NgModule, isDevMode } from '@angular/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
+import { RouterService } from './router/router.service';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -37,15 +39,21 @@ const MaterialModules = [
     AppRoutingModule,
     HttpClientModule,
     AuthenticationModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({ routerReducer }, {}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'routerReducer',
+    }),
   ],
   providers: [
     {
       provide: APP_BASE_HREF,
       useFactory: (p: PlatformLocation) => p.getBaseHrefFromDOM(),
       deps: [PlatformLocation],
+    },
+    {
+      provide: RouterService,
     },
   ],
   bootstrap: [AppComponent],

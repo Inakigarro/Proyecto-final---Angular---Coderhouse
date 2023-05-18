@@ -3,7 +3,7 @@
         <mat-card-title>Editar Alumno</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <ng-container *ngIf="loaded; else loading">
+        <ng-container *ngIf="currentAlumno$ | async; else loading">
             <form [formGroup]="form" fxLayout="column">
                 <mat-form-field>
                     <mat-label for="firstNameInput">Nombre: </mat-label>

@@ -80,11 +80,7 @@ export class ListaAlumnosComponent implements OnDestroy {
 
   public dispatch(id: number, button: BasicButtonDefinition) {
     if (button.kind === 'raised') {
-      this.service.dispatch(
-        AlumnosActions.editAlumnoButtonClicked({
-          alumnoId: id,
-        })
-      );
+      this.service.navigate(['editar', `${id}`], true);
     }
     if (button.kind === 'fab') {
       this.service.dispatch(

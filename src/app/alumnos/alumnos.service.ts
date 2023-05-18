@@ -40,7 +40,11 @@ export class AlumnosService {
   );
   public listaAlumnos$ = this.store.select(AlumnosSelectors.getAlumnosList);
 
+  public currentAlumno$ = this.store.select(AlumnosSelectors.getCurrentAlumno);
   // Navigation.
+  public navigateToRoot() {
+    this.navigate(['alumnos'], false);
+  }
   public navigate(url: string[], isRelative: boolean) {
     let urlArray: string[] = [];
     if (isRelative) {
