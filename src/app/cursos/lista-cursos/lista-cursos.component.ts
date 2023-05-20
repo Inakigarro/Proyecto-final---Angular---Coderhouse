@@ -9,7 +9,7 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { Curso } from 'src/app/models/models';
 import { InscripcionesActions } from 'src/app/inscripciones/+state/inscripciones.actions';
-import { CursosActions } from '../+state/cursos.inscripciones';
+import { CursosActions } from '../+state/cursos.actions';
 
 @Component({
   selector: 'app-lista-cursos',

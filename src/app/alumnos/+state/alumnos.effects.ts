@@ -59,13 +59,11 @@ export class AlumnosEffects {
       ofType(routerNavigatedAction),
       switchMap(() => this.routerService.routerParams$),
       filter((params) => !!params && params['alumnoId']),
-      map((params) => {
-        console.log(params['alumnoId']);
-
-        return AlumnosActions.requestCurrentAlumno({
+      map((params) =>
+        AlumnosActions.requestCurrentAlumno({
           alumnoId: params['alumnoId'] as number,
-        });
-      })
+        })
+      )
     )
   );
 
@@ -143,6 +141,21 @@ export class AlumnosEffects {
       ),
     { dispatch: false }
   );
+
+  // Detalles Alumnos.
+  public viewMoreButtonClicked$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(routerNavigatedAction),
+      switchMap(() => this.routerService.routerParams$),
+      filter((params) => !!params && params['alumnoId']),
+      map((params) =>
+        AlumnosActions.requestCurrentAlumno({
+          alumnoId: params['alumnoId'],
+        })
+      )
+    )
+  );
+
   constructor(
     private readonly action$: Actions,
     private readonly service: AlumnosService,

@@ -5,6 +5,7 @@ import { NuevoAlumnoFormComponent } from './nuevo-alumno-form/nuevo-alumno-form.
 import { EditAlumnoFormComponent } from './edit-alumno-form/edit-alumno-form.component';
 import { AlumnosComponent } from './alumnos.component';
 import { AuthGuard } from '../authentication/guards/auth.guard';
+import { DetalleAlumnoComponent } from './detalle-alumno/detalle-alumno.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,11 @@ const routes: Routes = [
       {
         path: '',
         component: ListaAlumnosComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: ':alumnoId',
+        component: DetalleAlumnoComponent,
         canActivate: [AuthGuard],
       },
       {

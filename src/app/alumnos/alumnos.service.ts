@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { Action, Store } from '@ngrx/store';
 import * as AlumnosSelectors from './+state/alumnos.selectors';
+import { filter, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -34,6 +35,20 @@ export class AlumnosService {
   public getAlumnos() {
     return this.apiService.getAlumnos();
   }
+
+  public getInscripcionesByAlumno(id: number) {
+    return this.apiService.getInscripciones().pipe(
+      filter((x) => !!x),
+      map((ins) => ins.filter((i) => i.alumnoId == id))
+    );
+  }
+
+  public getCursosInscriptos(ids: number[]) {
+    return this.apiService
+      .getCursos()
+      .pipe(map((cursos) => cursos.filter((c) => ids.includes(c.id))));
+  }
+
   // Selectors.
   public alumnoListLoaded$ = this.store.select(
     AlumnosSelectors.getAlumnoListLoaded

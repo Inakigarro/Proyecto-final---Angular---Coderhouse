@@ -9,6 +9,7 @@ import {
 import { AlumnosService } from '../alumnos.service';
 import { Alumno } from 'src/app/models/models';
 import { AlumnosActions } from '../+state/alumnos.actions';
+import { raceInit } from 'rxjs/internal/observable/race';
 @Component({
   selector: 'app-lista-alumnos',
   templateUrl: './lista-alumnos.component.html',
@@ -30,6 +31,14 @@ export class ListaAlumnosComponent implements OnDestroy {
     },
   ];
   public listItemButtons: ListButtonDefinition[] = [
+    {
+      buttonDefinition: {
+        buttonType: 'normal',
+        type: 'basic',
+        kind: 'basic',
+      },
+      label: 'Ver mas',
+    },
     {
       buttonDefinition: {
         buttonType: 'normal',
@@ -79,6 +88,9 @@ export class ListaAlumnosComponent implements OnDestroy {
   }
 
   public dispatch(id: number, button: BasicButtonDefinition) {
+    if (button.kind === 'basic') {
+      this.service.navigate([`${id}`], true);
+    }
     if (button.kind === 'raised') {
       this.service.navigate(['editar', `${id}`], true);
     }

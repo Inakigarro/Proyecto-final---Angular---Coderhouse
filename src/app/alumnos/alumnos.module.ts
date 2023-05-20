@@ -18,6 +18,9 @@ import { StoreModule } from '@ngrx/store';
 import { ALUMNOS_FEATURE_KEY, alumnosReducer } from './+state/alumnos.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { AlumnosEffects } from './+state/alumnos.effects';
+import { DetalleAlumnoComponent } from './detalle-alumno/detalle-alumno.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 const MaterialModules = [
   MatTableModule,
@@ -26,6 +29,8 @@ const MaterialModules = [
   MatInputModule,
   MatCardModule,
   MatProgressSpinnerModule,
+  MatIconModule,
+  MatButtonModule,
 ];
 
 @NgModule({
@@ -34,6 +39,7 @@ const MaterialModules = [
     NuevoAlumnoFormComponent,
     EditAlumnoFormComponent,
     AlumnosComponent,
+    DetalleAlumnoComponent,
   ],
   imports: [
     CommonModule,
