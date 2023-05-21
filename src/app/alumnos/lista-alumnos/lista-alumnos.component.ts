@@ -71,18 +71,6 @@ export class ListaAlumnosComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  public onEditButtonClicked(id: number) {
-    this.service.navigate(['editar', `${id}`], true);
-  }
-  public onDeleteButtonClicked(id: number) {
-    this.service
-      .deleteAlumnoById(id)
-      .pipe(filter((x) => !!x))
-      .subscribe((data) => {
-        this.dataSource.data = this.dataSource.data.filter((x) => x.id !== id);
-      });
-  }
-
   public navigate(url: string) {
     this.service.navigate([url], true);
   }

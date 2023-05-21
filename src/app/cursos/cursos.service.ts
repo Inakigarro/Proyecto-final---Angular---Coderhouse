@@ -4,15 +4,17 @@ import { Observable, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { Action, Store } from '@ngrx/store';
+import * as CursosSelectors from './+state/cursos.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class CursosService {
-  public listaCursos: Curso[] = [];
+  public listaCursos$ = this.store.select(CursosSelectors.getCursosList);
+  public currentCurso$ = this.store.select(CursosSelectors.getCurrentCurso);
+  public currentProfesor$ = this.store.select(
+    CursosSelectors.getCurrentProfesor
+  );
   public cursos$ = this.apiService.getCursos();
   public profesores$ = this.apiService.getProfesores();
-  public cursosLength$ = new Observable<number>((s) =>
-    s.next(this.listaCursos.length)
-  );
   constructor(
     private router: Router,
     private apiService: ApiService,
@@ -51,6 +53,13 @@ export class CursosService {
       .pipe(map((alumnos) => alumnos.filter((a) => ids.includes(a.id))));
   }
 
+  public getListLoaded$ = this.store.select(
+    CursosSelectors.getCursosListLoaded
+  );
+
+  public navigateToRoot() {
+    this.navigate(['cursos'], false);
+  }
   public navigate(url: string[], isRelative: boolean) {
     let urlArray: string[] = [];
     if (isRelative) {

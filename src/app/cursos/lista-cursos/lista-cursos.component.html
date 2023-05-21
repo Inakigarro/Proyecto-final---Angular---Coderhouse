@@ -4,7 +4,7 @@
             [url]="toolbarButton.url" (executed)="navigate($event)"></app-button>
     </ng-container>
 </mat-toolbar>
-<ng-container *ngIf="loaded; else loading">
+<ng-container *ngIf="listLoaded$ | async; else loading">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>Id</th>

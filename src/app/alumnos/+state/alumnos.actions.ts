@@ -13,7 +13,6 @@ export const AlumnosActions = createActionGroup({
     'Current Alumno obtained': props<{ alumno: Alumno }>(),
     'Edit Alumno form submitted': props<{ alumno: Alumno }>(),
     'Edit alumno form submition succeed': props<{ alumno: Alumno }>(),
-    'Edit alumno form submition failed': emptyProps(),
     'Delete alumno button clicked': props<{ alumnoId: number }>(),
   },
 });

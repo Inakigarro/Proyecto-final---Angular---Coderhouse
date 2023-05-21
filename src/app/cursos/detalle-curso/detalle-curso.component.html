@@ -1,0 +1,40 @@
+<mat-card>
+    <ng-container *ngIf="currentCurso$ | async; else loading">
+        <mat-card-header *ngIf="currentCurso$ | async as curso">
+            <mat-card-title>
+                <button mat-icon-button (click)="returnToList()">
+                    <mat-icon>
+                        arrow_back
+                    </mat-icon>
+                </button>
+                {{curso.displayName}}
+            </mat-card-title>
+            <mat-card-subtitle *ngIf="currentProfesor$ | async as profesor">
+                {{profesor.firstName}} {{profesor.lastName}}
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <h3>Alumnos Inscriptos</h3>
+            <table mat-table [dataSource]="inscripcionesDataSource" class="mat-elevation-z8" style="margin-bottom: 2%">
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                    <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="apellido">
+                    <th mat-header-cell *matHeaderCellDef>Profesor</th>
+                    <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef>Profesor</th>
+                    <td mat-cell *matCellDef="let element">{{element.email}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="headers"></tr>
+                <tr mat-row *matRowDef="let row; columns: headers"></tr>
+            </table>
+        </mat-card-content>
+    </ng-container>
+    <ng-template #loading>
+        <mat-progress-spinner class="spinner" color="accent" mode="indeterminate">
+        </mat-progress-spinner>
+    </ng-template>
+</mat-card>

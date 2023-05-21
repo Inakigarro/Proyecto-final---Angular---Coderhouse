@@ -15,6 +15,13 @@ import { NuevoCursoFormComponent } from './nuevo-curso-form/nuevo-curso-form.com
 import { EditarCursoFormComponent } from './editar-curso-form/editar-curso-form.component';
 import { FlexModule } from '@angular/flex-layout';
 import { MatSelectModule } from '@angular/material/select';
+import { DetalleCursoComponent } from './detalle-curso/detalle-curso.component';
+import { StoreModule } from '@ngrx/store';
+import { CURSOS_FEATURE_KEY, cursosReducer } from './+state/cursos.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CursosEffects } from './+state/cursos.effects';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 const MaterialModules = [
   MatTableModule,
@@ -24,6 +31,8 @@ const MaterialModules = [
   MatCardModule,
   MatProgressSpinnerModule,
   MatSelectModule,
+  MatButtonModule,
+  MatIconModule,
 ];
 
 @NgModule({
@@ -32,6 +41,7 @@ const MaterialModules = [
     ListaCursosComponent,
     NuevoCursoFormComponent,
     EditarCursoFormComponent,
+    DetalleCursoComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +51,8 @@ const MaterialModules = [
     ReactiveFormsModule,
     FormsModule,
     FlexModule,
+    StoreModule.forFeature(CURSOS_FEATURE_KEY, cursosReducer),
+    EffectsModule.forFeature([CursosEffects]),
   ],
 })
 export class CursosModule {}

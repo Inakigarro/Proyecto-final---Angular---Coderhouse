@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subject, filter } from 'rxjs';
+import { Subject, filter, map } from 'rxjs';
 import { CursosService } from '../cursos.service';
 import {
   BasicButtonDefinition,
@@ -18,7 +18,7 @@ import { CursosActions } from '../+state/cursos.actions';
 })
 export class ListaCursosComponent implements OnDestroy {
   public destroy$ = new Subject();
-  public data$ = this.service.cursos$;
+  public data$ = this.service.listaCursos$;
   public headers: string[] = ['id', 'displayName', 'inscriptos', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -32,6 +32,14 @@ export class ListaCursosComponent implements OnDestroy {
     },
   ];
   public listItemButtons: ListButtonDefinition[] = [
+    {
+      buttonDefinition: {
+        buttonType: 'normal',
+        type: 'basic',
+        kind: 'basic',
+      },
+      label: 'Ver Mas',
+    },
     {
       buttonDefinition: {
         buttonType: 'normal',
@@ -50,12 +58,14 @@ export class ListaCursosComponent implements OnDestroy {
     },
   ];
   public dataSource = new MatTableDataSource<Curso>();
-  public loaded = false;
+  public listLoaded$ = this.service.getListLoaded$;
   constructor(private service: CursosService) {
-    this.data$.subscribe((cursos) => {
-      this.dataSource.data = cursos;
-      this.loaded = true;
-    });
+    this.data$
+      .pipe(
+        filter((x) => !!x),
+        map((cursos) => (this.dataSource.data = cursos as Curso[]))
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
@@ -66,13 +76,11 @@ export class ListaCursosComponent implements OnDestroy {
     this.service.navigate(['editar', `${id}`], true);
   }
   public onDeleteButtonClicked(id: number) {
-    this.loaded = false;
     this.service
       .deleteCursoById(id)
       .pipe(filter((x) => !!x))
       .subscribe((data) => {
         this.dataSource.data = this.dataSource.data.filter((x) => x.id !== id);
-        this.loaded = true;
       });
   }
 
@@ -81,6 +89,10 @@ export class ListaCursosComponent implements OnDestroy {
   }
 
   public dispatch(id: number, button: BasicButtonDefinition) {
+    if (button.kind === 'basic') {
+      this.service.navigate([`${id}`], true);
+    }
+
     if (button.kind === 'raised') {
       this.service.dispatch(
         CursosActions.editCursoButtonClicked({

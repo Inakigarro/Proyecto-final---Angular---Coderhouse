@@ -1,21 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AlumnosActions } from './alumnos.actions';
-import {
-  filter,
-  map,
-  startWith,
-  switchMap,
-  take,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { filter, map, switchMap, take, tap } from 'rxjs';
 import { AlumnosService } from '../alumnos.service';
-import {
-  ROUTER_NAVIGATED,
-  getRouterSelectors,
-  routerNavigatedAction,
-} from '@ngrx/router-store';
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { RouterService } from 'src/app/router/router.service';
 
 @Injectable()
@@ -58,7 +46,7 @@ export class AlumnosEffects {
     this.action$.pipe(
       ofType(routerNavigatedAction),
       switchMap(() => this.routerService.routerParams$),
-      filter((params) => !!params && params['alumnoId']),
+      filter((params) => !!params['alumnoId']),
       map((params) =>
         AlumnosActions.requestCurrentAlumno({
           alumnoId: params['alumnoId'] as number,
