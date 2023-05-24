@@ -18,19 +18,25 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: ':alumnoId',
-        component: DetalleAlumnoComponent,
-        canActivate: [AuthGuard],
-      },
-      {
         path: 'nuevo',
         component: NuevoAlumnoFormComponent,
         canActivate: [AuthGuard],
       },
       {
-        path: 'editar/:alumnoId',
-        component: EditAlumnoFormComponent,
+        path: ':alumnoId',
+        component: DetalleAlumnoComponent,
         canActivate: [AuthGuard],
+      },
+      {
+        path: 'editar',
+        canActivate: [AuthGuard],
+        children: [
+          {
+            path: ':alumnoId',
+            component: EditAlumnoFormComponent,
+            canActivate: [AuthGuard],
+          },
+        ],
       },
     ],
   },

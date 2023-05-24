@@ -15,6 +15,15 @@ export class SidebarComponent {
         buttonType: 'normal',
         type: 'basic',
       },
+      label: 'Usuarios',
+      url: 'usuarios',
+    },
+    {
+      buttonDefinition: {
+        kind: 'raised',
+        buttonType: 'normal',
+        type: 'basic',
+      },
       label: 'Alumnos',
       url: 'alumnos',
     },

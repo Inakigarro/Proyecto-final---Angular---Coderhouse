@@ -12,7 +12,7 @@ export class AlumnosEffects {
   public requestAlumnosListFromNavigation$ = createEffect(() =>
     this.action$.pipe(
       ofType(routerNavigatedAction),
-      switchMap(() => this.routerService.routerUrl$),
+      switchMap(() => this.routerService.routerUrl$.pipe(take(1))),
       filter((url) => url === '/alumnos'),
       switchMap(() => this.service.getAlumnos()),
       map((alumnos) =>
@@ -21,6 +21,34 @@ export class AlumnosEffects {
         })
       )
     )
+  );
+
+  public alumnosList$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(AlumnosActions.requestAlumnosList),
+      switchMap(() =>
+        this.service.getAlumnos().pipe(
+          take(1),
+          map((alumnos) =>
+            AlumnosActions.alumnosListObtained({
+              alumnosList: alumnos,
+            })
+          )
+        )
+      )
+    )
+  );
+
+  public navigateToAlumnosList$ = createEffect(
+    () =>
+      this.action$.pipe(
+        ofType(
+          AlumnosActions.createAlumnoFormSubmitionSucceed,
+          AlumnosActions.editAlumnoFormSubmitionSucceed
+        ),
+        tap(() => this.service.navigateToRoot())
+      ),
+    { dispatch: false }
   );
 
   // Crear alumnos
@@ -36,20 +64,6 @@ export class AlumnosEffects {
       map((alumno) =>
         AlumnosActions.createAlumnoFormSubmitionSucceed({
           alumno: alumno,
-        })
-      )
-    )
-  );
-
-  // Editar Alumnos
-  public requesCurrentAlumnoFromRouting$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(routerNavigatedAction),
-      switchMap(() => this.routerService.routerParams$),
-      filter((params) => !!params['alumnoId']),
-      map((params) =>
-        AlumnosActions.requestCurrentAlumno({
-          alumnoId: params['alumnoId'] as number,
         })
       )
     )
@@ -102,40 +116,12 @@ export class AlumnosEffects {
     )
   );
 
-  public alumnosList$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(AlumnosActions.requestAlumnosList),
-      switchMap(() =>
-        this.service.getAlumnos().pipe(
-          take(1),
-          map((alumnos) =>
-            AlumnosActions.alumnosListObtained({
-              alumnosList: alumnos,
-            })
-          )
-        )
-      )
-    )
-  );
-
-  public navigateToAlumnosList$ = createEffect(
-    () =>
-      this.action$.pipe(
-        ofType(
-          AlumnosActions.createAlumnoFormSubmitionSucceed,
-          AlumnosActions.editAlumnoFormSubmitionSucceed
-        ),
-        tap(() => this.service.navigateToRoot())
-      ),
-    { dispatch: false }
-  );
-
   // Detalles Alumnos.
   public viewMoreButtonClicked$ = createEffect(() =>
     this.action$.pipe(
       ofType(routerNavigatedAction),
-      switchMap(() => this.routerService.routerParams$),
-      filter((params) => !!params && params['alumnoId']),
+      switchMap(() => this.routerService.routerParams$.pipe(take(1))),
+      filter((params) => !!params['alumnoId']),
       map((params) =>
         AlumnosActions.requestCurrentAlumno({
           alumnoId: params['alumnoId'],

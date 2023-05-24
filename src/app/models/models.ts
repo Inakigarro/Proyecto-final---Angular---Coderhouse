@@ -60,6 +60,7 @@ export interface Usuario {
   id: number;
   loginId: string;
   password: string;
+  rol: string;
 }
 
 export interface CreateUsuario {

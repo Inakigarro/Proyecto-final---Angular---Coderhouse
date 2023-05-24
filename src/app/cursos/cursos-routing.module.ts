@@ -19,13 +19,13 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: ':cursoId',
-        component: DetalleCursoComponent,
+        path: 'nuevo',
+        component: NuevoCursoFormComponent,
         canActivate: [AuthGuard],
       },
       {
-        path: 'nuevo',
-        component: NuevoCursoFormComponent,
+        path: ':cursoId',
+        component: DetalleCursoComponent,
         canActivate: [AuthGuard],
       },
       {

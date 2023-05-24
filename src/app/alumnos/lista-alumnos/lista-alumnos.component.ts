@@ -9,7 +9,7 @@ import {
 import { AlumnosService } from '../alumnos.service';
 import { Alumno } from 'src/app/models/models';
 import { AlumnosActions } from '../+state/alumnos.actions';
-import { raceInit } from 'rxjs/internal/observable/race';
+
 @Component({
   selector: 'app-lista-alumnos',
   templateUrl: './lista-alumnos.component.html',
