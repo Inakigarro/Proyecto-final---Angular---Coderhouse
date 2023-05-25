@@ -6,9 +6,11 @@ import {
   CreateCurso,
   CreateInscripcion,
   CreateProfesor,
+  CreateUsuario,
   Curso,
   Inscripcion,
   Profesor,
+  Usuario,
 } from './models/models';
 
 @Injectable({
@@ -114,5 +116,32 @@ export class ApiService {
     return this.httpClient.delete<Inscripcion>(
       this.apiEndpoint + `inscripciones/${id}`
     );
+  }
+
+  // Usuarios.
+  public getUsuarios() {
+    return this.httpClient.get<Usuario[]>(this.apiEndpoint + 'usuarios');
+  }
+
+  public addUsuario(nuevoUsuario: CreateUsuario) {
+    return this.httpClient.post<Usuario>(
+      this.apiEndpoint + 'usuarios',
+      nuevoUsuario
+    );
+  }
+
+  public getUsuarioById(id: number) {
+    return this.httpClient.get<Usuario>(this.apiEndpoint + `usuarios/${id}`);
+  }
+
+  public editUsuario(usuario: Usuario) {
+    return this.httpClient.put<Usuario>(
+      this.apiEndpoint + `usuarios/${usuario.id}`,
+      usuario
+    );
+  }
+
+  public deleteUsuarioById(id: number) {
+    return this.httpClient.delete<Usuario>(this.apiEndpoint + `usuarios/${id}`);
   }
 }

@@ -16,7 +16,6 @@ import { AlumnosActions } from '../+state/alumnos.actions';
 @Component({
   selector: 'app-edit-alumno-form',
   templateUrl: './edit-alumno-form.component.html',
-  styleUrls: ['./edit-alumno-form.component.scss'],
 })
 export class EditAlumnoFormComponent {
   public form: FormGroup;

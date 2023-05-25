@@ -6,16 +6,17 @@ import {
   Validators,
 } from '@angular/forms';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
-import { CursosService } from '../cursos.service';
-import { CreateCurso, Curso, Profesor } from 'src/app/models/models';
-import { CURSOS_BASE_ROUTE } from '../base-route';
-import { filter } from 'rxjs';
+import { UsuariosService } from '../usuarios.service';
+import { CreateUsuario } from 'src/app/models/models';
+import { filter, tap } from 'rxjs';
+import { USUARIOS_BASE_ROUTE } from '../base-route';
+import { UsuariosActions } from '../+state/usuarios.actions';
 
 @Component({
-  selector: 'app-nuevo-curso-form',
-  templateUrl: './nuevo-curso-form.component.html',
+  selector: 'app-nuevo-usuario-form',
+  templateUrl: './nuevo-usuario-form.component.html',
 })
-export class NuevoCursoFormComponent {
+export class NuevoUsuarioFormComponent {
   public form: FormGroup;
   public buttons: ExtendedButtonDefinition[] = [
     {
@@ -35,29 +36,35 @@ export class NuevoCursoFormComponent {
       label: 'Cancelar',
     },
   ];
-  public listaProfesores$ = this.service.profesores$;
-  public profesorSelected: Profesor;
   constructor(
     private formBuilder: FormBuilder,
-    private service: CursosService
+    private service: UsuariosService
   ) {
     this.form = this.formBuilder.group({
-      displayName: new FormControl('', [
+      loginId: new FormControl('', [
         Validators.required,
-        Validators.maxLength(30),
+        Validators.maxLength(15),
       ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(15),
+        Validators.minLength(8),
+      ]),
+      rol: new FormControl('', [Validators.required]),
     });
   }
+
   public onSubmit() {
     if (this.form.valid) {
-      const nuevoCurso: CreateCurso = this.form.value;
-      nuevoCurso.profesorId = this.profesorSelected.id;
-      this.service
-        .addCurso(nuevoCurso)
-        .pipe(filter((x) => !!x))
-        .subscribe((data) => this.service.navigateToRoot());
+      const nuevoUsuario: CreateUsuario = this.form.value;
+      this.service.dispatch(
+        UsuariosActions.createUsuarioFormSubmitted({
+          usuario: nuevoUsuario,
+        })
+      );
     }
   }
+
   public onCancel() {
     this.form.reset();
     this.service.navigateToRoot();

@@ -1,0 +1,39 @@
+<mat-toolbar class="listToolbar">
+    <ng-container *ngFor="let toolbarButton of toolbarButtons">
+        <app-button [button]="toolbarButton.buttonDefinition" [label]="toolbarButton.label" [icon]="toolbarButton.icon"
+            [url]="toolbarButton.url" (executed)="navigate($event)"></app-button>
+    </ng-container>
+</mat-toolbar>
+<ng-container *ngIf="listLoaded$ |async; else loading">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Id</th>
+            <td mat-cell *matCellDef="let element">{{element.id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="loginId">
+            <th mat-header-cell *matHeaderCellDef>Login Id</th>
+            <td mat-cell *matCellDef="let element">{{element.loginId}}</td>
+        </ng-container>
+        <ng-container matColumnDef="rol">
+            <th mat-header-cell *matHeaderCellDef>Rol</th>
+            <td mat-cell *matCellDef="let element">{{element.rol}}</td>
+        </ng-container>
+        <ng-container matColumnDef="botones">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="space-evenly center">
+                <ng-container *ngFor="let listButton of listItemButtons">
+                    <app-list-button [button]="listButton.buttonDefinition" [label]="listButton.label"
+                        [icon]="listButton.icon" [id]="element.id"
+                        (executed)="dispatch(element.id, $event)"></app-list-button>
+                </ng-container>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="headers"></tr>
+        <tr mat-row *matRowDef="let row; columns: headers"></tr>
+    </table>
+</ng-container>
+
+<ng-template #loading>
+    <mat-progress-spinner class="spinner" color="accent" mode="indeterminate">
+    </mat-progress-spinner>
+</ng-template>

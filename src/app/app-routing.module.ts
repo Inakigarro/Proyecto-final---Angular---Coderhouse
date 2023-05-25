@@ -13,6 +13,12 @@ const routes: Routes = [
     canActivate: [LoginGuard],
   },
   {
+    path: 'usuarios',
+    loadChildren: () =>
+      import('./usuarios/usuarios.module').then((m) => m.UsuariosModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'alumnos',
     loadChildren: () =>
       import('./alumnos/alumnos.module').then((m) => m.AlumnosModule),

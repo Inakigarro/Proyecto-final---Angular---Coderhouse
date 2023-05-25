@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { Action, Store } from '@ngrx/store';
 import * as CursosSelectors from './+state/cursos.selectors';
+import { CURSOS_BASE_ROUTE } from './base-route';
 
 @Injectable({ providedIn: 'root' })
 export class CursosService {
@@ -58,7 +59,7 @@ export class CursosService {
   );
 
   public navigateToRoot() {
-    this.navigate(['cursos'], false);
+    this.navigate([CURSOS_BASE_ROUTE], false);
   }
   public navigate(url: string[], isRelative: boolean) {
     let urlArray: string[] = [];
