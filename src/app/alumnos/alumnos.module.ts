@@ -21,6 +21,7 @@ import { AlumnosEffects } from './+state/alumnos.effects';
 import { DetalleAlumnoComponent } from './detalle-alumno/detalle-alumno.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthenticationModule } from '../authentication/authentication.module';
 
 const MaterialModules = [
   MatTableModule,
@@ -49,6 +50,7 @@ const MaterialModules = [
     ReactiveFormsModule,
     FormsModule,
     FlexModule,
+    AuthenticationModule,
     StoreModule.forFeature(ALUMNOS_FEATURE_KEY, alumnosReducer),
     EffectsModule.forFeature([AlumnosEffects]),
   ],

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ExtendedButtonDefinition } from '../components/models/button';
 import { AppService } from '../app.service';
+import { AuthenticationService } from '../authentication/authentication.service';
+import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,6 +19,7 @@ export class SidebarComponent {
       },
       label: 'Usuarios',
       url: 'usuarios',
+      rolLevel: 'admin',
     },
     {
       buttonDefinition: {
@@ -26,6 +29,7 @@ export class SidebarComponent {
       },
       label: 'Alumnos',
       url: 'alumnos',
+      rolLevel: 'user',
     },
     {
       buttonDefinition: {
@@ -35,6 +39,7 @@ export class SidebarComponent {
       },
       label: 'Profesores',
       url: 'profesores',
+      rolLevel: 'user',
     },
     {
       buttonDefinition: {
@@ -44,6 +49,7 @@ export class SidebarComponent {
       },
       label: 'Cursos',
       url: 'cursos',
+      rolLevel: 'user',
     },
     {
       buttonDefinition: {
@@ -53,12 +59,23 @@ export class SidebarComponent {
       },
       label: 'Inscripciones',
       url: 'inscripciones',
+      rolLevel: 'user',
     },
   ];
-
-  constructor(private appService: AppService) {}
+  public currentUser$ = this.authService.getCurrentUser();
+  constructor(
+    private appService: AppService,
+    private authService: AuthenticationService
+  ) {}
 
   public navigate(url: string) {
     this.appService.navigate([url]);
+  }
+
+  public hasPermission(button: ExtendedButtonDefinition) {
+    return this.currentUser$.pipe(
+      filter((user) => !!user),
+      map((user) => user?.rol === button.rolLevel || user?.rol === 'admin')
+    );
   }
 }

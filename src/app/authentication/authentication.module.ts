@@ -8,11 +8,12 @@ import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { ComponentsModule } from '../components/components.module';
+import { IsAdminDirective } from './directives/is-admin.directive';
 
 const MaterialModule = [MatFormFieldModule, MatInputModule, MatCardModule];
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, IsAdminDirective],
   imports: [
     CommonModule,
     ComponentsModule,
@@ -22,6 +23,6 @@ const MaterialModule = [MatFormFieldModule, MatInputModule, MatCardModule];
     FlexLayoutModule,
     AuthenticationRoutingModule,
   ],
-  exports: [LoginComponent],
+  exports: [LoginComponent, IsAdminDirective],
 })
 export class AuthenticationModule {}

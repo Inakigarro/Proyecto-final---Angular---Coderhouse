@@ -5,6 +5,7 @@ import { AuthGuard } from '../authentication/guards/auth.guard';
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
 import { NuevoUsuarioFormComponent } from './nuevo-usuario-form/nuevo-usuario-form.component';
 import { EditUsuarioFormComponent } from './edit-usuario-form/edit-usuario-form.component';
+import { AdminGuard } from '../authentication/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -14,21 +15,21 @@ const routes: Routes = [
       {
         path: '',
         component: ListaUsuariosComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AdminGuard],
       },
       {
         path: 'nuevo',
         component: NuevoUsuarioFormComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AdminGuard],
       },
       {
         path: 'editar',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AdminGuard],
         children: [
           {
             path: ':usuarioId',
             component: EditUsuarioFormComponent,
-            canActivate: [AuthGuard],
+            canActivate: [AuthGuard, AdminGuard],
           },
         ],
       },

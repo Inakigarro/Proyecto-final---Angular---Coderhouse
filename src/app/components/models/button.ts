@@ -11,6 +11,7 @@ export interface ExtendedButtonDefinition {
   label?: string;
   icon?: string;
   url?: string;
+  rolLevel?: string;
 }
 
 export interface ListButtonDefinition {
@@ -19,4 +20,5 @@ export interface ListButtonDefinition {
   icon?: string;
   itemId?: number;
   action?: Action;
+  rolLevel?: string;
 }

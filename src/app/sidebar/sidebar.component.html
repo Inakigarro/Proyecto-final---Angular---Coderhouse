@@ -1,9 +1,11 @@
 <mat-sidenav-container>
     <mat-sidenav mode="side" opened>
         <div class="sidenav">
-            <ng-container *ngFor="let button of buttons">
-                <app-button [button]="button.buttonDefinition" [label]="button.label" [icon]="button.icon"
-                    [routerLink]="button.url"></app-button>
+            <ng-container *ngIf="currentUser$ | async">
+                <ng-container *ngFor="let button of buttons">
+                    <app-button *isAdmin="button.rolLevel!" [button]="button.buttonDefinition" [label]="button.label"
+                        [icon]="button.icon" [routerLink]="button.url"></app-button>
+                </ng-container>
             </ng-container>
         </div>
     </mat-sidenav>
