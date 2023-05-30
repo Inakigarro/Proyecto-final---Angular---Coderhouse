@@ -130,6 +130,17 @@ export class AlumnosEffects {
     )
   );
 
+  public requestInscripcionesAlumnos$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(AlumnosActions.currentAlumnoObtained),
+      map((action) =>
+        DetalleAlumnoActions.pedirInscripcionesDeAlumno({
+          alumnoId: action.alumno.id,
+        })
+      )
+    )
+  );
+
   public unsubscribeAlumnoButtonClicked$ = createEffect(() =>
     this.action$.pipe(
       ofType(DetalleAlumnoActions.desinscribirAlumnoDelCurso),
@@ -144,12 +155,49 @@ export class AlumnosEffects {
                 .deleteInscripcionById(inscripcion?.id as number)
                 .pipe(
                   take(1),
-                  map(() =>
-                    DetalleAlumnoActions.alumnoDesinscriptoCorrectamente()
+                  map((ins) =>
+                    DetalleAlumnoActions.alumnoDesinscriptoCorrectamente({
+                      alumnoId: ins.alumnoId,
+                    })
                   )
                 )
             )
           )
+      )
+    )
+  );
+
+  public reloadCurrentAlumnoInscripciones$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(DetalleAlumnoActions.alumnoDesinscriptoCorrectamente),
+      map((action) =>
+        DetalleAlumnoActions.pedirInscripcionesDeAlumno({
+          alumnoId: action.alumnoId,
+        })
+      )
+    )
+  );
+
+  public requestInscripcionesalumno$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(DetalleAlumnoActions.pedirInscripcionesDeAlumno),
+      switchMap((action) =>
+        this.service.getInscripcionesByAlumno(action.alumnoId).pipe(
+          filter((x) => !!x),
+          take(1),
+          switchMap((ins) => {
+            let cursosIds = ins.map((i) => i.cursoId);
+            return this.service.getCursosInscriptos(cursosIds).pipe(
+              filter((x) => !!x),
+              take(1),
+              map((cursos) =>
+                DetalleAlumnoActions.inscripcionesDeAlumnoObtenidas({
+                  cursos: cursos,
+                })
+              )
+            );
+          })
+        )
       )
     )
   );

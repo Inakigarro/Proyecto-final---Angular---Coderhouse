@@ -4,7 +4,7 @@ import {
   emptyProps,
   props,
 } from '@ngrx/store';
-import { Alumno, CreateAlumno } from 'src/app/models/models';
+import { Alumno, CreateAlumno, Curso } from 'src/app/models/models';
 
 export const AlumnosActions = createActionGroup({
   source: 'Alumnos',
@@ -29,6 +29,8 @@ export const DetalleAlumnoActions = createActionGroup({
       alumnoId: number;
       cursoId: number;
     }>(),
-    'Alumno desinscripto correctamente': emptyProps(),
+    'Alumno desinscripto correctamente': props<{ alumnoId: number }>(),
+    'Pedir inscripciones de alumno': props<{ alumnoId: number }>(),
+    'Inscripciones de alumno obtenidas': props<{ cursos: Curso[] }>(),
   },
 });

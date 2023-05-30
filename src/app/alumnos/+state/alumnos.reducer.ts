@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { Alumno } from 'src/app/models/models';
-import { AlumnosActions } from './alumnos.actions';
+import { Alumno, Curso } from 'src/app/models/models';
+import { AlumnosActions, DetalleAlumnoActions } from './alumnos.actions';
 
 export const ALUMNOS_FEATURE_KEY = 'alumnos';
 
@@ -9,6 +9,8 @@ export interface AlumnosState {
   listaAlumnos?: Alumno[];
   currentAlumnoLoaded: boolean;
   currentAlumno?: Alumno;
+  currentAlumnoInscripcionesLoaded: boolean;
+  currentAlumnoInscripciones?: Curso[];
 }
 
 export interface AlumnosPartialState {
@@ -18,6 +20,7 @@ export interface AlumnosPartialState {
 export const initialState: AlumnosState = {
   alumnosListLoaded: false,
   currentAlumnoLoaded: false,
+  currentAlumnoInscripcionesLoaded: false,
 };
 
 const reducer = createReducer(
@@ -34,6 +37,14 @@ const reducer = createReducer(
   on(AlumnosActions.editAlumnoButtonClicked, (state) => ({
     ...state,
     currentAlumnoLoaded: false,
+    currentAlumnoInscripcionesLoaded: false,
+  })),
+  on(AlumnosActions.requestCurrentAlumno, (state) => ({
+    ...state,
+    currentAlumnoLoaded: false,
+    currentAlumnoInscripcionesLoaded: false,
+    currentAlumno: undefined,
+    currentAlumnoInscripciones: undefined,
   })),
   on(AlumnosActions.currentAlumnoObtained, (state, action) => ({
     ...state,
@@ -48,6 +59,11 @@ const reducer = createReducer(
   on(AlumnosActions.editAlumnoFormSubmitionSucceed, (state, action) => ({
     ...state,
     currentAlumno: action.alumno,
+  })),
+  on(DetalleAlumnoActions.inscripcionesDeAlumnoObtenidas, (state, action) => ({
+    ...state,
+    currentAlumnoInscripcionesLoaded: true,
+    currentAlumnoInscripciones: action.cursos,
   }))
 );
 

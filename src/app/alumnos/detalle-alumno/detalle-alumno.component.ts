@@ -16,6 +16,7 @@ import { DetalleAlumnoActions } from '../+state/alumnos.actions';
 export class DetalleAlumnoComponent implements OnDestroy {
   private destroy$ = new Subject();
   public currentAlumno$ = this.service.currentAlumno$;
+  public currentAlumnoInscripciones$ = this.service.currentAlumnoInscripciones$;
   public inscripcionesDataSource = new MatTableDataSource<Curso>();
   public headers = ['nombre', 'profesor', 'botones'];
   public listItemButtons: ListButtonDefinition[] = [
@@ -33,28 +34,14 @@ export class DetalleAlumnoComponent implements OnDestroy {
   private currentAlumnoId: number;
   constructor(private service: AlumnosService) {
     this.currentAlumno$
-      .pipe(
-        filter((a) => !!a),
-        tap((alumno) =>
-          this.service
-            .getInscripcionesByAlumno(alumno!.id)
-            .pipe(
-              map((ins) => {
-                let cursosIds = ins.map((i) => i.cursoId);
-                return this.service
-                  .getCursosInscriptos(cursosIds)
-                  .pipe(
-                    map(
-                      (cursos) => (this.inscripcionesDataSource.data = cursos)
-                    )
-                  )
-                  .subscribe();
-              })
-            )
-            .subscribe()
-        )
-      )
+      .pipe(filter((a) => !!a))
       .subscribe((a) => (this.currentAlumnoId = a?.id as number));
+    this.currentAlumnoInscripciones$
+      .pipe(
+        filter((x) => !!x),
+        map((cursos) => (this.inscripcionesDataSource.data = cursos as Curso[]))
+      )
+      .subscribe();
   }
   ngOnDestroy(): void {
     this.destroy$.next({});

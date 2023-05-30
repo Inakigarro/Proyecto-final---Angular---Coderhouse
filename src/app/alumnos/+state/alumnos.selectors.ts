@@ -24,3 +24,13 @@ export const getCurrentAlumno = createSelector(
   getAlumnosState,
   (state) => state.currentAlumno
 );
+
+export const getCurrentAlumnoInscripcionesLoaded = createSelector(
+  getAlumnosState,
+  (state) => state.currentAlumnoInscripcionesLoaded
+);
+
+export const getCurrentAlumnoInscripciones = createSelector(
+  getAlumnosState,
+  (state) => state.currentAlumnoInscripciones
+);

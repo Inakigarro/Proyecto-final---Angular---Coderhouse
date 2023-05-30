@@ -69,6 +69,10 @@ export class AlumnosService {
   public listaAlumnos$ = this.store.select(AlumnosSelectors.getAlumnosList);
 
   public currentAlumno$ = this.store.select(AlumnosSelectors.getCurrentAlumno);
+
+  public currentAlumnoInscripciones$ = this.store.select(
+    AlumnosSelectors.getCurrentAlumnoInscripciones
+  );
   // Navigation.
   public navigateToRoot() {
     this.navigate(['alumnos'], false);
