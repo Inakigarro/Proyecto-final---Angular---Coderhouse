@@ -62,7 +62,7 @@ export class SidebarComponent {
       rolLevels: ['admin', 'user'],
     },
   ];
-  public currentUser$ = this.authService.getCurrentUser();
+  public currentUser$ = this.authService.userLoggedIn$;
   constructor(
     private appService: AppService,
     private authService: AuthenticationService

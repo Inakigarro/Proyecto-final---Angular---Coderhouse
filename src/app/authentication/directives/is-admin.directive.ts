@@ -4,7 +4,7 @@ import { filter, map } from 'rxjs';
 
 @Directive({ selector: '[isAdmin]' })
 export class IsAdminDirective {
-  private currentUser$ = this.authService.getCurrentUser();
+  private currentUser$ = this.authService.userLoggedIn$;
   private hasView = false;
   constructor(
     private templateRef: TemplateRef<any>,

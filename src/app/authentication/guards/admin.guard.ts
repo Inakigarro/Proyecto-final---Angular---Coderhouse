@@ -14,12 +14,10 @@ export class AdminGuard {
     private authService: AuthenticationService
   ) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.authService
-      .getCurrentUser()
-      .pipe(
-        map((user) =>
-          user?.rol === 'admin' ? true : this.router.createUrlTree(['alumnos'])
-        )
-      );
+    return this.authService.userLoggedIn$.pipe(
+      map((user) =>
+        user?.rol === 'admin' ? true : this.router.createUrlTree(['alumnos'])
+      )
+    );
   }
 }

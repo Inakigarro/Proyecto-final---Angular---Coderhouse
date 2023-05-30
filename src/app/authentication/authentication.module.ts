@@ -9,6 +9,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { ComponentsModule } from '../components/components.module';
 import { IsAdminDirective } from './directives/is-admin.directive';
+import { StoreModule } from '@ngrx/store';
+import { AUTH_FEATURE_KEY, authReducer } from './+state/auth.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthenticationEffects } from './+state/auth.effects';
 
 const MaterialModule = [MatFormFieldModule, MatInputModule, MatCardModule];
 
@@ -22,6 +26,8 @@ const MaterialModule = [MatFormFieldModule, MatInputModule, MatCardModule];
     MaterialModule,
     FlexLayoutModule,
     AuthenticationRoutingModule,
+    StoreModule.forFeature(AUTH_FEATURE_KEY, authReducer),
+    EffectsModule.forFeature([AuthenticationEffects]),
   ],
   exports: [LoginComponent, IsAdminDirective],
 })

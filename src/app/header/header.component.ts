@@ -14,8 +14,7 @@ export class HeaderComponent {
     private authService: AuthenticationService,
     private title: Title
   ) {
-    this.authService
-      .getCurrentUser()
+    this.authService.userLoggedIn$
       .pipe(
         delay(250),
         map((user) => {

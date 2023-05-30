@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { AuthenticationService } from '../authentication.service';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
+import { AuthActions } from '../+state/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -47,7 +48,12 @@ export class LoginComponent {
     if (this.loginFormGroup.valid) {
       let loginId = this.loginFormGroup.get('loginId')?.value;
       let password = this.loginFormGroup.get('password')?.value;
-      this.service.login(loginId, password);
+      this.service.dispatch(
+        AuthActions.requestLogin({
+          loginId,
+          password,
+        })
+      );
     }
   }
 

@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { Observable, map } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class LoginGuard  {
+export class LoginGuard {
   constructor(
     private router: Router,
     private authService: AuthenticationService
@@ -18,7 +23,7 @@ export class LoginGuard  {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.authService.verifyToken().pipe(
+    return this.authService.userLoggedIn$.pipe(
       map((user) => {
         if (user) {
           return this.router.createUrlTree(['alumnos']);
