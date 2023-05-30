@@ -28,7 +28,7 @@ export class ListaAlumnosComponent implements OnDestroy {
       },
       label: 'Nuevo',
       url: 'nuevo',
-      rolLevel: 'admin',
+      rolLevels: ['admin'],
     },
   ];
   public listItemButtons: ListButtonDefinition[] = [
@@ -39,7 +39,7 @@ export class ListaAlumnosComponent implements OnDestroy {
         kind: 'basic',
       },
       label: 'Ver mas',
-      rolLevel: 'user',
+      rolLevels: ['admin', 'user'],
     },
     {
       buttonDefinition: {
@@ -48,7 +48,7 @@ export class ListaAlumnosComponent implements OnDestroy {
         kind: 'raised',
       },
       label: 'Editar',
-      rolLevel: 'admin',
+      rolLevels: ['admin'],
     },
     {
       buttonDefinition: {
@@ -57,7 +57,7 @@ export class ListaAlumnosComponent implements OnDestroy {
         kind: 'fab',
       },
       icon: 'delete',
-      rolLevel: 'admin',
+      rolLevels: ['admin'],
     },
   ];
   public dataSource = new MatTableDataSource<Alumno>();

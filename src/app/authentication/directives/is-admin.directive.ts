@@ -12,15 +12,15 @@ export class IsAdminDirective {
     private authService: AuthenticationService
   ) {}
 
-  @Input() set isAdmin(rol: string) {
+  @Input() set isAdmin(rols: string[]) {
     this.currentUser$
       .pipe(
         filter((user) => !!user),
         map((user) => {
-          if (user?.rol === rol && !this.hasView) {
+          if (rols.includes(user?.rol as string) && !this.hasView) {
             this.viewContainer.createEmbeddedView(this.templateRef);
             this.hasView = true;
-          } else if (user?.rol !== rol && this.hasView) {
+          } else if (!rols.includes(user?.rol as string) && this.hasView) {
             this.viewContainer.clear();
             this.hasView = false;
           }

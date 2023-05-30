@@ -6,7 +6,4 @@ import { AuthenticationService } from './authentication/authentication.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  constructor(private authService: AuthenticationService) {}
-  title = 'proyecto-final';
-}
+export class AppComponent {}

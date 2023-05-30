@@ -22,6 +22,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { CursosEffects } from './+state/cursos.effects';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthenticationModule } from '../authentication/authentication.module';
 
 const MaterialModules = [
   MatTableModule,
@@ -51,6 +52,7 @@ const MaterialModules = [
     ReactiveFormsModule,
     FormsModule,
     FlexModule,
+    AuthenticationModule,
     StoreModule.forFeature(CURSOS_FEATURE_KEY, cursosReducer),
     EffectsModule.forFeature([CursosEffects]),
   ],

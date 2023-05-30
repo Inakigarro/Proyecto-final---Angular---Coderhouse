@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Observable, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppService {
-  constructor(private router: Router) {}
+  public title$ = new BehaviorSubject<string>(
+    this.title.getTitle()
+  ).asObservable();
+  constructor(private router: Router, private title: Title) {}
 
   public navigate(url: string[], isRelative: boolean = false) {
     let urlArray: string[] = [];

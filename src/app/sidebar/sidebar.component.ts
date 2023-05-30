@@ -19,7 +19,7 @@ export class SidebarComponent {
       },
       label: 'Usuarios',
       url: 'usuarios',
-      rolLevel: 'admin',
+      rolLevels: ['admin'],
     },
     {
       buttonDefinition: {
@@ -29,7 +29,7 @@ export class SidebarComponent {
       },
       label: 'Alumnos',
       url: 'alumnos',
-      rolLevel: 'user',
+      rolLevels: ['admin', 'user'],
     },
     {
       buttonDefinition: {
@@ -39,7 +39,7 @@ export class SidebarComponent {
       },
       label: 'Profesores',
       url: 'profesores',
-      rolLevel: 'user',
+      rolLevels: ['admin', 'user'],
     },
     {
       buttonDefinition: {
@@ -49,7 +49,7 @@ export class SidebarComponent {
       },
       label: 'Cursos',
       url: 'cursos',
-      rolLevel: 'user',
+      rolLevels: ['admin', 'user'],
     },
     {
       buttonDefinition: {
@@ -59,7 +59,7 @@ export class SidebarComponent {
       },
       label: 'Inscripciones',
       url: 'inscripciones',
-      rolLevel: 'user',
+      rolLevels: ['admin', 'user'],
     },
   ];
   public currentUser$ = this.authService.getCurrentUser();
@@ -75,7 +75,7 @@ export class SidebarComponent {
   public hasPermission(button: ExtendedButtonDefinition) {
     return this.currentUser$.pipe(
       filter((user) => !!user),
-      map((user) => user?.rol === button.rolLevel || user?.rol === 'admin')
+      map((user) => button.rolLevels?.includes(user?.rol as string))
     );
   }
 }
