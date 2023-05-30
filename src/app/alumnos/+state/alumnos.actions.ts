@@ -1,4 +1,9 @@
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import {
+  createAction,
+  createActionGroup,
+  emptyProps,
+  props,
+} from '@ngrx/store';
 import { Alumno, CreateAlumno } from 'src/app/models/models';
 
 export const AlumnosActions = createActionGroup({
@@ -14,5 +19,16 @@ export const AlumnosActions = createActionGroup({
     'Edit Alumno form submitted': props<{ alumno: Alumno }>(),
     'Edit alumno form submition succeed': props<{ alumno: Alumno }>(),
     'Delete alumno button clicked': props<{ alumnoId: number }>(),
+  },
+});
+
+export const DetalleAlumnoActions = createActionGroup({
+  source: 'Detalle Alumno',
+  events: {
+    'Desinscribir alumno del curso': props<{
+      alumnoId: number;
+      cursoId: number;
+    }>(),
+    'Alumno desinscripto correctamente': emptyProps(),
   },
 });

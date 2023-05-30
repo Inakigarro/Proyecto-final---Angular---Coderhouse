@@ -24,6 +24,16 @@
                     <th mat-header-cell *matHeaderCellDef>Profesor</th>
                     <td mat-cell *matCellDef="let element">{{element.profesorId}}</td>
                 </ng-container>
+                <ng-container matColumnDef="botones">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="space-evenly center">
+                        <ng-container *ngFor="let listButton of listItemButtons">
+                            <app-list-button *isAdmin="listButton.rolLevels!" [button]="listButton.buttonDefinition"
+                                [label]="listButton.label" [icon]="listButton.icon" [id]="element.id"
+                                (executed)="dispatch(element.id, $event)"></app-list-button>
+                        </ng-container>
+                    </td>
+                </ng-container>
                 <tr mat-header-row *matHeaderRowDef="headers"></tr>
                 <tr mat-row *matRowDef="let row; columns: headers"></tr>
             </table>

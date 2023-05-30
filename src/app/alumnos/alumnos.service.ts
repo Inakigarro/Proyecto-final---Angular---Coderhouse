@@ -49,6 +49,19 @@ export class AlumnosService {
       .pipe(map((cursos) => cursos.filter((c) => ids.includes(c.id))));
   }
 
+  public getInscripcionByAlumnoAndCurso(alumnoId: number, cursoId: number) {
+    return this.apiService.getInscripciones().pipe(
+      filter((x) => !!x),
+      map((ins) =>
+        ins.find((i) => i.alumnoId === alumnoId && i.cursoId === cursoId)
+      )
+    );
+  }
+
+  public deleteInscripcionById(id: number) {
+    return this.apiService.deleteInscripcionById(id);
+  }
+
   // Selectors.
   public alumnoListLoaded$ = this.store.select(
     AlumnosSelectors.getAlumnoListLoaded

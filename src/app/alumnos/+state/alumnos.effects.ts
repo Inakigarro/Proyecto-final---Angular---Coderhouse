@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AlumnosActions } from './alumnos.actions';
+import { AlumnosActions, DetalleAlumnoActions } from './alumnos.actions';
 import { filter, map, switchMap, take, tap } from 'rxjs';
 import { AlumnosService } from '../alumnos.service';
 import { routerNavigatedAction } from '@ngrx/router-store';
@@ -130,6 +130,29 @@ export class AlumnosEffects {
     )
   );
 
+  public unsubscribeAlumnoButtonClicked$ = createEffect(() =>
+    this.action$.pipe(
+      ofType(DetalleAlumnoActions.desinscribirAlumnoDelCurso),
+      switchMap((action) =>
+        this.service
+          .getInscripcionByAlumnoAndCurso(action.alumnoId, action.cursoId)
+          .pipe(
+            filter((x) => !!x),
+            take(1),
+            switchMap((inscripcion) =>
+              this.service
+                .deleteInscripcionById(inscripcion?.id as number)
+                .pipe(
+                  take(1),
+                  map(() =>
+                    DetalleAlumnoActions.alumnoDesinscriptoCorrectamente()
+                  )
+                )
+            )
+          )
+      )
+    )
+  );
   constructor(
     private readonly action$: Actions,
     private readonly service: AlumnosService,
