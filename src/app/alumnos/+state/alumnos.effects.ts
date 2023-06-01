@@ -28,6 +28,7 @@ export class AlumnosEffects {
       ofType(AlumnosActions.requestAlumnosList),
       switchMap(() =>
         this.service.getAlumnos().pipe(
+          filter((x) => !!x),
           take(1),
           map((alumnos) =>
             AlumnosActions.alumnosListObtained({

@@ -34,11 +34,6 @@ const reducer = createReducer(
     alumnosListLoaded: true,
     listaAlumnos: action.alumnosList,
   })),
-  on(AlumnosActions.editAlumnoButtonClicked, (state) => ({
-    ...state,
-    currentAlumnoLoaded: false,
-    currentAlumnoInscripcionesLoaded: false,
-  })),
   on(AlumnosActions.requestCurrentAlumno, (state) => ({
     ...state,
     currentAlumnoLoaded: false,

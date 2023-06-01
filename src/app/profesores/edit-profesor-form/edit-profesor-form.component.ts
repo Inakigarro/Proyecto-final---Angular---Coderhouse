@@ -36,40 +36,30 @@ export class EditProfesorFormComponent {
       label: 'Cancelar',
     },
   ];
-  private id: string = '';
-  public loaded = false;
+  public currentProfesor$ = this.service.currentProfesor$;
   constructor(
     private formBuilder: FormBuilder,
     private service: ProfesoresService,
     private route: ActivatedRoute
   ) {
-    let profesor: Profesor | undefined;
-    this.route.params.subscribe((params) => {
-      this.id = params['id'];
-    });
-    this.service
-      .findProfesorById(this.id)
-      .pipe(filter((x) => !!x))
-      .subscribe((profesor) => {
-        this.form = this.formBuilder.group({
-          id: new FormControl(`${profesor.id}`, [Validators.required]),
-          firstName: new FormControl(`${profesor?.firstName}`, [
-            Validators.required,
-            Validators.maxLength(30),
-          ]),
-          lastName: new FormControl(`${profesor?.lastName}`, [
-            Validators.required,
-            Validators.maxLength(30),
-          ]),
-          email: new FormControl(`${profesor?.email}`, [
-            Validators.required,
-            Validators.maxLength(150),
-            Validators.email,
-          ]),
-        });
-
-        this.loaded = true;
+    this.currentProfesor$.pipe(filter((x) => !!x)).subscribe((profesor) => {
+      this.form = this.formBuilder.group({
+        id: new FormControl(`${profesor?.id}`, [Validators.required]),
+        firstName: new FormControl(`${profesor?.firstName}`, [
+          Validators.required,
+          Validators.maxLength(30),
+        ]),
+        lastName: new FormControl(`${profesor?.lastName}`, [
+          Validators.required,
+          Validators.maxLength(30),
+        ]),
+        email: new FormControl(`${profesor?.email}`, [
+          Validators.required,
+          Validators.maxLength(150),
+          Validators.email,
+        ]),
       });
+    });
   }
 
   public onSubmit() {

@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject, filter } from 'rxjs';
+import { Subject, filter, map, take } from 'rxjs';
 import {
   BasicButtonDefinition,
   ExtendedButtonDefinition,
@@ -17,7 +17,7 @@ import { ProfesoresActions } from '../+state/profesores.actions';
 })
 export class ListaProfesoresComponent implements OnDestroy {
   public destroy$ = new Subject();
-  public data$ = this.service.profesores$;
+  public profesoresListLoaded$ = this.service.profesoresLoaded$;
   public headers: string[] = ['id', 'nombre', 'apellido', 'correo', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -31,6 +31,14 @@ export class ListaProfesoresComponent implements OnDestroy {
     },
   ];
   public listItemButtons: ListButtonDefinition[] = [
+    {
+      buttonDefinition: {
+        buttonType: 'normal',
+        type: 'basic',
+        kind: 'basic',
+      },
+      label: 'Ver mas',
+    },
     {
       buttonDefinition: {
         buttonType: 'normal',
@@ -49,12 +57,13 @@ export class ListaProfesoresComponent implements OnDestroy {
     },
   ];
   public dataSource = new MatTableDataSource<Profesor>();
-  public loaded = false;
   constructor(private service: ProfesoresService) {
-    this.data$.subscribe((profesores) => {
-      this.dataSource.data = profesores;
-      this.loaded = true;
-    });
+    this.service.profesores$
+      .pipe(
+        filter((x) => !!x),
+        map((profesores) => (this.dataSource.data = profesores as Profesor[]))
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
@@ -66,13 +75,11 @@ export class ListaProfesoresComponent implements OnDestroy {
     this.service.navigate(['editar', `${id}`], true);
   }
   public onDeleteButtonClicked(id: number) {
-    this.loaded = false;
-    this.service
-      .deleteProfesorById(id)
-      .pipe(filter((x) => !!x))
-      .subscribe((data) => {
-        this.dataSource.data = this.dataSource.data.filter((x) => x.id !== id);
-      });
+    this.service.dispatch(
+      ProfesoresActions.deleteProfesorButtonClicked({
+        profesorId: id,
+      })
+    );
   }
 
   public navigate(url: string) {
@@ -80,16 +87,15 @@ export class ListaProfesoresComponent implements OnDestroy {
   }
 
   public dispatch(id: number, button: BasicButtonDefinition) {
+    if (button.kind === 'basic') {
+      this.service.navigate([`${id}`], true);
+    }
     if (button.kind === 'raised') {
-      this.service.dispatch(
-        ProfesoresActions.editProfesorButtonClicked({
-          profesorId: id,
-        })
-      );
+      this.service.navigate(['editar', `${id}`], true);
     }
     if (button.kind === 'fab') {
       this.service.dispatch(
-        ProfesoresActions.editProfesorButtonClicked({
+        ProfesoresActions.deleteProfesorButtonClicked({
           profesorId: id,
         })
       );

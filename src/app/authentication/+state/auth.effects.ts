@@ -29,7 +29,10 @@ export class AuthenticationEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.currentUserObtained),
-        tap(() => this.service.navigate(['alumnos'], false))
+        tap((action) => {
+          localStorage.setItem('loginId', action.usuario.loginId);
+          this.service.navigate(['alumnos'], false);
+        })
       ),
     { dispatch: false }
   );

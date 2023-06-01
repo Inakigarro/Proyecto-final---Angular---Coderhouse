@@ -5,6 +5,7 @@ import { ProfesoresComponent } from './profesores.component';
 import { NuevoProfesorFormComponent } from './nuevo-profesor-form/nuevo-profesor-form.component';
 import { EditProfesorFormComponent } from './edit-profesor-form/edit-profesor-form.component';
 import { AuthGuard } from '../authentication/guards/auth.guard';
+import { DetalleProfesorComponent } from './detalle-profesor/detalle-profesor.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,12 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'editar/:id',
+        path: ':profesorId',
+        component: DetalleProfesorComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'editar/:profesorId',
         component: EditProfesorFormComponent,
         canActivate: [AuthGuard],
       },

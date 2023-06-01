@@ -14,6 +14,16 @@ import { MatCardModule } from '@angular/material/card';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditProfesorFormComponent } from './edit-profesor-form/edit-profesor-form.component';
 import { FlexModule } from '@angular/flex-layout';
+import { StoreModule } from '@ngrx/store';
+import {
+  PROFESORES_FEATURE_KEY,
+  profesoresReducer,
+} from './+state/profesores.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ProfesoresEffects } from './+state/profesores.effects';
+import { DetalleProfesorComponent } from './detalle-profesor/detalle-profesor.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 const MaterialModules = [
   MatTableModule,
@@ -22,6 +32,8 @@ const MaterialModules = [
   MatInputModule,
   MatCardModule,
   MatProgressSpinnerModule,
+  MatIconModule,
+  MatButtonModule,
 ];
 
 @NgModule({
@@ -30,6 +42,7 @@ const MaterialModules = [
     ProfesoresComponent,
     NuevoProfesorFormComponent,
     EditProfesorFormComponent,
+    DetalleProfesorComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +52,8 @@ const MaterialModules = [
     ReactiveFormsModule,
     FormsModule,
     FlexModule,
+    StoreModule.forFeature(PROFESORES_FEATURE_KEY, profesoresReducer),
+    EffectsModule.forFeature([ProfesoresEffects]),
   ],
 })
 export class ProfesoresModule {}

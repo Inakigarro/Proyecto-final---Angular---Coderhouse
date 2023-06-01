@@ -3,7 +3,7 @@
         <mat-card-title>Nuevo Profesor</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <ng-container *ngIf="loaded; else loading">
+        <ng-container *ngIf="currentProfesor$|async; else loading">
             <form [formGroup]="form" fxLayout="column">
 
                 <mat-form-field>

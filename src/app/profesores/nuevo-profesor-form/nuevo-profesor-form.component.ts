@@ -10,6 +10,7 @@ import { ProfesoresService } from '../profesores.service';
 import { PROFESORES_BASE_ROUTE } from '../base-route';
 import { CreateProfesor, Profesor } from 'src/app/models/models';
 import { filter } from 'rxjs';
+import { ProfesoresActions } from '../+state/profesores.actions';
 
 @Component({
   selector: 'app-nuevo-profesor-form',
@@ -59,12 +60,11 @@ export class NuevoProfesorFormComponent {
   public onSubmit() {
     if (this.form.valid) {
       const nuevoProfesor: CreateProfesor = this.form.value;
-      this.service
-        .addProfesor(nuevoProfesor)
-        .pipe(filter((x) => !!x))
-        .subscribe((data) =>
-          this.service.navigate([PROFESORES_BASE_ROUTE], false)
-        );
+      this.service.dispatch(
+        ProfesoresActions.createProfesorFormSubmitted({
+          profesor: nuevoProfesor,
+        })
+      );
     }
   }
 
