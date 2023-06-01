@@ -3,7 +3,15 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { InscripcionesService } from '../inscripciones.service';
 import { ActivatedRoute } from '@angular/router';
 import { Inscripcion } from 'src/app/models/models';
-import { filter, withLatestFrom } from 'rxjs';
+import {
+  Subject,
+  filter,
+  map,
+  switchMap,
+  take,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
 import { INSCRIPCIONES_BASE_ROUTE } from '../base-route';
 
@@ -13,10 +21,11 @@ import { INSCRIPCIONES_BASE_ROUTE } from '../base-route';
   styleUrls: ['./inscripcion-detalles.component.scss'],
 })
 export class InscripcionDetallesComponent {
+  private destroy$ = new Subject();
+  public currentInscripcion$ = this.service.currentInscripcion$;
   public alumnoFormGroup: FormGroup;
   public cursoFormGroup: FormGroup;
 
-  private id: string = '';
   public alumnoLoaded = false;
   public cursoLoaded = false;
 
@@ -35,19 +44,18 @@ export class InscripcionDetallesComponent {
     private service: InscripcionesService,
     private route: ActivatedRoute
   ) {
-    let alumnoId = 0;
-    let cursoId = 0;
-    this.route.params.subscribe((params) => {
-      this.id = params['id'];
-    });
-
-    this.service
-      .findInscripcionById(this.id)
-      .pipe(filter((x) => !!x))
-      .subscribe((data) => {
+    this.currentInscripcion$
+      .pipe(
+        filter((x) => !!x),
+        take(1)
+      )
+      .subscribe((inscripcion) => {
         this.service
-          .findAlumnoById(data.alumnoId)
-          .pipe(filter((x) => !!x))
+          .findAlumnoById(inscripcion?.alumnoId!)
+          .pipe(
+            filter((x) => !!x),
+            take(1)
+          )
           .subscribe((alumno) => {
             this.alumnoFormGroup = this.formBuilder.group({
               id: new FormControl(`${alumno.id}`),
@@ -67,12 +75,18 @@ export class InscripcionDetallesComponent {
             this.alumnoLoaded = true;
           });
         this.service
-          .findCursoById(data.cursoId)
-          .pipe(filter((x) => !!x))
-          .subscribe((curso) => {
+          .findCursoById(inscripcion?.cursoId!)
+          .pipe(
+            filter((x) => !!x),
+            take(1)
+          )
+          .subscribe((curso) =>
             this.service
               .findProfesorById(curso.profesorId)
-              .pipe(filter((x) => !!x))
+              .pipe(
+                filter((x) => !!x),
+                take(1)
+              )
               .subscribe((profesor) => {
                 this.cursoFormGroup = this.formBuilder.group({
                   id: new FormControl(`${curso.id}`),
@@ -86,8 +100,8 @@ export class InscripcionDetallesComponent {
                   }),
                 });
                 this.cursoLoaded = true;
-              });
-          });
+              })
+          );
       });
   }
 

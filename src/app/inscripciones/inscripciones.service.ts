@@ -1,17 +1,26 @@
 import { Injectable } from '@angular/core';
-import {
-  CreateInscripcion,
-  Inscripcion,
-  InscripcionDto,
-} from '../models/models';
-import { BehaviorSubject, Observable, filter, of } from 'rxjs';
+import { CreateInscripcion, Curso, Inscripcion } from '../models/models';
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { Action, Store } from '@ngrx/store';
+import * as InscripcionesSelectors from './+state/inscripciones.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class InscripcionesService {
-  public inscripciones$ = this.apiService.getInscripciones();
+  public inscripciones$ = this.store.select(
+    InscripcionesSelectors.getInscripcionesList
+  );
+  public inscripcionesLoaded$ = this.store.select(
+    InscripcionesSelectors.getInscripcionesListLoaded
+  );
+
+  public currentInscripcion$ = this.store.select(
+    InscripcionesSelectors.getCurrentInscripcion
+  );
+
+  public currentInscripcionLoaded$ = this.store.select(
+    InscripcionesSelectors.getCurrentInscripcionLoaded
+  );
 
   public alumnos$ = this.apiService.getAlumnos();
   public cursos$ = this.apiService.getCursos();
@@ -36,6 +45,10 @@ export class InscripcionesService {
       });
   }
 
+  public getInscripciones() {
+    return this.apiService.getInscripciones();
+  }
+
   public findInscripcionById(id: string) {
     return this.apiService.getInscripcionById(id);
   }
@@ -53,6 +66,9 @@ export class InscripcionesService {
   public findCursoById(id: number) {
     return this.apiService.getCursoById(id.toString());
   }
+  public updateCurso(curso: Curso) {
+    return this.apiService.modifyCurso(curso);
+  }
 
   // Profesores.
   public findProfesorById(id: number) {
@@ -69,6 +85,10 @@ export class InscripcionesService {
       url.forEach((x) => urlArray.push(x));
       this.router.navigate(url);
     }
+  }
+
+  public navigateToRoot() {
+    this.navigate(['inscripciones'], false);
   }
 
   public dispatch(action: Action) {

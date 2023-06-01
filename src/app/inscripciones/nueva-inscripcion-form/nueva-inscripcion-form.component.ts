@@ -10,6 +10,7 @@ import {
 import { ExtendedButtonDefinition } from 'src/app/components/models/button';
 import { INSCRIPCIONES_BASE_ROUTE } from '../base-route';
 import { filter } from 'rxjs';
+import { InscripcionesActions } from '../+state/inscripciones.actions';
 
 @Component({
   selector: 'app-nueva-inscripcion-form',
@@ -84,10 +85,11 @@ export class NuevaInscripcionFormComponent {
       alumnoId: this.alumnoSelected.id,
       cursoId: this.cursoSelected.id,
     };
-    this.service.addInscripcion(inscripcion).subscribe((data) => {
-      this.service.addIncripcionToCurso(data);
-      this.service.navigate([INSCRIPCIONES_BASE_ROUTE], false);
-    });
+    this.service.dispatch(
+      InscripcionesActions.createInscripcionFormSubmitted({
+        inscripcion: inscripcion,
+      })
+    );
   }
 
   public onCancel() {

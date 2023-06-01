@@ -53,10 +53,10 @@ export class ApiService {
       curso
     );
   }
-  public modifyProfesor(curso: Profesor) {
+  public modifyProfesor(profesor: Profesor) {
     return this.httpClient.put<Profesor>(
-      this.apiEndpoint + `profesores/${curso.id}`,
-      curso
+      this.apiEndpoint + `profesores/${profesor.id}`,
+      profesor
     );
   }
   public deleteProfesorById(id: number) {

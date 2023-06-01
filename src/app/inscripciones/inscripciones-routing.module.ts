@@ -22,7 +22,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'detalles/:id',
+        path: 'detalles/:inscripcionId',
         component: InscripcionDetallesComponent,
         canActivate: [AuthGuard],
       },

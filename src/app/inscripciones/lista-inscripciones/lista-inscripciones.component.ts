@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject, filter } from 'rxjs';
+import { Subject, filter, map } from 'rxjs';
 import {
   BasicButtonDefinition,
   ExtendedButtonDefinition,
@@ -17,7 +17,6 @@ import { InscripcionesActions } from '../+state/inscripciones.actions';
 })
 export class ListaInscripcionesComponent implements OnDestroy {
   public destroy$ = new Subject();
-  public data$ = this.service.inscripciones$;
   public headers: string[] = ['id', 'curso', 'alumno', 'botones'];
   public toolbarButtons: ExtendedButtonDefinition[] = [
     {
@@ -49,31 +48,32 @@ export class ListaInscripcionesComponent implements OnDestroy {
     },
   ];
   public dataSource = new MatTableDataSource<InscripcionDto>();
-  public loaded = false;
-
+  public listLoaded$ = this.service.inscripcionesLoaded$;
   constructor(private service: InscripcionesService) {
-    this.data$.subscribe((inscripciones) => {
-      let inscripcionesList: InscripcionDto[] = [];
-      inscripciones.map((i) => {
-        let inscripcion: InscripcionDto = {
-          id: i.id,
-        };
+    this.service.inscripciones$
+      .pipe(
+        filter((x) => !!x),
+        map((inscripciones) => {
+          let inscripcionesList: InscripcionDto[] = [];
+          inscripciones?.map((i) => {
+            let inscripcion: InscripcionDto = {
+              id: i.id,
+            };
 
-        this.service
-          .findAlumnoById(i.alumnoId)
-          .subscribe((a) => (inscripcion.alumno = a));
-        this.service
-          .findCursoById(i.cursoId)
-          .subscribe((c) => (inscripcion.curso = c));
+            this.service
+              .findAlumnoById(i.alumnoId)
+              .subscribe((a) => (inscripcion.alumno = a));
+            this.service
+              .findCursoById(i.cursoId)
+              .subscribe((c) => (inscripcion.curso = c));
 
-        inscripcionesList.push(inscripcion);
-      });
+            inscripcionesList.push(inscripcion);
+          });
 
-      if (inscripcionesList.length > 0) {
-        this.dataSource.data = inscripcionesList;
-        this.loaded = true;
-      }
-    });
+          this.dataSource.data = inscripcionesList;
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
@@ -86,13 +86,11 @@ export class ListaInscripcionesComponent implements OnDestroy {
   }
 
   public onDeleteButtonClicked(id: number) {
-    this.loaded = false;
     this.service
       .deleteInscripcionById(id)
       .pipe(filter((x) => !!x))
       .subscribe(() => {
         this.dataSource.data = this.dataSource.data.filter((x) => x.id !== id);
-        this.loaded = true;
       });
   }
 
@@ -102,11 +100,7 @@ export class ListaInscripcionesComponent implements OnDestroy {
 
   public dispatch(id: number, button: BasicButtonDefinition) {
     if (button.kind === 'raised') {
-      this.service.dispatch(
-        InscripcionesActions.editInscripcionButtonClicked({
-          inscripcionId: id,
-        })
-      );
+      this.service.navigate(['detalles', `${id}`], true);
     }
 
     if (button.kind === 'fab') {
