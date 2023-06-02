@@ -14,7 +14,11 @@
             </mat-form-field>
             <mat-form-field>
                 <mat-label for="rolInput">Rol: </mat-label>
-                <input required matInput formControlName="rol" type="text" id="rolInput">
+                <mat-select required formControlName="rol" id="rolInput">
+                    <mat-option>None</mat-option>
+                    <mat-option [value]="'admin'">Admin</mat-option>
+                    <mat-option [value]="'user'">User</mat-option>
+                </mat-select>
             </mat-form-field>
             <div fxLayout="row">
                 <ng-container *ngFor="let button of buttons">

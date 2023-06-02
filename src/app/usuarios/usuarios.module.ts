@@ -23,6 +23,7 @@ import { UsuariosComponent } from './usuarios.component';
 import { UsuariosEffects } from './+state/usuarios.effects';
 import { NuevoUsuarioFormComponent } from './nuevo-usuario-form/nuevo-usuario-form.component';
 import { EditUsuarioFormComponent } from './edit-usuario-form/edit-usuario-form.component';
+import { MatSelectModule } from '@angular/material/select';
 
 const MaterialModules = [
   MatTableModule,
@@ -33,6 +34,7 @@ const MaterialModules = [
   MatProgressSpinnerModule,
   MatIconModule,
   MatButtonModule,
+  MatSelectModule,
 ];
 
 @NgModule({
