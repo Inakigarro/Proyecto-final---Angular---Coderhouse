@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -14,7 +14,7 @@ import { AuthActions } from '../+state/auth.actions';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   public loginFormGroup: FormGroup;
   public buttons: ExtendedButtonDefinition[] = [
     {
@@ -59,5 +59,9 @@ export class LoginComponent {
 
   public onCancel() {
     this.loginFormGroup.reset();
+  }
+
+  ngOnInit(): void {
+    this.service.dispatch(AuthActions.initAuth());
   }
 }

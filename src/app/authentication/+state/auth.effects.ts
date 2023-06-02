@@ -6,6 +6,23 @@ import { filter, map, switchMap, take, tap } from 'rxjs';
 
 @Injectable()
 export class AuthenticationEffects {
+  public initAuth$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.initAuth),
+      switchMap(() =>
+        this.service.verifyToken().pipe(
+          filter((x) => !!x),
+          take(1),
+          map((usuario) =>
+            AuthActions.requestLogin({
+              loginId: usuario?.loginId as string,
+              password: usuario?.password as string,
+            })
+          )
+        )
+      )
+    )
+  );
   public requestLogin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.requestLogin),
@@ -37,10 +54,18 @@ export class AuthenticationEffects {
     { dispatch: false }
   );
 
-  public logoutUser$ = createEffect(
+  public logoutUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.logoutUser),
+      tap(() => localStorage.removeItem('loginId')),
+      map(() => AuthActions.userLoggedOut())
+    )
+  );
+
+  public userLoggedOut$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.logoutUser),
+        ofType(AuthActions.userLoggedOut),
         tap(() => this.service.navigate(['auth'], false))
       ),
     { dispatch: false }

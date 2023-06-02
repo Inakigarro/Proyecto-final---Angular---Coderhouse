@@ -40,14 +40,16 @@ export class InscripcionesEffects {
     )
   );
 
-  public navigateToInscripcionesList$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(
-        InscripcionesActions.createInscripcionFormSubmitionSucceed,
-        InscripcionesActions.editInscripcionFormSubmitionSucceed
+  public navigateToInscripcionesList$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          InscripcionesActions.createInscripcionFormSubmitionSucceed,
+          InscripcionesActions.editInscripcionFormSubmitionSucceed
+        ),
+        tap(() => this.service.navigateToRoot())
       ),
-      tap(() => this.service.navigateToRoot())
-    )
+    { dispatch: false }
   );
 
   public createInscripcionRequest$ = createEffect(() =>
@@ -74,14 +76,14 @@ export class InscripcionesEffects {
         this.service.findCursoById(action.inscripcion.cursoId).pipe(
           filter((x) => !!x),
           take(1),
-          switchMap((curso) => {
-            curso.inscripciones.push(action.inscripcion.id);
-            return this.service.updateCurso(curso).pipe(
+          tap((curso) => curso.inscripciones.push(action.inscripcion.id)),
+          switchMap((curso) =>
+            this.service.updateCurso(curso).pipe(
               filter((x) => !!x),
               take(1),
               map(() => InscripcionesActions.inscripcionAddedToCurso())
-            );
-          })
+            )
+          )
         )
       )
     )

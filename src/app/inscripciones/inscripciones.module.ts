@@ -22,6 +22,7 @@ import {
 } from './+state/inscripciones.reducer';
 import { EffectSources, EffectsModule } from '@ngrx/effects';
 import { InscripcionesEffects } from './+state/inscripciones.effects';
+import { AuthenticationModule } from '../authentication/authentication.module';
 
 const MaterialModules = [
   MatTableModule,
@@ -48,6 +49,7 @@ const MaterialModules = [
     ReactiveFormsModule,
     FormsModule,
     FlexModule,
+    AuthenticationModule,
     StoreModule.forFeature(INSCRIPCIONES_FEATURE_KEY, inscripcionesReducer),
     EffectsModule.forFeature([InscripcionesEffects]),
   ],

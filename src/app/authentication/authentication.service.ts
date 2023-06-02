@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, filter, map, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, filter, map, take, withLatestFrom } from 'rxjs';
 import { Usuario } from '../models/models';
 import { Router } from '@angular/router';
 import { Action, Store } from '@ngrx/store';
 import * as AuthSelectors from './+state/auth.selectors';
 import { AuthActions } from './+state/auth.actions';
+import { ApiService } from '../api.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -14,7 +15,8 @@ export class AuthenticationService {
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    private store: Store
+    private store: Store,
+    private apiService: ApiService
   ) {}
 
   public login(loginId: string, password: string) {
@@ -26,6 +28,19 @@ export class AuthenticationService {
 
   public logout() {
     this.store.dispatch(AuthActions.logoutUser());
+  }
+
+  public verifyToken() {
+    let loginId = localStorage.getItem('loginId');
+
+    if (loginId) {
+      return this.apiService.getUsuarioByLoginId(loginId).pipe(
+        filter((x) => !!x),
+        take(1)
+      );
+    } else {
+      return this.userLoggedIn$;
+    }
   }
 
   public navigate(url: string[], isRelative: boolean) {

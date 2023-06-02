@@ -1,7 +1,8 @@
 <mat-toolbar class="listToolbar">
     <ng-container *ngFor="let toolbarButton of toolbarButtons">
-        <app-button [button]="toolbarButton.buttonDefinition" [label]="toolbarButton.label" [icon]="toolbarButton.icon"
-            [url]="toolbarButton.url" (executed)="navigate($event)"></app-button>
+        <app-button *isAdmin="toolbarButton.rolLevels!" [button]="toolbarButton.buttonDefinition"
+            [label]="toolbarButton.label" [icon]="toolbarButton.icon" [url]="toolbarButton.url"
+            (executed)="navigate($event)"></app-button>
     </ng-container>
 </mat-toolbar>
 <ng-container *ngIf="listLoaded$ | async; else loading">
@@ -23,8 +24,8 @@
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element" fxLayout="row" fxLayoutAlign="space-evenly center">
                 <ng-container *ngFor="let listButton of listItemButtons">
-                    <app-list-button [button]="listButton.buttonDefinition" [label]="listButton.label"
-                        [icon]="listButton.icon" [id]="element.id"
+                    <app-list-button *isAdmin="listButton.rolLevels!" [button]="listButton.buttonDefinition"
+                        [label]="listButton.label" [icon]="listButton.icon" [id]="element.id"
                         (executed)="dispatch(element.id, $event)"></app-list-button>
                 </ng-container>
             </td>

@@ -12,6 +12,7 @@ import {
   Profesor,
   Usuario,
 } from './models/models';
+import { filter, map, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -132,6 +133,14 @@ export class ApiService {
 
   public getUsuarioById(id: number) {
     return this.httpClient.get<Usuario>(this.apiEndpoint + `usuarios/${id}`);
+  }
+
+  public getUsuarioByLoginId(loginId: string) {
+    return this.getUsuarios().pipe(
+      filter((x) => !!x),
+      take(1),
+      map((usuarios) => usuarios.find((u) => u.loginId === loginId))
+    );
   }
 
   public editUsuario(usuario: Usuario) {

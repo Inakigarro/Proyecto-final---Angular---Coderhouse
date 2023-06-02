@@ -27,6 +27,7 @@ export class ListaInscripcionesComponent implements OnDestroy {
       },
       label: 'Nueva',
       url: 'nueva',
+      rolLevels: ['admin'],
     },
   ];
   public listItemButtons: ListButtonDefinition[] = [
@@ -37,6 +38,7 @@ export class ListaInscripcionesComponent implements OnDestroy {
         kind: 'raised',
       },
       label: 'Detalles',
+      rolLevels: ['admin', 'user'],
     },
     {
       buttonDefinition: {
@@ -45,6 +47,7 @@ export class ListaInscripcionesComponent implements OnDestroy {
         kind: 'fab',
       },
       icon: 'delete',
+      rolLevels: ['admin'],
     },
   ];
   public dataSource = new MatTableDataSource<InscripcionDto>();

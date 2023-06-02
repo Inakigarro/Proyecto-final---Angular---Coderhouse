@@ -24,6 +24,7 @@ import { ProfesoresEffects } from './+state/profesores.effects';
 import { DetalleProfesorComponent } from './detalle-profesor/detalle-profesor.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthenticationModule } from '../authentication/authentication.module';
 
 const MaterialModules = [
   MatTableModule,
@@ -52,6 +53,7 @@ const MaterialModules = [
     ReactiveFormsModule,
     FormsModule,
     FlexModule,
+    AuthenticationModule,
     StoreModule.forFeature(PROFESORES_FEATURE_KEY, profesoresReducer),
     EffectsModule.forFeature([ProfesoresEffects]),
   ],
