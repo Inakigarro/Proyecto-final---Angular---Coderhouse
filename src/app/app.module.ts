@@ -20,6 +20,8 @@ import { NgModule, isDevMode } from '@angular/core';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreRouterConnectingModule, routerReducer } from '@ngrx/router-store';
 import { RouterService } from './router/router.service';
+import { headerReducer } from './header/+state/header.reducer';
+import { HeaderEffects } from './header/+state/header.effects';
 
 const MaterialModules = [
   MatToolbarModule,
@@ -39,8 +41,8 @@ const MaterialModules = [
     AppRoutingModule,
     HttpClientModule,
     AuthenticationModule,
-    StoreModule.forRoot({ routerReducer }, {}),
-    EffectsModule.forRoot([]),
+    StoreModule.forRoot({ routerReducer, header: headerReducer }, {}),
+    EffectsModule.forRoot([HeaderEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     StoreRouterConnectingModule.forRoot({
       stateKey: 'routerReducer',

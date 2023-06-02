@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { Title } from '@angular/platform-browser';
-import { Subject, delay, filter, map } from 'rxjs';
+import { Subject, delay, filter, map, withLatestFrom } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { getCurrentTitle } from './+state/header.selectors';
 
 @Component({
   selector: 'app-header',
@@ -9,18 +11,20 @@ import { Subject, delay, filter, map } from 'rxjs';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
+  public appTitle = this.store.select(getCurrentTitle);
   public headaerTitle: string = '';
   constructor(
     private authService: AuthenticationService,
-    private title: Title
+    private store: Store
   ) {
-    this.authService.userLoggedIn$
+    this.appTitle
       .pipe(
-        delay(250),
-        map((user) => {
-          this.headaerTitle = this.title.getTitle();
+        withLatestFrom(this.authService.userLoggedIn$),
+        map(([title, user]) => {
           if (user) {
-            this.headaerTitle = this.headaerTitle + ` | ${user?.loginId}`;
+            this.headaerTitle = title + ` | ${user.loginId}`;
+          } else {
+            this.headaerTitle = title;
           }
         })
       )
